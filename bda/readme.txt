@@ -1,0 +1,1 @@
+Pràctiques de bda
