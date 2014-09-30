@@ -1,13 +1,11 @@
 CREATE TABLE Familia (
 	nom text,
-	idFamilia INTEGER,
-
-	PRIMARY KEY (idFamilia)
+	idFamilia int PRIMARY KEY
 );
 
 CREATE TABLE Subfamilia (
 	nom text,
-	idSubfamilia INTEGER,
+	idSubfamilia int,
 	familia int,
 
 	PRIMARY KEY (idSubfamilia, familia),

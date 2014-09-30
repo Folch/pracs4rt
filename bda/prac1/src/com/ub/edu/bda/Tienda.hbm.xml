@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.ub.edu.bda.Tienda" table="tienda">
+        <id name="id" column="ID">
+            <generator class="identity" />
+        </id>
+        <property name="nombre" column="NOMBRE" />
+        <property name="direccion" column="DIRECCION" />
+           <property name="telefono" column="TELEFONO" />
+        
+
+       <set name="catalogos" table="TIENDA_CATALOGO" cascade="all">
+                       <key column="IDTIENDA" />
+                       <many-to-many column="IDCATALOGO" class="com.ub.edu.bda.Catalogo" />
+               </set>                                
+   </class>
+</hibernate-mapping>

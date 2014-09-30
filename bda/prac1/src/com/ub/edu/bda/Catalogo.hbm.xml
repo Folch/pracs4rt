@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.ub.edu.bda.Catalogo" table="CATALOGO">
+        <id name="id" column="ID">
+            <generator class="identity" />
+        </id>
+        <property name="nombre" column="NOMBRE" />
+        <property name="descripcion" column="DESCRIPCION" />
+        
+        <set name="articulos" table="articulo" lazy="true" cascade="all">
+           <key>
+               <column name="ID_CATALOGO" /> <!-- CAMP FK de la taula articulo -->
+           </key>
+            <one-to-many class="com.ub.edu.bda.Articulo" /> 
+       </set>
+       <set name="tiendas" table="TIENDA_CATALOGO" cascade="all">
+                       <key column="IDCATALOGO" />
+                       <many-to-many column="IDTIENDA" class="com.ub.edu.bda.Tienda" />
+               </set>                                
+   </class>
+</hibernate-mapping>
