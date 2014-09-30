@@ -1,0 +1,10 @@
+DROP TABLE Familia;
+DROP TABLE Subfamilia;
+DROP TABLE Marca;
+DROP TABLE Campanya;
+DROP TABLE Entrada;
+DROP TABLE EntradaCampanya;
+DROP TABLE Article;
+DROP TABLE ArticleCampanya;
+DROP TABLE Usuari;
+DROP TABLE UsuariArticle;
