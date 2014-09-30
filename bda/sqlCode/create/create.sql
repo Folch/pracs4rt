@@ -63,6 +63,7 @@ CREATE TABLE Article (
 	campanya text,
 	talla text,
 	color text,
+	stock int,
 	preu real,
 	IVA real,
 
