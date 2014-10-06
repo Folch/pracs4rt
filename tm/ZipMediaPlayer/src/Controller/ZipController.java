@@ -11,14 +11,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
-import javax.swing.Timer;
 
 /**
  *
@@ -96,11 +96,13 @@ public class ZipController {
     }
 
     public void auto(int time) {
-        /*new Timer().schedule(new TimerTask() {
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(10);
+        executor.schedule(new Runnable() {
+            @Override
             public void run() {
-  // do stuff
+                next();
             }
-        }, 1, 1);*/
+        }, time, TimeUnit.MILLISECONDS);
     }
 
     public void manual() {
