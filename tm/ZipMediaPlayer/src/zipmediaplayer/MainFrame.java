@@ -29,12 +29,15 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
         initComponents();
     }
     
-    public String showFileChooser() {
+    public String showFileChooser(ZipController.FileType fileType) {
         JFileChooser fc = new JFileChooser();
         fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fc.setFileFilter(new FileNameExtensionFilter("Zip", "zip"));
-        fc.setFileFilter(new FileNameExtensionFilter("Images", new String[]{"png","jpeg"}));
+        if(fileType == ZipController.FileType.ZIP)
+            fc.setFileFilter(new FileNameExtensionFilter("Zip", "zip"));
+        else if(fileType == ZipController.FileType.IMAGE)
+            fc.setFileFilter(new FileNameExtensionFilter("Images", new String[]{"png","jpeg", "jpg"}));
+        
         int result = fc.showOpenDialog(null);
         if(result == JFileChooser.APPROVE_OPTION) {
             return fc.getSelectedFile().getAbsolutePath();
@@ -78,6 +81,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
 
         prevbtn.setForeground(new java.awt.Color(74, 62, 254));
         prevbtn.setText("<<");
+        prevbtn.setEnabled(false);
         prevbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prevbtnActionPerformed(evt);
@@ -86,6 +90,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
 
         nextbtn.setForeground(new java.awt.Color(74, 62, 254));
         nextbtn.setText(">>");
+        nextbtn.setEnabled(false);
         nextbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextbtnActionPerformed(evt);
@@ -94,6 +99,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
 
         automanual.setForeground(new java.awt.Color(74, 62, 254));
         automanual.setText("Auto");
+        automanual.setEnabled(false);
         automanual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 automanualActionPerformed(evt);
@@ -199,7 +205,8 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
         automanual.enable();
         automanual.setSelected(false);
         
-        String path = showFileChooser();
+        String path = showFileChooser(fileType);
+        if(path == null) return;
         controller = new ZipController(path, fileType, this);
         controller.first();
     }
