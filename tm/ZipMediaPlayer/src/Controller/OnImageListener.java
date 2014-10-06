@@ -3,19 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package zipmediaplayer;
+package Controller;
+
+import java.awt.image.BufferedImage;
 
 /**
  *
- * @author zenbook
+ * @author albert
  */
-public class ZipMediaPlayer {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        
-    }
+public interface OnImageListener {
+    
+    public void onImage(BufferedImage i);
     
 }
