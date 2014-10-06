@@ -15,4 +15,5 @@ public interface OnImageListener {
     
     public void onImage(BufferedImage i);
     
+    
 }

@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +29,7 @@ public class ZipController {
 
     private ArrayList<BufferedImage> images;
     private OnImageListener listener;
-    private ScheduledThreadPoolExecutor executor;
+    private ScheduledExecutorService executor;
     private int index;
     private String path;
 
@@ -39,7 +40,7 @@ public class ZipController {
 
     public ZipController(String path, FileType f, OnImageListener listener) {
         this.listener = listener;
-        this.setPath(path,f);
+        this.setPath(path, f);
     }
 
     public void first() {
@@ -50,9 +51,11 @@ public class ZipController {
     }
 
     public void next() {
+        index++;
         if (index == (images.size() - 1)) {
             index = 0;
         }
+        System.out.println("Imatge index= " + index);
         if (listener != null) {
             listener.onImage(images.get(index));
         }
@@ -68,24 +71,26 @@ public class ZipController {
     }
 
     public void auto(int time) {
-        executor = new ScheduledThreadPoolExecutor(2);
-        executor.schedule(new Runnable() {
-            @Override
+        Runnable nextRunnable = new Runnable() {
             public void run() {
                 next();
             }
-        }, time, TimeUnit.MILLISECONDS);
+        };
+
+        executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(nextRunnable, 0, time, TimeUnit.MILLISECONDS);
+
     }
 
     public void manual() {
         executor.shutdown();
     }
 
-    public void setPath(String path,FileType f) {
+    public void setPath(String path, FileType f) {
         this.path = path;
         this.index = 0;
         this.images = new ArrayList<>();
-        
+
         File file = new File(this.path);
         if (f == FileType.ZIP) {
             try {
@@ -114,8 +119,10 @@ public class ZipController {
             }
         }
     }
+
     //comprimmeix les imatges i les guarda al mateix path d'entrada amb una altra extensio
-    public void saveImages(){
-        
+
+    public void saveImages() {
+
     }
 }

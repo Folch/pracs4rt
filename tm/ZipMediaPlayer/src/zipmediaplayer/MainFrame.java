@@ -9,37 +9,36 @@ import Controller.OnImageListener;
 import Controller.ZipController;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author zenbook
  */
-public class MainFrame extends javax.swing.JFrame implements OnImageListener{
+public class MainFrame extends javax.swing.JFrame implements OnImageListener {
 
     private ZipController controller;
-    
+
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
     }
-    
+
     public String showFileChooser(ZipController.FileType fileType) {
         JFileChooser fc = new JFileChooser();
         fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        if(fileType == ZipController.FileType.ZIP)
+        if (fileType == ZipController.FileType.ZIP) {
             fc.setFileFilter(new FileNameExtensionFilter("Zip", "zip"));
-        else if(fileType == ZipController.FileType.IMAGE)
-            fc.setFileFilter(new FileNameExtensionFilter("Images", new String[]{"png","jpeg", "jpg"}));
-        
+        } else if (fileType == ZipController.FileType.IMAGE) {
+            fc.setFileFilter(new FileNameExtensionFilter("Images", new String[]{"png", "jpeg", "jpg"}));
+        }
+
         int result = fc.showOpenDialog(null);
-        if(result == JFileChooser.APPROVE_OPTION) {
+        if (result == JFileChooser.APPROVE_OPTION) {
             return fc.getSelectedFile().getAbsolutePath();
         } else {
             return null;
@@ -165,21 +164,29 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
     }// </editor-fold>//GEN-END:initComponents
 
     private void prevbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevbtnActionPerformed
-        if(controller != null) controller.previous();
+        if (controller != null) {
+            controller.previous();
+        }
     }//GEN-LAST:event_prevbtnActionPerformed
 
     private void nextbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextbtnActionPerformed
-        if(controller != null) controller.next();
+        if (controller != null) {
+            controller.next();
+        }
     }//GEN-LAST:event_nextbtnActionPerformed
 
     private void automanualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_automanualActionPerformed
-        if(controller != null) {
-            if(automanual.isSelected()) {
+        if (controller != null) {
+            if (automanual.isSelected()) {
                 //Si està pressionat serà auto
                 automanual.setText("Manual");
-                controller.auto(3000);
-            }else{
+                prevbtn.setEnabled(false);
+                nextbtn.setEnabled(false);
+                controller.auto(500);
+            } else {
                 automanual.setText("Auto");
+                prevbtn.setEnabled(true);
+                nextbtn.setEnabled(true);
                 controller.manual();
             }
         }
@@ -192,33 +199,37 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
     private void openimagemenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openimagemenuActionPerformed
         createZipController(ZipController.FileType.IMAGE);
     }//GEN-LAST:event_openimagemenuActionPerformed
-    
+
     @Override
     public void onImage(BufferedImage image) {
-        getGraphics().drawImage(image, Math.round(this.getWidth()*0.25f), Math.round(this.getHeight()*0.25f), this);
-        System.out.println("xFrame: "+this.getX());
-        System.out.println("yFrame: "+this.getY());
-        System.out.println("ximagepanel: "+imagepanel.getX());
-        System.out.println("yimagepanel: "+imagepanel.getY());
-        
+        update(getGraphics());
+        getGraphics().drawImage(image, Math.round(this.getWidth() * 0.25f), Math.round(this.getHeight() * 0.25f), this);
+
         /*JLabel picLabel = new JLabel(new ImageIcon(image));
-        imagepanel.add(picLabel);
-        add(picLabel);*/
-        
-        
+         imagepanel.add(picLabel);
+         add(picLabel);*/
     }
-    
+
     public void createZipController(ZipController.FileType fileType) {
-        prevbtn.enable();
-        nextbtn.enable();
-        automanual.enable();
-        automanual.setSelected(false);
-        
         String path = showFileChooser(fileType);
-        if(path == null) return;
-        controller = new ZipController(path, fileType, this);
+        if (path == null) {
+            return;
+        }
+        if (controller == null) {
+            controller = new ZipController(path, fileType, this);
+        } else {
+            
+            
+            controller.setPath(path, fileType);
+        }
         controller.first();
+        prevbtn.setEnabled(true);
+        nextbtn.setEnabled(true);
+        automanual.setEnabled(true);
+        automanual.setSelected(false);
+
     }
+
     /**
      * @param args the command line arguments
      */
@@ -239,7 +250,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -263,5 +274,4 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
     private javax.swing.JButton prevbtn;
     // End of variables declaration//GEN-END:variables
 
-    
 }
