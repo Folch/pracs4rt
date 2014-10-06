@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Model.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -27,11 +28,12 @@ import javax.imageio.stream.ImageInputStream;
  */
 public class ZipController {
 
-    private ArrayList<BufferedImage> images;
+    private ArrayList<Image> images;
     private OnImageListener listener;
     private ScheduledExecutorService executor;
     private int index;
     private String path;
+    
 
     public enum FileType {
 
@@ -51,23 +53,25 @@ public class ZipController {
     }
 
     public void next() {
-        index++;
-        if (index == (images.size() - 1)) {
+        
+        if (index == images.size() || index < 0) {
             index = 0;
         }
-        System.out.println("Imatge index= " + index);
+        
         if (listener != null) {
             listener.onImage(images.get(index));
         }
+        index++;
     }
 
     public void previous() {
-        if (index == 0) {
-            index = images.size() - 1;
+        if (index == images.size() || index < 0) {
+            index = images.size() -1;
         }
         if (listener != null) {
             listener.onImage(images.get(index));
         }
+        index--;
     }
 
     public void auto(int time) {
@@ -98,14 +102,17 @@ public class ZipController {
                 Enumeration<? extends ZipEntry> entries = zFl.entries();
                 while (entries.hasMoreElements()) {
                     ZipEntry entry = entries.nextElement();
+                    Image image = new Image();
                     String imgName = entry.getName();
+                    image.setName(imgName);
                     InputStream is = zFl.getInputStream(entry);
                     ImageInputStream iis = ImageIO.createImageInputStream(is);
                     BufferedImage bufImg = ImageIO.read(iis);
-                    images.add(bufImg);
+                    image.setImage(bufImg);
+                    images.add(image);
 
                 }
-                System.out.println("Imatges carregades");
+                
             } catch (IOException ex) {
                 Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -113,13 +120,26 @@ public class ZipController {
             try {
 
                 BufferedImage bufImg = ImageIO.read(file);
-                images.add(bufImg);
+                Image image = new Image();
+                image.setImage(bufImg);
+                image.setName(file.getName());
+                images.add(image);
             } catch (IOException ex) {
                 Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
+    public void jpgToPng(){//no funciona encara
+        for (Image image : images) {
+            try {
+                ImageIO.write(image.getImage(), "png", new File(image.getName()));
+            } catch (IOException ex) {
+                Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     //comprimmeix les imatges i les guarda al mateix path d'entrada amb una altra extensio
 
     public void saveImages() {

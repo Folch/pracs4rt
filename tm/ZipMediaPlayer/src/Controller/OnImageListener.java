@@ -5,7 +5,7 @@
  */
 package Controller;
 
-import java.awt.image.BufferedImage;
+import Model.Image;
 
 /**
  *
@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
  */
 public interface OnImageListener {
     
-    public void onImage(BufferedImage i);
+    public void onImage(Image i);
     
     
 }

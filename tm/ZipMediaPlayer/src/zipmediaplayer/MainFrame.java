@@ -7,7 +7,7 @@ package zipmediaplayer;
 
 import Controller.OnImageListener;
 import Controller.ZipController;
-import java.awt.image.BufferedImage;
+import Model.Image;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -62,6 +62,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         fileField = new javax.swing.JMenu();
         openzipmenu = new javax.swing.JMenuItem();
         openimagemenu = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -127,6 +128,9 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         fileField.add(openimagemenu);
 
         jMenuBar1.add(fileField);
+
+        jMenu1.setText("About");
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -200,11 +204,11 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         createZipController(ZipController.FileType.IMAGE);
     }//GEN-LAST:event_openimagemenuActionPerformed
 
+    
     @Override
-    public void onImage(BufferedImage image) {
+    public void onImage(Image image) {
         update(getGraphics());
-        getGraphics().drawImage(image, Math.round(this.getWidth() * 0.25f), Math.round(this.getHeight() * 0.25f), this);
-
+        getGraphics().drawImage(image.getImage(), Math.round(this.getWidth() * 0.25f), Math.round(this.getHeight() * 0.25f), this);
         /*JLabel picLabel = new JLabel(new ImageIcon(image));
          imagepanel.add(picLabel);
          add(picLabel);*/
@@ -267,6 +271,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
     private javax.swing.JToggleButton automanual;
     private javax.swing.JMenu fileField;
     private javax.swing.JPanel imagepanel;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JButton nextbtn;
     private javax.swing.JMenuItem openimagemenu;
