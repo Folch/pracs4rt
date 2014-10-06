@@ -200,6 +200,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
         
         String path = showFileChooser();
         controller = new ZipController(path, fileType, this);
+        controller.first();
     }
     /**
      * @param args the command line arguments
