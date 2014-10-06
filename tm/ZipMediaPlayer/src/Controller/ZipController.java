@@ -28,6 +28,7 @@ public class ZipController {
 
     private ArrayList<BufferedImage> images;
     private OnImageListener listener;
+    private ScheduledThreadPoolExecutor executor;
     private int index;
     private String path;
 
@@ -37,37 +38,8 @@ public class ZipController {
     };
 
     public ZipController(String path, FileType f, OnImageListener listener) {
-        this.path = path;
-        this.index = 0;
-        this.images = new ArrayList<>();
         this.listener = listener;
-        File file = new File(path);
-        if (f == FileType.ZIP) {
-            try {
-                ZipFile zFl = new ZipFile(file);
-                Enumeration<? extends ZipEntry> entries = zFl.entries();
-                while (entries.hasMoreElements()) {
-                    ZipEntry entry = entries.nextElement();
-                    String imgName = entry.getName();
-                    InputStream is = zFl.getInputStream(entry);
-                    ImageInputStream iis = ImageIO.createImageInputStream(is);
-                    BufferedImage bufImg = ImageIO.read(iis);
-                    images.add(bufImg);
-
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else { //image
-            try {
-
-                BufferedImage bufImg = ImageIO.read(file);
-                images.add(bufImg);
-            } catch (IOException ex) {
-                Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
+        this.setPath(path,f);
     }
 
     public void first() {
@@ -96,7 +68,7 @@ public class ZipController {
     }
 
     public void auto(int time) {
-        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(10);
+        executor = new ScheduledThreadPoolExecutor(10);
         executor.schedule(new Runnable() {
             @Override
             public void run() {
@@ -106,10 +78,43 @@ public class ZipController {
     }
 
     public void manual() {
-
+        executor.shutdown();
     }
 
-    public void setPath(String path) {
+    public void setPath(String path,FileType f) {
         this.path = path;
+        this.index = 0;
+        this.images = new ArrayList<>();
+        
+        File file = new File(this.path);
+        if (f == FileType.ZIP) {
+            try {
+                ZipFile zFl = new ZipFile(file);
+                Enumeration<? extends ZipEntry> entries = zFl.entries();
+                while (entries.hasMoreElements()) {
+                    ZipEntry entry = entries.nextElement();
+                    String imgName = entry.getName();
+                    InputStream is = zFl.getInputStream(entry);
+                    ImageInputStream iis = ImageIO.createImageInputStream(is);
+                    BufferedImage bufImg = ImageIO.read(iis);
+                    images.add(bufImg);
+
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else { //image
+            try {
+
+                BufferedImage bufImg = ImageIO.read(file);
+                images.add(bufImg);
+            } catch (IOException ex) {
+                Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    //comprimmeix les imatges i les guarda al mateix path d'entrada amb una altra extensio
+    public void saveImages(){
+        
     }
 }
