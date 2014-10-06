@@ -33,7 +33,8 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
         JFileChooser fc = new JFileChooser();
         fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fc.setFileFilter(new FileNameExtensionFilter("Imagefile", ".zip"));
+        fc.setFileFilter(new FileNameExtensionFilter("Zip", "zip"));
+        fc.setFileFilter(new FileNameExtensionFilter("Images", new String[]{"png","jpeg"}));
         int result = fc.showOpenDialog(null);
         if(result == JFileChooser.APPROVE_OPTION) {
             return fc.getSelectedFile().getAbsolutePath();
