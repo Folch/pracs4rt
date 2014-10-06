@@ -68,7 +68,7 @@ public class ZipController {
     }
 
     public void auto(int time) {
-        executor = new ScheduledThreadPoolExecutor(10);
+        executor = new ScheduledThreadPoolExecutor(2);
         executor.schedule(new Runnable() {
             @Override
             public void run() {
@@ -100,6 +100,7 @@ public class ZipController {
                     images.add(bufImg);
 
                 }
+                System.out.println("Imatges carregades");
             } catch (IOException ex) {
                 Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
             }
