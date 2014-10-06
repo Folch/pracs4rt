@@ -56,6 +56,7 @@ public class ZipController {
             try {
 
                 BufferedImage bufImg = ImageIO.read(file);
+                images.add(bufImg);
             } catch (IOException ex) {
                 Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
             }
