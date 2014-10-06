@@ -124,6 +124,7 @@
           <Color blue="fe" green="3e" red="4a" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="&lt;&lt;"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="prevbtnActionPerformed"/>
@@ -135,6 +136,7 @@
           <Color blue="fe" green="3e" red="4a" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="&gt;&gt;"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextbtnActionPerformed"/>
@@ -146,6 +148,7 @@
           <Color blue="fe" green="3e" red="4a" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Auto"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="automanualActionPerformed"/>
