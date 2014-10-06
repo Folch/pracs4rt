@@ -65,6 +65,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
         openimagemenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         imagepanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 62, 254), 2, true));
 
@@ -194,9 +195,17 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener{
     
     @Override
     public void onImage(BufferedImage image) {
-        JLabel picLabel = new JLabel(new ImageIcon(image));
-        add(picLabel);
+        getGraphics().drawImage(image, Math.round(this.getWidth()*0.25f), Math.round(this.getHeight()*0.25f), this);
+        System.out.println("xFrame: "+this.getX());
+        System.out.println("yFrame: "+this.getY());
+        System.out.println("ximagepanel: "+imagepanel.getX());
+        System.out.println("yimagepanel: "+imagepanel.getY());
+        
+        /*JLabel picLabel = new JLabel(new ImageIcon(image));
         imagepanel.add(picLabel);
+        add(picLabel);*/
+        
+        
     }
     
     public void createZipController(ZipController.FileType fileType) {
