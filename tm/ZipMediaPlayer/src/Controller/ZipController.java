@@ -25,6 +25,7 @@ import javax.imageio.stream.ImageInputStream;
 public class ZipController {
 
     private ArrayList<BufferedImage> images;
+    private OnImageListener listener;
 
     public enum FileType {
 
@@ -33,7 +34,8 @@ public class ZipController {
 
     public ZipController(String path, FileType f, OnImageListener listener) {
         File file = new File(path);
-
+        this.images = new ArrayList<>();
+        this.listener = listener;
         if (f == FileType.ZIP) {
             try {
                 ZipFile zFl = new ZipFile(file);
@@ -43,16 +45,21 @@ public class ZipController {
                     String imgName = entry.getName();
                     InputStream is = zFl.getInputStream(entry);
                     ImageInputStream iis = ImageIO.createImageInputStream(is);
-                    images.add(ImageIO.read(iis));
+                    BufferedImage bufImg = ImageIO.read(iis);
+                    images.add(bufImg);
+
                 }
             } catch (IOException ex) {
                 Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else { //image
+            try {
 
+                BufferedImage bufImg = ImageIO.read(file);
+            } catch (IOException ex) {
+                Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
-        this.images = new ArrayList<>();
 
     }
 

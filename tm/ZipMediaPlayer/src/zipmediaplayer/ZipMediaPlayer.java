@@ -19,7 +19,7 @@ public class ZipMediaPlayer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ZipController cont = new ZipController("/home/albert/Downloads/imagenes.zip", ZipController.FileType.ZIP, new OnImageListener() {
+        ZipController cont = new ZipController("/home/albert/Downloads/images.jpg", ZipController.FileType.IMAGE, new OnImageListener() {
 
             @Override
             public void onImage(BufferedImage i) {
