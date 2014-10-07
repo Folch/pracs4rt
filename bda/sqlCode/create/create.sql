@@ -23,11 +23,12 @@ CREATE TABLE Campanya (
 	nom text,
 	data_fi text,
 	data_inici text,
-	numArticles int CHECK (numArticles >= 0),
+	numArticles  int,
 	import real,
 
-	--CONSTRAINT num_articles_positive CHECK(numArticles >= 0)
-	CONSTRAINT positive_import CHECK(import > 0),
+	CONSTRAINT positive_num_articles CHECK(numArticles >= 0),
+	CONSTRAINT positive_import CHECK(import >= 0),
+
 	PRIMARY KEY (nom, data_fi, data_inici) 
 );
 
@@ -40,6 +41,15 @@ CREATE TABLE Entrada (
 	preu real,
 	IVA real,
 	importTotal real,
+	venuda int,
+
+
+	CONSTRAINT positive_fila CHECK(fila >= 0),	
+	CONSTRAINT positive_seient CHECK(seient >= 0),	
+	CONSTRAINT positive_preu CHECK(preu >= 0),
+	CONSTRAINT positive_IVA CHECK(IVA >= 0),
+	CONSTRAINT positive_importTotal CHECK(importTotal >= 0),
+	CONSTRAINT venuda_bool CHECK(venuda == 0 or venuda == 1),
 
 	PRIMARY KEY (fila, seient, campanya, data_fi, data_inici),
 	FOREIGN KEY (campanya, data_fi, data_inici) REFERENCES Campanya(nom, data_fi, data_inici) 
@@ -66,6 +76,10 @@ CREATE TABLE Article (
 	stock int,
 	preu real,
 	IVA real,
+
+	CONSTRAINT positive_stock CHECK(stock >= 0),
+	CONSTRAINT positive_preu CHECK(preu >= 0),
+	CONSTRAINT positive_IVA CHECK(IVA >= 0),
 
 	PRIMARY KEY (idArticle, producte),
 	FOREIGN KEY (producte) REFERENCES Producte(idProducte),
@@ -97,6 +111,10 @@ CREATE TABLE UsuariArticle (
 	unitatsComprades int,
 	preuTotal real,
 	impostos real,
+
+	CONSTRAINT positive_unitatsComprades CHECK(unitatsComprades >= 1),
+	CONSTRAINT positive_preuTotal CHECK(preuTotal >= 0),
+	CONSTRAINT positive_impostos CHECK(impostos >= 0),
 
 	PRIMARY KEY (nom, idArticle),
 	FOREIGN KEY (nom) REFERENCES Usuari (nom),
