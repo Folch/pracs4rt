@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.ub.edu.bda.Article" table="ARTICLE">
+        <composite-id>
+            <key-one-to-many name="Producte" 
+                             column="PRODUCTE"/>
+            <key-property name="idArticle" 
+                          column="IDARTICLE"/>
+        </composite-id>
+        
+        <property name="talla" column="TALLA" />
+        <property name="color" column="COLOR" />
+        <property name="stock" column="STOCK" />
+        <property name="preu" column="PREU" />
+        <property name="iva" column="IVA" />
+        
+        <many-to-one name="producte" class="com.ub.edu.bda.Producte" fetch="select">
+            <column name="IDPRODUCTE" />
+        </many-to-one>
+        <many-to-many name="campanya" class="com.ub.edu.bda.Campanya" fetch="select">
+            <column name="NOM"/>
+            <column name="DATA_FI"/>
+            <column name="DATA_INICI"/>  
+        </many-to-many>
+        <one-to-many name="marca" class="com.ub.edu.bda.Marca" fetch="select">
+            <column name="NOM" />
+        </one-to-many>
+    </class>
+</hibernate-mapping>

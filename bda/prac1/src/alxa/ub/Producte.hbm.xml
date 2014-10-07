@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.ub.edu.bda.Producte" table="PRODUCTE">
+        <id name="idProducte" column="IDPRODUCTE">
+            <generator class="identity" />
+        </id>
+        
+        <property name="nom" column="NOM" />
+        <property name="color" column="COLOR" />
+        
+        <many-to-one name="subFamilia" class="com.ub.edu.bda.SubFamilia" fetch="select">
+            <column name="IDSUBFAMILIA" /> <!-- CAMP FK de la taula articulo IDENTICS A LES DUES ENTITATS --> 
+        </many-to-one>
+    </class>
+</hibernate-mapping>

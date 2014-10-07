@@ -4,19 +4,16 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.SQLiteDialect</property>
     <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
-    <property name="hibernate.connection.url">jdbc:sqlite:test.db</property>
-    
+    <property name="hibernate.connection.url">jdbc:sqlite:p1bda.bd</property>
     <!-- Definimos propiedades de Hibernate para SQL -->
     <property name="show_sql">false</property>
     <property name="format_sql">true</property>
-
     <!-- Definimos que Hibernate cree las tablas none : no actualiza, update : act las dif, create :> machaca todo en la bd-->
     <!-- none, update, create -->
-    <property name="hibernate.hbm2ddl.auto">create</property>
-
+    <property name="hibernate.hbm2ddl.auto">none</property>
     <!-- Declaramos los archivos de mapping-->
-    <mapping resource="com/ub/edu/bda/Articulo.hbm.xml" />  
-    <mapping resource="com/ub/edu/bda/Catalogo.hbm.xml" />
-    <mapping resource="com/ub/edu/bda/Tienda.hbm.xml" />	
+    <mapping resource="com/ub/edu/bda/Articulo.hbm.xml"/>
+    <mapping resource="com/ub/edu/bda/Catalogo.hbm.xml"/>
+    <mapping resource="com/ub/edu/bda/Tienda.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
