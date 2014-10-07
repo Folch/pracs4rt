@@ -32,28 +32,6 @@ CREATE TABLE Campanya (
 	PRIMARY KEY (nom, data_fi, data_inici) 
 );
 
-CREATE TABLE Entrada (
-	fila int,
-	seient int,
-	campanya text,
-	data_fi text,
-	data_inici text,
-	preu real,
-	IVA real,
-	importTotal real,
-	venuda int,
-
-
-	CONSTRAINT positive_fila CHECK(fila >= 0),	
-	CONSTRAINT positive_seient CHECK(seient >= 0),	
-	CONSTRAINT positive_preu CHECK(preu >= 0),
-	CONSTRAINT positive_IVA CHECK(IVA >= 0),
-	CONSTRAINT positive_importTotal CHECK(importTotal >= 0),
-	CONSTRAINT venuda_bool CHECK(venuda == 0 or venuda == 1),
-
-	PRIMARY KEY (fila, seient, campanya, data_fi, data_inici),
-	FOREIGN KEY (campanya, data_fi, data_inici) REFERENCES Campanya(nom, data_fi, data_inici) 
-);
 
 CREATE TABLE Producte (
 	idProducte int,
@@ -91,6 +69,7 @@ CREATE TABLE ArticleCampanya (
 	nom text,
 	data_fi text,
 	data_inici text,
+	
 
 	PRIMARY KEY (idArticle, nom, data_fi, data_inici),
 	FOREIGN KEY (idArticle) REFERENCES Article(idArticle),
@@ -111,12 +90,17 @@ CREATE TABLE UsuariArticle (
 	unitatsComprades int,
 	preuTotal real,
 	impostos real,
+	campanya text,
+	data_fi text,
+	data_inici text,
 
 	CONSTRAINT positive_unitatsComprades CHECK(unitatsComprades >= 1),
 	CONSTRAINT positive_preuTotal CHECK(preuTotal >= 0),
 	CONSTRAINT positive_impostos CHECK(impostos >= 0),
 
+	
 	PRIMARY KEY (nom, idArticle),
 	FOREIGN KEY (nom) REFERENCES Usuari (nom),
+	FOREIGN KEY (campanya, data_fi, data_inici) REFERENCES Campanya (nom, data_fi, data_inici),
 	FOREIGN KEY (idArticle) REFERENCES Article (idArticle)
 );
