@@ -37,11 +37,9 @@ CREATE TABLE Producte (
 	idProducte int,
 	nom text,
 	color text,
-	marca text,
 	subfamilia int,
 
 	PRIMARY KEY (idProducte),
-	FOREIGN KEY (marca) REFERENCES Marca(nom),
 	FOREIGN KEY (subfamilia) REFERENCES Subfamilia(idSubfamilia)
 );
 
@@ -54,12 +52,14 @@ CREATE TABLE Article (
 	stock int,
 	preu real,
 	IVA real,
+	marca text,
 
 	CONSTRAINT positive_stock CHECK(stock >= 0),
 	CONSTRAINT positive_preu CHECK(preu >= 0),
 	CONSTRAINT positive_IVA CHECK(IVA >= 0),
 
 	PRIMARY KEY (idArticle, producte),
+	FOREIGN KEY (marca) REFERENCES Marca(nom),
 	FOREIGN KEY (producte) REFERENCES Producte(idProducte),
 	FOREIGN KEY (campanya) REFERENCES Campanya(nom)
 );
