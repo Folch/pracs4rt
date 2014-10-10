@@ -84,7 +84,7 @@ CREATE TABLE Usuari (
 	PRIMARY KEY (nom)
 );
 
-CREATE TABLE UsuariArticle (
+CREATE TABLE UsuariArticleCampanya (
 	nom text,
 	idArticle int,
 	unitatsComprades int,

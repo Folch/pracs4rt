@@ -20,11 +20,17 @@
         <many-to-one name="producte" class="com.ub.edu.bda.Producte" fetch="select">
             <column name="IDPRODUCTE" />
         </many-to-one>
+        
         <many-to-many name="campanya" class="com.ub.edu.bda.Campanya" fetch="select">
             <column name="NOM"/>
             <column name="DATA_FI"/>
             <column name="DATA_INICI"/>  
         </many-to-many>
+        
+        <many-to-many name="usuari" class="com.ub.edu.bda.Usuari" fetch="select">
+            <column name="NOM"/>
+        </many-to-many>
+
         <one-to-many name="marca" class="com.ub.edu.bda.Marca" fetch="select">
             <column name="NOM" />
         </one-to-many>

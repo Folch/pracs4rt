@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.ub.edu.bda.Campanya" table="CAMPANYA">
+        <composite-id>
+            <key-one-to-many name="nom" 
+                             column="NOM"/>
+            <key-property name="data_inici" 
+                          column="DATA_INICI"/>
+            <key-property name="data_fi" 
+                          column="DATA_FI"/>
+        </composite-id>
+        
+        <property name="numArticles" column="NUMARTICLES" />
+        <property name="imprt" column="IMPORT" />
+        
+        <many-to-many name="usuari" class="com.ub.edu.bda.Usuari" fetch="select">
+            <column name="NOM"/>
+        </many-to-many>
+        
+        <many-to-many name="article" class="com.ub.edu.bda.Usuari" fetch="select">
+            <column name="IDARTICLE"/>
+            <column name="PRODUCTE"/>
+        </many-to-many>
+    </class>
+</hibernate-mapping>

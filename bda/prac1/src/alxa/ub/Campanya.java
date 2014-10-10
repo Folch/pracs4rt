@@ -19,14 +19,19 @@ public class Campanya {
     private int numArticles;
     private float imprt;
     
+    private Usuari usuari;
+    private Article article;
+    
     public Campanya() { }
 
-    public Campanya(String nom, Date data_fi, Date data_inici, int numArticles, float imprt) {
+    public Campanya(String nom, Date data_fi, Date data_inici, int numArticles, float imprt, Usuari usuari, Article article) {
         this.nom = nom;
         this.data_fi = data_fi;
         this.data_inici = data_inici;
         this.numArticles = numArticles;
         this.imprt = imprt;
+        this.usuari = usuari;
+        this.article = article;
     }
 
     public String getNom() {
@@ -68,8 +73,21 @@ public class Campanya {
     public void setImprt(float imprt) {
         this.imprt = imprt;
     }
-    
-    
-    
+
+    public Usuari getUsuari() {
+        return usuari;
+    }
+
+    public void setUsuari(Usuari usuari) {
+        this.usuari = usuari;
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
     
 }

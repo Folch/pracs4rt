@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.ub.edu.bda.UsuariArticleCampanya" table="USUARIARTICLECAMPANYA">
+        <composite-id>
+            <key-one-to-many name="nom" 
+                             column="NOM"/>
+            <key-property name="article" 
+                          column="IDARTICLE"/>
+        </composite-id>
+        
+        <property name="unitatsComprades" column="UNITATSCOMPRADES" />
+        <property name="preuTotal" column="PREUTOTAL" />
+        <property name="impostos" column="IMPOSTOS" />
+        
+        <many-to-one name="familia" class="com.ub.edu.bda.Familia" fetch="select">
+            <column name="IDFAMILIA" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

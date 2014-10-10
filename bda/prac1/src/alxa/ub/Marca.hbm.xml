@@ -3,10 +3,9 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.ub.edu.bda.Familia" table="FAMILIA">
-        <id name="idFamilia" column="IDFAMILIA">
+    <class name="com.ub.edu.bda.Marca" table="MARCA">
+        <id name="nom" column="NOM">
             <generator class="identity" />
         </id>
-        <property name="nom" column="NOM" />
     </class>
 </hibernate-mapping>

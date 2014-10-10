@@ -13,6 +13,5 @@
     <property name="hibernate.hbm2ddl.auto">none</property>
     <!-- Declaramos los archivos de mapping-->
     <mapping resource="com/ub/edu/bda/Article.hbm.xml"/>
-
   </session-factory>
 </hibernate-configuration>

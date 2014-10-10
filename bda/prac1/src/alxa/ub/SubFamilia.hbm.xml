@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.ub.edu.bda.SubFamilia" table="SUBFAMILIA">
+        <composite-id>
+            <key-one-to-many name="idSubFamilia" 
+                             column="IDSUBFAMILIA"/>
+            <key-property name="familia" 
+                          column="IDFAMILIA"/>
+        </composite-id>
+        
+        <property name="nom" column="NOM" />
+        
+        <many-to-one name="familia" class="com.ub.edu.bda.Familia" fetch="select">
+            <column name="IDFAMILIA" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

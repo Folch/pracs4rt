@@ -5,6 +5,8 @@
  */
 package alxa.ub;
 
+import java.util.Set;
+
 /**
  *
  * @author zenbook
@@ -13,6 +15,9 @@ public class Usuari {
     private String nom;
     private String contrasenya;
     private String direccio;
+    
+    private Set<Article> articles;
+    private Set<Campanya> campanyes;
 
     public Usuari() {
     }

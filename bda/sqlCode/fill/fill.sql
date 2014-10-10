@@ -7,5 +7,5 @@
 .import fill/data/article.csv Article
 .import fill/data/articlecampanya.csv ArticleCampanya
 .import fill/data/usuari.csv Usuari
-.import fill/data/usuariarticle.csv UsuariArticle
+.import fill/data/usuariarticlecampanya.csv UsuariArticleCampanya
 .separator "|"

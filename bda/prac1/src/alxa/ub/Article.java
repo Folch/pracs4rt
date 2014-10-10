@@ -21,19 +21,22 @@ public class Article {
     private Marca marca;
     private Producte producte;
     private Campanya campanya;
+    private Usuari usuari;
 
     public Article() {
     }
 
-    public Article(int idArticle, String talla, String color, int stock, float preu, float iva, Producte producte, Campanya campanya) {
+    public Article(int idArticle, String talla, String color, int stock, float preu, float iva, Marca marca, Producte producte, Campanya campanya, Usuari usuari) {
         this.idArticle = idArticle;
         this.talla = talla;
         this.color = color;
         this.stock = stock;
         this.preu = preu;
         this.iva = iva;
+        this.marca = marca;
         this.producte = producte;
         this.campanya = campanya;
+        this.usuari = usuari;
     }
 
     public int getIdArticle() {
@@ -99,5 +102,22 @@ public class Article {
     public void setCampanya(Campanya campanya) {
         this.campanya = campanya;
     }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+
+    public Usuari getUsuari() {
+        return usuari;
+    }
+
+    public void setUsuari(Usuari usuari) {
+        this.usuari = usuari;
+    }
+    
     
 }

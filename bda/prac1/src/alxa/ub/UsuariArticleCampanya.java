@@ -9,7 +9,7 @@ package alxa.ub;
  *
  * @author zenbook
  */
-public class UsuariArticle {
+public class UsuariArticleCampanya {
     private int unitatsComprades;
     private float preuTotal;
     private float impostes;
@@ -18,10 +18,10 @@ public class UsuariArticle {
     private Article article;
     private Campanya campanya;
 
-    public UsuariArticle() {
+    public UsuariArticleCampanya() {
     }
 
-    public UsuariArticle(int unitatsComprades, float preuTotal, float impostes, Usuari usuari, Article article, Campanya campanya) {
+    public UsuariArticleCampanya(int unitatsComprades, float preuTotal, float impostes, Usuari usuari, Article article, Campanya campanya) {
         this.unitatsComprades = unitatsComprades;
         this.preuTotal = preuTotal;
         this.impostes = impostes;
