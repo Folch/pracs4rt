@@ -20,6 +20,7 @@ CREATE TABLE Marca (
 );
 
 CREATE TABLE Campanya (
+	idCampanya INTEGER,
 	nom text,
 	data_fi text,
 	data_inici text,
@@ -29,7 +30,7 @@ CREATE TABLE Campanya (
 	CONSTRAINT positive_num_articles CHECK(numArticles >= 0),
 	CONSTRAINT positive_import CHECK(import >= 0),
 
-	PRIMARY KEY (nom, data_fi, data_inici) 
+	PRIMARY KEY (idCampanya) 
 );
 
 
@@ -46,7 +47,7 @@ CREATE TABLE Producte (
 CREATE TABLE Article (
 	idArticle int,
 	producte int,
-	campanya text,
+	campanya int,
 	talla text,
 	color text,
 	stock int,
@@ -61,19 +62,17 @@ CREATE TABLE Article (
 	PRIMARY KEY (idArticle, producte),
 	FOREIGN KEY (marca) REFERENCES Marca(nom),
 	FOREIGN KEY (producte) REFERENCES Producte(idProducte),
-	FOREIGN KEY (campanya) REFERENCES Campanya(nom)
+	FOREIGN KEY (campanya) REFERENCES Campanya(idCampanya)
 );
 
 CREATE TABLE ArticleCampanya (
 	idArticle int,
-	nom text,
-	data_fi text,
-	data_inici text,
+	idCampanya int,
 	
 
-	PRIMARY KEY (idArticle, nom, data_fi, data_inici),
+	PRIMARY KEY (idArticle),
 	FOREIGN KEY (idArticle) REFERENCES Article(idArticle),
-	FOREIGN KEY (nom, data_fi, data_inici) REFERENCES Campanya (nom, data_fi, data_inici)
+	FOREIGN KEY (idCampanya) REFERENCES Campanya (idCampanya)
 );
 
 CREATE TABLE Usuari (
@@ -90,17 +89,15 @@ CREATE TABLE UsuariArticleCampanya (
 	unitatsComprades int,
 	preuTotal real,
 	impostos real,
-	campanya text,
-	data_fi text,
-	data_inici text,
+	campanya int,
 
 	CONSTRAINT positive_unitatsComprades CHECK(unitatsComprades >= 1),
 	CONSTRAINT positive_preuTotal CHECK(preuTotal >= 0),
 	CONSTRAINT positive_impostos CHECK(impostos >= 0),
 
 	
-	PRIMARY KEY (nom, idArticle),
+	PRIMARY KEY (nom, idArticle, campanya),
 	FOREIGN KEY (nom) REFERENCES Usuari (nom),
-	FOREIGN KEY (campanya, data_fi, data_inici) REFERENCES Campanya (nom, data_fi, data_inici),
+	FOREIGN KEY (campanya) REFERENCES Campanya (idCampanya),
 	FOREIGN KEY (idArticle) REFERENCES Article (idArticle)
 );
