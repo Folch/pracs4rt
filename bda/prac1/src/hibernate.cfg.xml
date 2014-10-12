@@ -11,7 +11,15 @@
     <!-- Definimos que Hibernate cree las tablas none : no actualiza, update : act las dif, create :> machaca todo en la bd-->
     <!-- none, update, create -->
     <property name="hibernate.hbm2ddl.auto">none</property>
+    
     <!-- Declaramos los archivos de mapping-->
-    <mapping resource="com/ub/edu/bda/Article.hbm.xml"/>
+    <mapping resource="alxa/ub/Producte.hbm.xml"/>
+    <mapping resource="alxa/ub/Familia.hbm.xml"/>
+    <mapping resource="alxa/ub/SubFamilia.hbm.xml"/>
+    <mapping resource="alxa/ub/Marca.hbm.xml"/>
+    <mapping resource="alxa/ub/Usuari.hbm.xml"/>
+    <mapping resource="alxa/ub/Campanya.hbm.xml"/>
+    <mapping resource="alxa/ub/Article.hbm.xml"/>
+    <mapping resource="alxa/ub/UsuariArticleCampanya.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

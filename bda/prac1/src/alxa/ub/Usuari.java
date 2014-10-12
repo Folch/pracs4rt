@@ -22,10 +22,12 @@ public class Usuari {
     public Usuari() {
     }
 
-    public Usuari(String nom, String contrasenya, String direccio) {
+    public Usuari(String nom, String contrasenya, String direccio, Set<Article> articles, Set<Campanya> campanyes) {
         this.nom = nom;
         this.contrasenya = contrasenya;
         this.direccio = direccio;
+        this.campanyes = campanyes;
+        this.articles = articles;
     }
 
     public String getNom() {
@@ -51,5 +53,23 @@ public class Usuari {
     public void setDireccio(String direccio) {
         this.direccio = direccio;
     }
+
+    public Set<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(Set<Article> articles) {
+        this.articles = articles;
+    }
+
+    public Set<Campanya> getCampanyes() {
+        return campanyes;
+    }
+
+    public void setCampanyes(Set<Campanya> campanyes) {
+        this.campanyes = campanyes;
+    }
+    
+    
     
 }

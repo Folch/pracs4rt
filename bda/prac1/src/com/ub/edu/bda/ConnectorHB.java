@@ -24,6 +24,8 @@ public class ConnectorHB {
             System.out.println("Instanciando SF");
         } catch (HibernateException e) {
             System.out.println("Error SF: "+e.getMessage());
+            System.out.println("PATH"+e.toString());
+            e.printStackTrace();
         }
     }
 

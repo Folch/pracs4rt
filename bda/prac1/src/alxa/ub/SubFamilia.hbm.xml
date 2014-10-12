@@ -3,17 +3,17 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.ub.edu.bda.SubFamilia" table="SUBFAMILIA">
+    <class name="alxa.ub.SubFamilia" table="SUBFAMILIA">
         <composite-id>
-            <key-one-to-many name="idSubFamilia" 
+            <key-property name="idSubFamilia" 
                              column="IDSUBFAMILIA"/>
-            <key-property name="familia" 
+            <key-many-to-one name="familia" 
                           column="IDFAMILIA"/>
         </composite-id>
         
         <property name="nom" column="NOM" />
         
-        <many-to-one name="familia" class="com.ub.edu.bda.Familia" fetch="select">
+        <many-to-one name="familia" class="alxa.ub.Familia" fetch="select">
             <column name="IDFAMILIA" />
         </many-to-one>
     </class>

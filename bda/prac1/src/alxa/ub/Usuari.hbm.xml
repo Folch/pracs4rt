@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.ub.edu.bda.Usuari" table="USUARI">
+    <class name="alxa.ub.Usuari" table="USUARI">
         <id name="nom" column="NOM">
             <generator class="identity" />
         </id>
@@ -12,20 +12,13 @@
         <property name="direccio" column="DIRECCIO" />
         
         <set name="articles" table="USUARIARTICLECAMPANYA">
-            <many-to-many column="IDARTICLE" class="com.ub.edu.bda.Article"/>
-        </set>
-        
-        <set name="articles" table="USUARIARTICLECAMPANYA">
             <key column="NOM"/>
-            <key column="CAMPANYA"/>
-            <key column="DATA_INICI"/>
-            <key column="DATA_FI"/>
-            <many-to-many column="IDARTICLE" class="com.ub.edu.bda.Article"/>
+            <many-to-many column="IDARTICLE" class="alxa.ub.Article"/>
         </set>
         
         <set name="campanyes" table="USUARIARTICLECAMPANYA">
-            <key column="employee_id"/>
-            <many-to-many column="certificate_id" class="Certificate"/>
+            <key column="NOM"/>
+            <many-to-many column="IDCAMPANYA" class="alxa.ub.Campanya"/>
         </set>
     </class>
 </hibernate-mapping>

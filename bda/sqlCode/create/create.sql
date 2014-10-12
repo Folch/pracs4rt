@@ -35,7 +35,7 @@ CREATE TABLE Campanya (
 
 
 CREATE TABLE Producte (
-	idProducte int,
+	idProducte INTEGER,
 	nom text,
 	color text,
 	subfamilia int,
@@ -45,7 +45,7 @@ CREATE TABLE Producte (
 );
 
 CREATE TABLE Article (
-	idArticle int,
+	idArticle INTEGER,
 	producte int,
 	campanya int,
 	talla text,

@@ -6,6 +6,7 @@
 package alxa.ub;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  *
@@ -13,25 +14,27 @@ import java.util.Date;
  */
 public class Campanya {
 
+    private int idCampanya;
     private String nom;
     private Date data_fi;
     private Date data_inici;
     private int numArticles;
     private float imprt;
     
-    private Usuari usuari;
-    private Article article;
+    private Set<Article> articles;
+    private Set<Usuari> usuari;
     
     public Campanya() { }
 
-    public Campanya(String nom, Date data_fi, Date data_inici, int numArticles, float imprt, Usuari usuari, Article article) {
+    public Campanya(int idCampanya, String nom, Date data_fi, Date data_inici, int numArticles, float imprt, Set<Usuari> usuari, Set<Article> article) {
+        this.idCampanya = idCampanya;
         this.nom = nom;
         this.data_fi = data_fi;
         this.data_inici = data_inici;
         this.numArticles = numArticles;
         this.imprt = imprt;
         this.usuari = usuari;
-        this.article = article;
+        this.articles = article;
     }
 
     public String getNom() {
@@ -74,20 +77,28 @@ public class Campanya {
         this.imprt = imprt;
     }
 
-    public Usuari getUsuari() {
+    public Set<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(Set<Article> articles) {
+        this.articles = articles;
+    }
+
+    public Set<Usuari> getUsuari() {
         return usuari;
     }
 
-    public void setUsuari(Usuari usuari) {
+    public void setUsuari(Set<Usuari> usuari) {
         this.usuari = usuari;
     }
 
-    public Article getArticle() {
-        return article;
+    public int getIdCampanya() {
+        return idCampanya;
     }
 
-    public void setArticle(Article article) {
-        this.article = article;
+    public void setIdCampanya(int idCampanya) {
+        this.idCampanya = idCampanya;
     }
-    
+
 }

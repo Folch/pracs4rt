@@ -14,7 +14,7 @@
            <key>
                <column name="ID_CATALOGO" /> <!-- CAMP FK de la taula articulo -->
            </key>
-            <one-to-many class="com.ub.edu.bda.Articulo" /> 
+           <one-to-many class="com.ub.edu.bda.Articulo" /> 
        </set>
        <set name="tiendas" table="TIENDA_CATALOGO" cascade="all">
                        <key column="IDCATALOGO" />

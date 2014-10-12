@@ -3,20 +3,34 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.ub.edu.bda.UsuariArticleCampanya" table="USUARIARTICLECAMPANYA">
+    <class name="alxa.ub.UsuariArticleCampanya" table="USUARIARTICLECAMPANYA">
+        
         <composite-id>
-            <key-one-to-many name="nom" 
+            <key-many-to-one name="usuari" 
                              column="NOM"/>
-            <key-property name="article" 
+            <key-many-to-one name="article" 
                           column="IDARTICLE"/>
+            <key-many-to-one name="campanya" 
+                          column="IDCAMPANYA"/>
         </composite-id>
         
         <property name="unitatsComprades" column="UNITATSCOMPRADES" />
         <property name="preuTotal" column="PREUTOTAL" />
         <property name="impostos" column="IMPOSTOS" />
         
-        <many-to-one name="familia" class="com.ub.edu.bda.Familia" fetch="select">
-            <column name="IDFAMILIA" />
+        <many-to-one name="usuari" class="alxa.ub.Usuari" fetch="select">
+            <column name="NOM" />
         </many-to-one>
+        
+        <many-to-one name="article" class="alxa.ub.Article" fetch="select">
+            <column name="PRODUCTE"/>
+            <column name="IDARTICLE" />
+        </many-to-one>
+        
+        <many-to-one name="campanya" class="alxa.ub.Campanya" fetch="select">
+            <column name="IDCAMPANYA" />
+        </many-to-one>
+
+        
     </class>
 </hibernate-mapping>

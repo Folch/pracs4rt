@@ -5,6 +5,8 @@
  */
 package alxa.ub;
 
+import java.util.Set;
+
 /**
  *
  * @author zenbook
@@ -20,13 +22,13 @@ public class Article {
     
     private Marca marca;
     private Producte producte;
-    private Campanya campanya;
-    private Usuari usuari;
+    private Set<Usuari> usuaris;
+    private Set<Campanya> campanyes;
 
     public Article() {
     }
 
-    public Article(int idArticle, String talla, String color, int stock, float preu, float iva, Marca marca, Producte producte, Campanya campanya, Usuari usuari) {
+    public Article(int idArticle, String talla, String color, int stock, float preu, float iva, Marca marca, Producte producte, Set<Campanya> campanya, Set<Usuari> usuari) {
         this.idArticle = idArticle;
         this.talla = talla;
         this.color = color;
@@ -35,8 +37,8 @@ public class Article {
         this.iva = iva;
         this.marca = marca;
         this.producte = producte;
-        this.campanya = campanya;
-        this.usuari = usuari;
+        this.campanyes = campanya;
+        this.usuaris = usuari;
     }
 
     public int getIdArticle() {
@@ -95,14 +97,6 @@ public class Article {
         this.producte = producte;
     }
 
-    public Campanya getCampanya() {
-        return campanya;
-    }
-
-    public void setCampanya(Campanya campanya) {
-        this.campanya = campanya;
-    }
-
     public Marca getMarca() {
         return marca;
     }
@@ -111,13 +105,19 @@ public class Article {
         this.marca = marca;
     }
 
-    public Usuari getUsuari() {
-        return usuari;
+    public Set<Usuari> getUsuaris() {
+        return usuaris;
     }
 
-    public void setUsuari(Usuari usuari) {
-        this.usuari = usuari;
+    public void setUsuaris(Set<Usuari> usuaris) {
+        this.usuaris = usuaris;
     }
-    
-    
+
+    public Set<Campanya> getCampanyes() {
+        return campanyes;
+    }
+
+    public void setCampanyes(Set<Campanya> campanyes) {
+        this.campanyes = campanyes;
+    }
 }

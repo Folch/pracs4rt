@@ -3,9 +3,9 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.ub.edu.bda.Article" table="ARTICLE">
+    <class name="alxa.ub.Article" table="ARTICLE">
         <composite-id>
-            <key-one-to-many name="Producte" 
+            <key-many-to-one name="Producte" 
                              column="PRODUCTE"/>
             <key-property name="idArticle" 
                           column="IDARTICLE"/>
@@ -17,22 +17,22 @@
         <property name="preu" column="PREU" />
         <property name="iva" column="IVA" />
         
-        <many-to-one name="producte" class="com.ub.edu.bda.Producte" fetch="select">
+        <many-to-one name="producte" class="alxa.ub.Producte" fetch="select">
             <column name="IDPRODUCTE" />
         </many-to-one>
         
-        <many-to-many name="campanya" class="com.ub.edu.bda.Campanya" fetch="select">
-            <column name="NOM"/>
-            <column name="DATA_FI"/>
-            <column name="DATA_INICI"/>  
-        </many-to-many>
+        <set name="campanyes" table="USUARIARTICLECAMPANYA">
+            <key column="IDARTICLE"/>
+            <many-to-many column="IDCAMPANYA" class="alxa.ub.Campanya"/>
+        </set>
         
-        <many-to-many name="usuari" class="com.ub.edu.bda.Usuari" fetch="select">
-            <column name="NOM"/>
-        </many-to-many>
+        <set name="usuaris" table="USUARIARTICLECAMPANYA">
+            <key column="IDARTICLE"/>
+            <many-to-many column="NOM" class="alxa.ub.Usuari"/>
+        </set>
 
-        <one-to-many name="marca" class="com.ub.edu.bda.Marca" fetch="select">
+        <many-to-one name="marca" class="alxa.ub.Marca" fetch="select">
             <column name="NOM" />
-        </one-to-many>
+        </many-to-one>
     </class>
 </hibernate-mapping>

@@ -3,26 +3,27 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.ub.edu.bda.Campanya" table="CAMPANYA">
-        <composite-id>
-            <key-one-to-many name="nom" 
-                             column="NOM"/>
-            <key-property name="data_inici" 
-                          column="DATA_INICI"/>
-            <key-property name="data_fi" 
-                          column="DATA_FI"/>
-        </composite-id>
+    <class name="alxa.ub.Campanya" table="CAMPANYA">
+        <id name="idCampanya" column="IDCAMPANYA">
+            <generator class="identity" />
+        </id>
         
-        <property name="numArticles" column="NUMARTICLES" />
+        <property name="nom" column="NOM" />
+        <property name="data_inici" column="DATA_INICI" />
+        <property name="data_fi" column="DATA_FI" />
+        
         <property name="imprt" column="IMPORT" />
+        <property name="numArticles" column="NUMARTICLES" />
         
-        <many-to-many name="usuari" class="com.ub.edu.bda.Usuari" fetch="select">
-            <column name="NOM"/>
-        </many-to-many>
         
-        <many-to-many name="article" class="com.ub.edu.bda.Usuari" fetch="select">
-            <column name="IDARTICLE"/>
-            <column name="PRODUCTE"/>
-        </many-to-many>
+        <set name="articles" table="USUARIARTICLECAMPANYA">
+            <key column="IDCAMPANYA"/>
+            <many-to-many column="IDARTICLE" class="alxa.ub.Article"/>
+        </set>
+        
+        <set name="usuaris" table="USUARIARTICLECAMPANYA">
+            <key column="IDCAMPANYA"/>
+            <many-to-many column="NOM" class="alxa.ub.Usuari"/>
+        </set>
     </class>
 </hibernate-mapping>
