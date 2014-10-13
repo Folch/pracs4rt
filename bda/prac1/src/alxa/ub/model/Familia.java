@@ -3,19 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package alxa.ub;
+package alxa.ub.model;
 
 /**
  *
  * @author zenbook
  */
-public class Marca {
-    
+public class Familia {
     private String nom;
-
-    public Marca() { }
+    private int idFamilia;
     
-    public Marca(String nom) {
+    public Familia() { }
+    
+    public Familia(int idFamilia, String nom) {
+        this.idFamilia = idFamilia;
         this.nom = nom;
     }
 
@@ -26,7 +27,14 @@ public class Marca {
     public void setNom(String nom) {
         this.nom = nom;
     }
-    
+
+    public int getIdFamilia() {
+        return idFamilia;
+    }
+
+    public void setIdFamilia(int idFamilia) {
+        this.idFamilia = idFamilia;
+    }
     
     
 }

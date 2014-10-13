@@ -48,7 +48,6 @@ CREATE TABLE Producte (
 CREATE TABLE Article (
 	idArticle INTEGER,
 	producte int,
-	campanya int,
 	talla text,
 	color text,
 	stock int,
@@ -62,8 +61,7 @@ CREATE TABLE Article (
 
 	PRIMARY KEY (idArticle),
 	FOREIGN KEY (marca) REFERENCES Marca(nom),
-	FOREIGN KEY (producte) REFERENCES Producte(idProducte),
-	FOREIGN KEY (campanya) REFERENCES Campanya(idCampanya)
+	FOREIGN KEY (producte) REFERENCES Producte(idProducte)
 );
 
 CREATE TABLE ArticleCampanya (

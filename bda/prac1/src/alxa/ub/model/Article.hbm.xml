@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="alxa.ub.Article" table="ARTICLE">
+    <class name="alxa.ub.model.Article" table="ARTICLE">
         
         <id name="idArticle" column="IDARTICLE">
             <generator class="identity" />
@@ -15,21 +15,21 @@
         <property name="preu" column="PREU" />
         <property name="iva" column="IVA" />
         
-        <many-to-one name="producte" class="alxa.ub.Producte" fetch="select">
+        <many-to-one name="producte" class="alxa.ub.model.Producte" fetch="select">
             <column name="PRODUCTE" />
         </many-to-one>
         
         <set name="campanyes" table="USUARIARTICLECAMPANYA">
             <key column="IDARTICLE"/>
-            <many-to-many column="IDCAMPANYA" class="alxa.ub.Campanya"/>
+            <many-to-many column="IDCAMPANYA" class="alxa.ub.model.Campanya"/>
         </set>
         
         <set name="usuaris" table="USUARIARTICLECAMPANYA">
             <key column="IDARTICLE"/>
-            <many-to-many column="NOM" class="alxa.ub.Usuari"/>
+            <many-to-many column="NOM" class="alxa.ub.model.Usuari"/>
         </set>
 
-        <many-to-one name="marca" class="alxa.ub.Marca" fetch="select">
+        <many-to-one name="marca" class="alxa.ub.model.Marca" fetch="select">
             <column name="MARCA" />
         </many-to-one>
     </class>

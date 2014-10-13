@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="alxa.ub.Campanya" table="CAMPANYA">
+    <class name="alxa.ub.model.Campanya" table="CAMPANYA">
         <id name="idCampanya" column="IDCAMPANYA">
             <generator class="identity" />
         </id>
@@ -18,12 +18,12 @@
         
         <set name="articles" table="USUARIARTICLECAMPANYA">
             <key column="IDCAMPANYA"/>
-            <many-to-many column="IDARTICLE" class="alxa.ub.Article"/>
+            <many-to-many column="IDARTICLE" class="alxa.ub.model.Article"/>
         </set>
         
         <set name="usuaris" table="USUARIARTICLECAMPANYA">
             <key column="IDCAMPANYA"/>
-            <many-to-many column="NOM" class="alxa.ub.Usuari"/>
+            <many-to-many column="NOM" class="alxa.ub.model.Usuari"/>
         </set>
     </class>
 </hibernate-mapping>

@@ -5,6 +5,8 @@
     <property name="hibernate.dialect">org.hibernate.dialect.SQLiteDialect</property>
     <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
     <property name="hibernate.connection.url">jdbc:sqlite:p1bda.db</property>
+    <property name="org.hibernate">false</property>
+    
     <!-- Definimos propiedades de Hibernate para SQL -->
     <property name="show_sql">false</property>
     <property name="format_sql">true</property>
@@ -12,14 +14,15 @@
     <!-- none, update, create -->
     <property name="hibernate.hbm2ddl.auto">none</property>
     
+    
     <!-- Declaramos los archivos de mapping-->
-    <mapping resource="alxa/ub/Producte.hbm.xml"/>
-    <mapping resource="alxa/ub/Familia.hbm.xml"/>
-    <mapping resource="alxa/ub/SubFamilia.hbm.xml"/>
-    <mapping resource="alxa/ub/Marca.hbm.xml"/>
-    <mapping resource="alxa/ub/Usuari.hbm.xml"/>
-    <mapping resource="alxa/ub/Campanya.hbm.xml"/>
-    <mapping resource="alxa/ub/Article.hbm.xml"/>
-    <mapping resource="alxa/ub/UsuariArticleCampanya.hbm.xml"/>
+    <mapping resource="alxa/ub/model/Producte.hbm.xml"/>
+    <mapping resource="alxa/ub/model/Familia.hbm.xml"/>
+    <mapping resource="alxa/ub/model/SubFamilia.hbm.xml"/>
+    <mapping resource="alxa/ub/model/Marca.hbm.xml"/>
+    <mapping resource="alxa/ub/model/Usuari.hbm.xml"/>
+    <mapping resource="alxa/ub/model/Campanya.hbm.xml"/>
+    <mapping resource="alxa/ub/model/Article.hbm.xml"/>
+    <mapping resource="alxa/ub/model/UsuariArticleCampanya.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

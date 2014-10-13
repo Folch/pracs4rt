@@ -1,4 +1,4 @@
-package alxa.ub;
+package alxa.ub.model;
 
 import com.ub.edu.bda.ConnectorHB;
 import java.util.ArrayList;

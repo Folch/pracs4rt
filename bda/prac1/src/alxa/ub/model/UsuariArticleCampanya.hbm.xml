@@ -3,19 +3,19 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="alxa.ub.UsuariArticleCampanya" table="USUARIARTICLECAMPANYA">
+    <class name="alxa.ub.model.UsuariArticleCampanya" table="USUARIARTICLECAMPANYA">
         
         <composite-id>
-            <key-many-to-one name="usuari" class="alxa.ub.Usuari">
+            <key-many-to-one name="usuari" class="alxa.ub.model.Usuari">
                 <column name="NOM" />
             </key-many-to-one>
         
-            <key-many-to-one name="article" class="alxa.ub.Article" >
+            <key-many-to-one name="article" class="alxa.ub.model.Article" >
             
                 <column name="IDARTICLE" />
             </key-many-to-one>
             
-            <key-many-to-one name="campanya" class="alxa.ub.Campanya" >
+            <key-many-to-one name="campanya" class="alxa.ub.model.Campanya" >
                 <column name="IDCAMPANYA" />
             </key-many-to-one>
            
