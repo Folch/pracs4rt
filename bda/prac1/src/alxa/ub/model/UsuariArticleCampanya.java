@@ -77,6 +77,9 @@ public class UsuariArticleCampanya implements Serializable{
     public void setCampanya(Campanya campanya) {
         this.campanya = campanya;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "UsuariArticleCampanya{" + "unitatsComprades=" + unitatsComprades + ", preuTotal=" + preuTotal + ", impostos=" + impostos + ", usuari=" + usuari + ", article=" + article + ", campanya=" + campanya + '}';
+    }
 }

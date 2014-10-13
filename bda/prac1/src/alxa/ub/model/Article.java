@@ -5,7 +5,9 @@
  */
 package alxa.ub.model;
 
+import java.util.AbstractSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  *
@@ -28,8 +30,7 @@ public class Article {
     public Article() {
     }
 
-    public Article(int idArticle, String talla, String color, int stock, float preu, float iva, Marca marca, Producte producte, Set<Campanya> campanya, Set<Usuari> usuari) {
-        this.idArticle = idArticle;
+    public Article(String talla, String color, int stock, float preu, float iva, Marca marca, Producte producte) {
         this.talla = talla;
         this.color = color;
         this.stock = stock;
@@ -37,8 +38,8 @@ public class Article {
         this.iva = iva;
         this.marca = marca;
         this.producte = producte;
-        this.campanyes = campanya;
-        this.usuaris = usuari;
+        this.campanyes = new TreeSet<>();
+        this.usuaris = new TreeSet<>();
     }
 
     public int getIdArticle() {
@@ -120,4 +121,12 @@ public class Article {
     public void setCampanyes(Set<Campanya> campanyes) {
         this.campanyes = campanyes;
     }
+
+    @Override
+    public String toString() {
+        
+        return "Article{" + "idArticle=" + idArticle + ", talla=" + talla + ", color=" + color + ", stock=" + stock + ", preu=" + preu + ", iva=" + iva + ", marca=" + (marca!=null?marca.getNom():"No té marca") + ", producte=" + (producte!=null?producte.getNom():"No té un producte referenciat") + '}';
+    }
+    
+    
 }

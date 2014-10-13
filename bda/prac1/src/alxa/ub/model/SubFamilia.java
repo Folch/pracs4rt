@@ -48,6 +48,11 @@ public class SubFamilia implements Serializable{
     public void setFamilia(Familia familia) {
         this.familia = familia;
     }
+
+    @Override
+    public String toString() {
+        return "SubFamilia{" + "nom=" + nom + ", idSubFamilia=" + idSubFamilia + ", familia=" + familia + '}';
+    }
     
     
     

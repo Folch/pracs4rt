@@ -101,6 +101,11 @@ public class Campanya {
         this.usuaris = usuaris;
     }
 
+    @Override
+    public String toString() {
+        return "Campanya{" + "idCampanya=" + idCampanya + ", nom=" + nom + ", data_fi=" + data_fi + ", data_inici=" + data_inici + ", numArticles=" + numArticles + ", imprt=" + imprt + ", articles=" + articles + ", usuaris=" + usuaris + '}';
+    }
+
     
 
 

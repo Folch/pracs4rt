@@ -69,6 +69,11 @@ public class Usuari {
     public void setCampanyes(Set<Campanya> campanyes) {
         this.campanyes = campanyes;
     }
+
+    @Override
+    public String toString() {
+        return "Usuari{" + "nom=" + nom + ", contrasenya=" + contrasenya + ", direccio=" + direccio + ", articles=" + articles + ", campanyes=" + campanyes + '}';
+    }
     
     
     

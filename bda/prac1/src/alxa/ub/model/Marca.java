@@ -26,6 +26,11 @@ public class Marca {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+    @Override
+    public String toString() {
+        return "Marca{" + "nom=" + nom + '}';
+    }
     
     
     

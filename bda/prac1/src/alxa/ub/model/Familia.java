@@ -35,6 +35,11 @@ public class Familia {
     public void setIdFamilia(int idFamilia) {
         this.idFamilia = idFamilia;
     }
+
+    @Override
+    public String toString() {
+        return "Familia{" + "nom=" + nom + ", idFamilia=" + idFamilia + '}';
+    }
     
     
 }

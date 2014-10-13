@@ -58,4 +58,11 @@ public class Producte {
     public void setSubFamilia(SubFamilia subFamilia) {
         this.subFamilia = subFamilia;
     }
+
+    @Override
+    public String toString() {
+        return "Producte{" + "idProducte=" + idProducte + ", nom=" + nom + ", color=" + color + ", subFamilia=" + subFamilia + '}';
+    }
+    
+    
 }
