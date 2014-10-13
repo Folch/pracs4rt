@@ -4,12 +4,9 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="alxa.ub.Article" table="ARTICLE">
-        <composite-id>
-            <key-many-to-one name="Producte" 
-                             column="PRODUCTE"/>
-            <key-property name="idArticle" 
-                          column="IDARTICLE"/>
-        </composite-id>
+        
+        <id name="idArticle" column="IDARTICLE"/>
+       
         
         <property name="talla" column="TALLA" />
         <property name="color" column="COLOR" />

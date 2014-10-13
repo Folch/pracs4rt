@@ -5,11 +5,13 @@
  */
 package alxa.ub;
 
+import java.io.Serializable;
+
 /**
  *
  * @author zenbook
  */
-public class SubFamilia {
+public class SubFamilia implements Serializable{
     private String nom;
     private int idSubFamilia;
     

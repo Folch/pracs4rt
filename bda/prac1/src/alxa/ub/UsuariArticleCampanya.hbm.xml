@@ -6,30 +6,30 @@
     <class name="alxa.ub.UsuariArticleCampanya" table="USUARIARTICLECAMPANYA">
         
         <composite-id>
-            <key-many-to-one name="usuari" 
-                             column="NOM"/>
-            <key-many-to-one name="article" 
-                          column="IDARTICLE"/>
-            <key-many-to-one name="campanya" 
-                          column="IDCAMPANYA"/>
+            <key-many-to-one name="usuari" class="alxa.ub.Usuari">
+                <column name="NOM" />
+            </key-many-to-one>
+        
+            <key-many-to-one name="article" class="alxa.ub.Article" >
+            
+                <column name="IDARTICLE" />
+            </key-many-to-one>
+            
+            <key-many-to-one name="campanya" class="alxa.ub.Campanya" >
+                <column name="IDCAMPANYA" />
+            </key-many-to-one>
+           
         </composite-id>
         
         <property name="unitatsComprades" column="UNITATSCOMPRADES" />
         <property name="preuTotal" column="PREUTOTAL" />
         <property name="impostos" column="IMPOSTOS" />
         
-        <many-to-one name="usuari" class="alxa.ub.Usuari" fetch="select">
-            <column name="NOM" />
-        </many-to-one>
+      
         
-        <many-to-one name="article" class="alxa.ub.Article" fetch="select">
-            <column name="PRODUCTE"/>
-            <column name="IDARTICLE" />
-        </many-to-one>
         
-        <many-to-one name="campanya" class="alxa.ub.Campanya" fetch="select">
-            <column name="IDCAMPANYA" />
-        </many-to-one>
+        
+       
 
         
     </class>

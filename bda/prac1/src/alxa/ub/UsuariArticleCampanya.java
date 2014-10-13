@@ -5,14 +5,17 @@
  */
 package alxa.ub;
 
+import java.io.Serializable;
+
 /**
  *
  * @author zenbook
  */
-public class UsuariArticleCampanya {
+public class UsuariArticleCampanya implements Serializable{
     private int unitatsComprades;
     private float preuTotal;
     private float impostos;
+    
     
     private Usuari usuari;
     private Article article;
@@ -43,11 +46,37 @@ public class UsuariArticleCampanya {
         this.preuTotal = preuTotal;
     }
 
-    public float getImpostes() {
+    public float getImpostos() {
         return impostos;
     }
 
-    public void setImpostes(float impostes) {
-        this.impostos = impostes;
+    public void setImpostos(float impostos) {
+        this.impostos = impostos;
     }
+
+    public Usuari getUsuari() {
+        return usuari;
+    }
+
+    public void setUsuari(Usuari usuari) {
+        this.usuari = usuari;
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
+    public Campanya getCampanya() {
+        return campanya;
+    }
+
+    public void setCampanya(Campanya campanya) {
+        this.campanya = campanya;
+    }
+    
+    
 }

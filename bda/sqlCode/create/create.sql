@@ -59,7 +59,7 @@ CREATE TABLE Article (
 	CONSTRAINT positive_preu CHECK(preu >= 0),
 	CONSTRAINT positive_IVA CHECK(IVA >= 0),
 
-	PRIMARY KEY (idArticle, producte),
+	PRIMARY KEY (idArticle),
 	FOREIGN KEY (marca) REFERENCES Marca(nom),
 	FOREIGN KEY (producte) REFERENCES Producte(idProducte),
 	FOREIGN KEY (campanya) REFERENCES Campanya(idCampanya)

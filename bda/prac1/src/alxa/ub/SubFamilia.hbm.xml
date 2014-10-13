@@ -6,15 +6,12 @@
     <class name="alxa.ub.SubFamilia" table="SUBFAMILIA">
         <composite-id>
             <key-property name="idSubFamilia" 
-                             column="IDSUBFAMILIA"/>
-            <key-many-to-one name="familia" 
-                          column="IDFAMILIA"/>
+                          column="IDSUBFAMILIA"/>
+            <key-many-to-one name="familia" class="alxa.ub.Familia">
+                <column name="IDFAMILIA" />
+            </key-many-to-one>
         </composite-id>
         
         <property name="nom" column="NOM" />
-        
-        <many-to-one name="familia" class="alxa.ub.Familia" fetch="select">
-            <column name="IDFAMILIA" />
-        </many-to-one>
     </class>
 </hibernate-mapping>

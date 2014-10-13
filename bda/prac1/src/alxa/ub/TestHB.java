@@ -23,8 +23,9 @@ public class TestHB {
 	        try {
 	            session = ConnectorHB.getSession();
 	            
-	            List<Article> listado = new ArrayList<Article>();
+	            List<Article> listado = new ArrayList<>();
 	            Query q = session.createQuery("from Article");
+                    
 	            listado = q.list();
 	            
 	            for (Article article : listado) {
@@ -37,6 +38,7 @@ public class TestHB {
 	            //US DE QUERY SQL PER TROBAR OBJECTES
 	            
 	        } catch (HibernateException e) {
+                    e.printStackTrace();
 	            if(tx!=null && tx.isActive()) tx.rollback();
 	        } finally {
 	            if(session!=null) session.close();

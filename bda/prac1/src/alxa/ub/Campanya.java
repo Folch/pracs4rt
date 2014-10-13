@@ -22,7 +22,7 @@ public class Campanya {
     private float imprt;
     
     private Set<Article> articles;
-    private Set<Usuari> usuari;
+    private Set<Usuari> usuaris;
     
     public Campanya() { }
 
@@ -33,8 +33,16 @@ public class Campanya {
         this.data_inici = data_inici;
         this.numArticles = numArticles;
         this.imprt = imprt;
-        this.usuari = usuari;
+        this.usuaris = usuari;
         this.articles = article;
+    }
+
+    public int getIdCampanya() {
+        return idCampanya;
+    }
+
+    public void setIdCampanya(int idCampanya) {
+        this.idCampanya = idCampanya;
     }
 
     public String getNom() {
@@ -85,20 +93,15 @@ public class Campanya {
         this.articles = articles;
     }
 
-    public Set<Usuari> getUsuari() {
-        return usuari;
+    public Set<Usuari> getUsuaris() {
+        return usuaris;
     }
 
-    public void setUsuari(Set<Usuari> usuari) {
-        this.usuari = usuari;
+    public void setUsuaris(Set<Usuari> usuaris) {
+        this.usuaris = usuaris;
     }
 
-    public int getIdCampanya() {
-        return idCampanya;
-    }
+    
 
-    public void setIdCampanya(int idCampanya) {
-        this.idCampanya = idCampanya;
-    }
 
 }
