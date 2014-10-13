@@ -4,7 +4,7 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.SQLiteDialect</property>
     <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
-    <property name="hibernate.connection.url">jdbc:sqlite://home/zenbook/github/pracs4rt/bda/prac1/p1bda.db</property>
+    <property name="hibernate.connection.url">jdbc:sqlite:p1bda.db</property>
     <!-- Definimos propiedades de Hibernate para SQL -->
     <property name="show_sql">false</property>
     <property name="format_sql">true</property>

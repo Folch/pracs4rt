@@ -8,6 +8,7 @@ package zipmediaplayer;
 import Controller.OnImageListener;
 import Controller.ZipController;
 import Model.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -186,7 +187,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
                 automanual.setText("Manual");
                 prevbtn.setEnabled(false);
                 nextbtn.setEnabled(false);
-                controller.auto(500);
+                controller.auto(60);
             } else {
                 automanual.setText("Auto");
                 prevbtn.setEnabled(true);
@@ -207,11 +208,10 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
     
     @Override
     public void onImage(Image image) {
-        update(getGraphics());
-        getGraphics().drawImage(image.getImage(), Math.round(this.getWidth() * 0.25f), Math.round(this.getHeight() * 0.25f), this);
-        /*JLabel picLabel = new JLabel(new ImageIcon(image));
-         imagepanel.add(picLabel);
-         add(picLabel);*/
+        //update(getGraphics());
+        /* TODO : fer update quan es canvia de fitxer*/
+        BufferedImage scaledImage = (BufferedImage) image.getImage().getScaledInstance(this.imagepanel.getWidth(),this.imagepanel.getHeight(),BufferedImage.SCALE_SMOOTH);
+        getGraphics().drawImage(scaledImage, 0,0, this);
     }
 
     public void createZipController(ZipController.FileType fileType) {
