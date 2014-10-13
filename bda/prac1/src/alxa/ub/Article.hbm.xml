@@ -5,8 +5,9 @@
 <hibernate-mapping>
     <class name="alxa.ub.Article" table="ARTICLE">
         
-        <id name="idArticle" column="IDARTICLE"/>
-       
+        <id name="idArticle" column="IDARTICLE">
+            <generator class="identity" />
+        </id>
         
         <property name="talla" column="TALLA" />
         <property name="color" column="COLOR" />
@@ -15,7 +16,7 @@
         <property name="iva" column="IVA" />
         
         <many-to-one name="producte" class="alxa.ub.Producte" fetch="select">
-            <column name="IDPRODUCTE" />
+            <column name="PRODUCTE" />
         </many-to-one>
         
         <set name="campanyes" table="USUARIARTICLECAMPANYA">
@@ -29,7 +30,7 @@
         </set>
 
         <many-to-one name="marca" class="alxa.ub.Marca" fetch="select">
-            <column name="NOM" />
+            <column name="MARCA" />
         </many-to-one>
     </class>
 </hibernate-mapping>

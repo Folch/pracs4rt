@@ -12,8 +12,8 @@
         <property name="color" column="COLOR" />
         
         <many-to-one name="subFamilia" class="alxa.ub.SubFamilia" fetch="select">
-            <column name="IDFAMILIA"/>
-            <column name="IDSUBFAMILIA" /> <!-- CAMP FK de la taula articulo IDENTICS A LES DUES ENTITATS --> 
+            <column name="SUBFAMILIA" />
+            <column name="FAMILIA"/>
         </many-to-one>
     </class>
 </hibernate-mapping>

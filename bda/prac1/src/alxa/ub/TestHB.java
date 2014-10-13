@@ -28,8 +28,10 @@ public class TestHB {
                     
 	            listado = q.list();
 	            
+                    
+                    
 	            for (Article article : listado) {
-	            	System.out.println(article.getMarca());
+	            	System.out.println(article.getMarca().getNom());
 	            	for(Usuari usuari: article.getUsuaris())
                             System.out.println(usuari.getNom());
                         System.out.println("\n");

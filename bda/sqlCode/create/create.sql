@@ -38,10 +38,11 @@ CREATE TABLE Producte (
 	idProducte INTEGER,
 	nom text,
 	color text,
+	familia int,
 	subfamilia int,
 
 	PRIMARY KEY (idProducte),
-	FOREIGN KEY (subfamilia) REFERENCES Subfamilia(idSubfamilia)
+	FOREIGN KEY (subfamilia, familia) REFERENCES Subfamilia(idSubfamilia, familia)
 );
 
 CREATE TABLE Article (
