@@ -49,6 +49,7 @@ public class PrivaliaUB {
         Scanner sc = new Scanner(System.in);
         new PrivaliaUB().showLogin(sc);
     }
+
     /**
      * Constructor
      */
@@ -57,9 +58,12 @@ public class PrivaliaUB {
         tx = session.getTransaction();
 
     }
+
     /**
-     * Mètode per 'logar-se' en el programa, si s'equivoca 3 vegades sortirà del programa
-     * @param sc 
+     * Mètode per 'logar-se' en el programa, si s'equivoca 3 vegades sortirà del
+     * programa
+     *
+     * @param sc
      */
     private void showLogin(Scanner sc) {
 
@@ -97,9 +101,11 @@ public class PrivaliaUB {
 
         showMainMenu(sc);
     }
+
     /**
      * Mètode que mostra les entitats que l'usuari pot manipular
-     * @param sc 
+     *
+     * @param sc
      */
     private void showMainMenu(Scanner sc) {
         Menu<MainMenuOps> mainMenu = new Menu<>(MAIN_MENU_TITOL, MainMenuOps.values(), MAIN_MENU_DESC);
@@ -123,10 +129,13 @@ public class PrivaliaUB {
             }
         } while (op != MainMenuOps.SORTIR);
     }
+
     /**
-     * Mètode per mostrar les operacions CRUD de cadascuna de les entitats demanades
+     * Mètode per mostrar les operacions CRUD de cadascuna de les entitats
+     * demanades
+     *
      * @param sc
-     * @param type 
+     * @param type
      */
     private void showCRUDMenu(Scanner sc, MainMenuOps type) {
         Menu<CRUDMenuOps> crudMenu = new Menu<>(CRUD_MENU_TITOL, CRUDMenuOps.values(), CRUD_MENU_DESC);
@@ -204,9 +213,12 @@ public class PrivaliaUB {
             }
         } while (op != CRUDMenuOps.SORTIR);
     }
+
     /**
-     * Mètode per insertar un nou article amb tots els seus atributs excepte les claus foranies
-     * @param sc 
+     * Mètode per insertar un nou article amb tots els seus atributs excepte les
+     * claus foranies
+     *
+     * @param sc
      */
     private void showInsertarArticle(Scanner sc) {
         try {
@@ -230,9 +242,11 @@ public class PrivaliaUB {
         }
 
     }
+
     /**
      * Mètode que fa un select de tots els atributs d'un article
-     * @param sc 
+     *
+     * @param sc
      */
     private void showObtenirArticle(Scanner sc) {
         List<Article> articles = new ArrayList<Article>();
@@ -244,49 +258,59 @@ public class PrivaliaUB {
             System.out.println(article);
         }
     }
+
     /**
      * Mètode per obtenir una instancia article donat el seu id
+     *
      * @param id
-     * @return 
+     * @return
      */
     private Article getArticle(int id) {
         Query q = session.createQuery("from Article where idArticle = :id");
         q.setInteger("id", id);
         return (Article) q.uniqueResult();
     }
+
     /**
      * Mètode per obtenir una instancia campanya donada el seu id
+     *
      * @param id
-     * @return 
+     * @return
      */
     private Campanya getCampanya(int id) {
         Query q = session.createQuery("from Campanya where idCampanya = :id");
         q.setInteger("id", id);
         return (Campanya) q.uniqueResult();
     }
+
     /**
      * Mètode per obtenir una instancia familia donada el seu id
+     *
      * @param id
-     * @return 
+     * @return
      */
     private Familia getFamilia(int id) {
         Query q = session.createQuery("from Familia where idFamilia = :id");
         q.setInteger("id", id);
         return (Familia) q.uniqueResult();
     }
+
     /**
      * Mètode per obtenir una instancia subfamilia donada el seu id
+     *
      * @param id
-     * @return 
+     * @return
      */
     private SubFamilia getSubFamilia(int id) {
         Query q = session.createQuery("from SubFamilia where idSubfamilia = :id");
         q.setInteger("id", id);
         return (SubFamilia) q.uniqueResult();
     }
+
     /**
      * Mètode per actualitzar tots els atributs d'un article donat el seu id
-     * @param sc 
+     *
+     * @param sc
      */
     private void showActualitzarArticle(Scanner sc) {
         showObtenirArticle(sc);
@@ -320,9 +344,11 @@ public class PrivaliaUB {
         }
 
     }
+
     /**
      * Mètode per eliminar un article donat el seu id
-     * @param sc 
+     *
+     * @param sc
      */
     private void showEliminarArticle(Scanner sc) {
         showObtenirArticle(sc);
@@ -337,9 +363,11 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
+
     /**
      * Mètode per insertar una nova campanya amb tots els seus atributs
-     * @param sc 
+     *
+     * @param sc
      */
     private void showInsertarCampanya(Scanner sc) {
         try {
@@ -348,24 +376,35 @@ public class PrivaliaUB {
             String nom = sc.nextLine();
             System.out.println("data_fi[dd/mm/aaaa]:");
             String df = sc.nextLine();
-            Date data_fi = new Date();
-            data_fi.setDate(Integer.parseInt(df.substring(0, 2)));
-            data_fi.setMonth(Integer.parseInt(df.substring(3, 5)) - 1);
-            data_fi.setYear(Integer.parseInt(df.substring(6, 10)) - 1900);
-            System.out.println("data_inici[dd/mm/aaaa]:");
-            String di = sc.nextLine();
-            Date data_inici = new Date();
-            data_inici.setDate(Integer.parseInt(di.substring(0, 2)));
-            data_inici.setMonth(Integer.parseInt(di.substring(3, 5)) - 1);
-            data_inici.setYear(Integer.parseInt(di.substring(6, 10)) - 1900);
-            System.out.println("numArticles:");
-            int numArticles = sc.nextInt();
-            System.out.println("import:");
-            float imprt = sc.nextFloat();
+            if (df.length() == "dd/mm/aaaa".length()) {
+                Date data_fi = new Date();
+                data_fi.setDate(Integer.parseInt(df.substring(0, 2)));
+                data_fi.setMonth(Integer.parseInt(df.substring(3, 5)) - 1);
+                data_fi.setYear(Integer.parseInt(df.substring(6, 10)) - 1900);
+                System.out.println("data_inici[dd/mm/aaaa]:");
+                String di = sc.nextLine();
+                if (di.length() == "dd/mm/aaaa".length()) {
+                    Date data_inici = new Date();
+                    data_inici.setDate(Integer.parseInt(di.substring(0, 2)));
+                    data_inici.setMonth(Integer.parseInt(di.substring(3, 5)) - 1);
+                    data_inici.setYear(Integer.parseInt(di.substring(6, 10)) - 1900);
+                    System.out.println("numArticles:");
+                    int numArticles = sc.nextInt();
+                    System.out.println("import:");
+                    float imprt = sc.nextFloat();
 
-            Campanya camp = new Campanya(nom, data_fi, data_inici, numArticles, imprt);
-            session.save(camp);
-            tx.commit();
+                    Campanya camp = new Campanya(nom, data_fi, data_inici, numArticles, imprt);
+                    session.save(camp);
+                    tx.commit();
+                } else {
+                    System.err.println("Les dates han de tenir el format dd/mm/aaaa");
+                    tx.rollback();
+                }
+            } else {
+                System.err.println("Les dates han de tenir el format dd/mm/aaaa");
+                tx.rollback();
+            }
+
         } catch (StringIndexOutOfBoundsException ex) {
             System.err.println("Les dates han de tenir el format dd/mm/aaaa");
             tx.rollback();
@@ -374,9 +413,11 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
+
     /**
      * Mètode que fa un select de tots els atributs d'una campanya
-     * @param sc 
+     *
+     * @param sc
      */
     private void showObtenirCampanya(Scanner sc) {
         List<Campanya> campanyes = new ArrayList<Campanya>();
@@ -388,9 +429,11 @@ public class PrivaliaUB {
             System.out.println(camp);
         }
     }
+
     /**
      * Mètode per actualitzar tots els atributs d'una campanya donada el seu id
-     * @param sc 
+     *
+     * @param sc
      */
     private void showActualitzarCampanya(Scanner sc) {
         showObtenirCampanya(sc);
@@ -406,28 +449,39 @@ public class PrivaliaUB {
             String nom = sc.nextLine();
             System.out.println("data_fi[dd/mm/aaaa]:");
             String df = sc.nextLine();
-            Date data_fi = new Date();
-            data_fi.setDate(Integer.parseInt(df.substring(0, 2)));
-            data_fi.setMonth(Integer.parseInt(df.substring(3, 5)) - 1);
-            data_fi.setYear(Integer.parseInt(df.substring(6, 10)) - 1900);
-            System.out.println("data_inici[dd/mm/aaaa]:");
-            String di = sc.nextLine();
-            Date data_inici = new Date();
-            data_inici.setDate(Integer.parseInt(di.substring(0, 2)));
-            data_inici.setMonth(Integer.parseInt(di.substring(3, 5)) - 1);
-            data_inici.setYear(Integer.parseInt(di.substring(6, 10)) - 1900);
-            System.out.println("numArticles:");
-            int numArticles = sc.nextInt();
-            System.out.println("import:");
-            float imprt = sc.nextFloat();
+            if (df.length() == "dd/mm/aaaa".length()) {
+                Date data_fi = new Date();
+                data_fi.setDate(Integer.parseInt(df.substring(0, 2)));
+                data_fi.setMonth(Integer.parseInt(df.substring(3, 5)) - 1);
+                data_fi.setYear(Integer.parseInt(df.substring(6, 10)) - 1900);
+                System.out.println("data_inici[dd/mm/aaaa]:");
+                String di = sc.nextLine();
+                if (di.length() == "dd/mm/aaaa".length()) {
+                    Date data_inici = new Date();
+                    data_inici.setDate(Integer.parseInt(di.substring(0, 2)));
+                    data_inici.setMonth(Integer.parseInt(di.substring(3, 5)) - 1);
+                    data_inici.setYear(Integer.parseInt(di.substring(6, 10)) - 1900);
+                    System.out.println("numArticles:");
+                    int numArticles = sc.nextInt();
+                    System.out.println("import:");
+                    float imprt = sc.nextFloat();
 
-            a.setNom(nom);
-            a.setData_fi(data_fi);
-            a.setData_inici(data_inici);
-            a.setNumArticles(numArticles);
-            a.setImprt(imprt);
+                    a.setNom(nom);
+                    a.setData_fi(data_fi);
+                    a.setData_inici(data_inici);
+                    a.setNumArticles(numArticles);
+                    a.setImprt(imprt);
 
-            tx.commit();
+                    tx.commit();
+                } else {
+                    System.err.println("Les dates han de tenir el format dd/mm/aaaa");
+                    tx.rollback();
+                }
+            } else {
+                System.err.println("Les dates han de tenir el format dd/mm/aaaa");
+                tx.rollback();
+            }
+
         } catch (StringIndexOutOfBoundsException ex) {
             System.err.println("Les dates han de tenir el format dd/mm/aaaa");
             tx.rollback();
@@ -435,9 +489,11 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
+
     /**
      * Mètode per eliminar una campanya donada el seu id
-     * @param sc 
+     *
+     * @param sc
      */
     private void showEliminarCampanya(Scanner sc) {
         showObtenirCampanya(sc);
@@ -452,9 +508,11 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
+
     /**
      * Mètode per insertar una nova familia amb tots els seus atributs
-     * @param sc 
+     *
+     * @param sc
      */
     private void showInsertarFamilia(Scanner sc) {
         try {
@@ -469,9 +527,11 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
+
     /**
      * Mètode que fa un select de tots els atributs d'una familia
-     * @param sc 
+     *
+     * @param sc
      */
     private void showObtenirFamilia(Scanner sc) {
         List<Familia> families = new ArrayList<Familia>();
@@ -483,9 +543,11 @@ public class PrivaliaUB {
             System.out.println(fam);
         }
     }
+
     /**
      * Mètode per actualitzar tots els atributs d'una familia donada el seu id
-     * @param sc 
+     *
+     * @param sc
      */
     private void showActualitzarFamilia(Scanner sc) {
         showObtenirFamilia(sc);
@@ -505,9 +567,11 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
+
     /**
      * Mètode per eliminar una familia donada el seu id
-     * @param sc 
+     *
+     * @param sc
      */
     private void showEliminarFamilia(Scanner sc) {
         showObtenirFamilia(sc);
@@ -522,9 +586,11 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
+
     /**
      * Mètode per insertar una nova subfamilia amb tots els seus atributs
-     * @param sc 
+     *
+     * @param sc
      */
     private void showInsertarSubFamilia(Scanner sc) {
         try {
@@ -539,9 +605,11 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
+
     /**
      * Mètode que fa un select de tots els atributs d'una subfamilia
-     * @param sc 
+     *
+     * @param sc
      */
     private void showObtenirSubFamilia(Scanner sc) {
         List<SubFamilia> subfamilies = new ArrayList<SubFamilia>();
@@ -553,9 +621,12 @@ public class PrivaliaUB {
             System.out.println(subfamilia);
         }
     }
+
     /**
-     * Mètode per actualitzar tots els atributs d'una subfamilia donada el seu id
-     * @param sc 
+     * Mètode per actualitzar tots els atributs d'una subfamilia donada el seu
+     * id
+     *
+     * @param sc
      */
     private void showActualitzarSubFamilia(Scanner sc) {
         showObtenirSubFamilia(sc);
@@ -576,9 +647,11 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
+
     /**
      * Mètode per eliminar una subfamilia donada el seu id
-     * @param sc 
+     *
+     * @param sc
      */
     private void showEliminarSubFamilia(Scanner sc) {
         showObtenirSubFamilia(sc);
