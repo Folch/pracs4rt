@@ -15,8 +15,7 @@ public class Familia {
     
     public Familia() { }
     
-    public Familia(int idFamilia, String nom) {
-        this.idFamilia = idFamilia;
+    public Familia(String nom) {
         this.nom = nom;
     }
 

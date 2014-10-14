@@ -19,9 +19,8 @@ public class SubFamilia implements Serializable{
 
     public SubFamilia() {}
     
-    public SubFamilia(String nom, int idSubFamilia, Familia familia) {
+    public SubFamilia(String nom, Familia familia) {
         this.nom = nom;
-        this.idSubFamilia = idSubFamilia;
         this.familia = familia;
     }
 

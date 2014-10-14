@@ -7,6 +7,7 @@ package alxa.ub.model;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  *
@@ -26,15 +27,14 @@ public class Campanya {
     
     public Campanya() { }
 
-    public Campanya(int idCampanya, String nom, Date data_fi, Date data_inici, int numArticles, float imprt, Set<Usuari> usuari, Set<Article> article) {
-        this.idCampanya = idCampanya;
+    public Campanya(String nom, Date data_fi, Date data_inici, int numArticles, float imprt) {
         this.nom = nom;
         this.data_fi = data_fi;
         this.data_inici = data_inici;
         this.numArticles = numArticles;
         this.imprt = imprt;
-        this.usuaris = usuari;
-        this.articles = article;
+        this.usuaris = new TreeSet<>();
+        this.articles = new TreeSet<>();
     }
 
     public int getIdCampanya() {

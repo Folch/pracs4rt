@@ -5,7 +5,6 @@
  */
 package alxa.ub.model;
 
-import java.util.AbstractSet;
 import java.util.Set;
 import java.util.TreeSet;
 

@@ -7,12 +7,14 @@ package alxa.ub.vista;
 
 import alxa.ub.model.Article;
 import alxa.ub.model.Campanya;
-import alxa.ub.model.Usuari;
+import alxa.ub.model.Familia;
+import alxa.ub.model.SubFamilia;
 import com.ub.edu.bda.ConnectorHB;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -42,7 +44,7 @@ public class PrivaliaUB {
     private Session session;
     private Transaction tx;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void main(String[] args) {
         System.out.println("Benvingut a Privalia UB");
         Scanner sc = new Scanner(System.in);
@@ -51,41 +53,42 @@ public class PrivaliaUB {
 
     public PrivaliaUB() {
         session = ConnectorHB.getSession();
-        tx = session.beginTransaction();
+        tx = session.getTransaction();
+
     }
 
     private void showLogin(Scanner sc) {
         /*String user, pass;
-        Usuari u = null;
-        short times = 0;
+         Usuari u = null;
+         short times = 0;
 
-        System.out.println("Usuari: userX");
-        System.out.println("Pass: passX");
-        System.out.println("on X varia en enters de 1 a 5");
-        do {
-            System.out.println("usuari:");
-            user = sc.nextLine();
-            System.out.println("contrasenya:");
-            pass = sc.nextLine();
+         System.out.println("Usuari: userX");
+         System.out.println("Pass: passX");
+         System.out.println("on X varia en enters de 1 a 5");
+         do {
+         System.out.println("usuari:");
+         user = sc.nextLine();
+         System.out.println("contrasenya:");
+         pass = sc.nextLine();
 
-            Query q = session.createQuery("from Usuari where nom = :user and contrasenya = :pass");
-            q.setString("user", user);
-            q.setString("pass", pass);
-            u = (Usuari) q.uniqueResult();
+         Query q = session.createQuery("from Usuari where nom = :user and contrasenya = :pass");
+         q.setString("user", user);
+         q.setString("pass", pass);
+         u = (Usuari) q.uniqueResult();
 
-            times++;
+         times++;
 
-            if (u == null) {
-                System.out.println("usuari i/o contrasenya incorrectes. Torna a provar-ho.");
-            }
-            if (times == 3) {
-                System.out.println("Ho has provat ja tres vegades. Adeu.");
-                System.exit(0);
-            }
+         if (u == null) {
+         System.out.println("usuari i/o contrasenya incorrectes. Torna a provar-ho.");
+         }
+         if (times == 3) {
+         System.out.println("Ho has provat ja tres vegades. Adeu.");
+         System.exit(0);
+         }
 
-        } while (u == null);
+         } while (u == null);
 
-        System.out.println("Benvingut " + u.getNom());*/
+         System.out.println("Benvingut " + u.getNom());*/
 
         showMainMenu(sc);
     }
@@ -115,10 +118,10 @@ public class PrivaliaUB {
 
     private void showCRUDMenu(Scanner sc, MainMenuOps type) {
         Menu<CRUDMenuOps> crudMenu = new Menu<>(CRUD_MENU_TITOL, CRUDMenuOps.values(), CRUD_MENU_DESC);
-        
+
         CRUDMenuOps op;
-        
-        do{
+
+        do {
             crudMenu.mostrarMenu();
             op = crudMenu.getOpcio(sc);
             switch (op) {
@@ -187,25 +190,30 @@ public class PrivaliaUB {
                     }
                     break;
             }
-        }while(op != CRUDMenuOps.SORTIR);
+        } while (op != CRUDMenuOps.SORTIR);
     }
 
     private void showInsertarArticle(Scanner sc) {
-        System.out.println("talla:");
-        String talla = sc.nextLine();
-        System.out.println("color:");
-        String color = sc.nextLine();
-        System.out.println("stock:");
-        int stock = sc.nextInt();
-        System.out.println("preu:");
-        float preu = sc.nextFloat();
-        System.out.println("iva:");
-        float iva = sc.nextFloat();
+        try {
+            tx = session.beginTransaction();
+            System.out.println("talla:");
+            String talla = sc.nextLine();
+            System.out.println("color:");
+            String color = sc.nextLine();
+            System.out.println("stock:");
+            int stock = sc.nextInt();
+            System.out.println("preu:");
+            float preu = sc.nextFloat();
+            System.out.println("iva:");
+            float iva = sc.nextFloat();
 
-        Article a = new Article(talla, color, stock, preu, iva, null, null);
-        session.save(a);
-        tx.commit();
-        
+            Article a = new Article(talla, color, stock, preu, iva, null, null);
+            session.save(a);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
+
     }
 
     private void showObtenirArticle(Scanner sc) {
@@ -218,93 +226,276 @@ public class PrivaliaUB {
             System.out.println(article);
         }
     }
-    
+
     private Article getArticle(int id) {
         Query q = session.createQuery("from Article where idArticle = :id");
         q.setInteger("id", id);
         return (Article) q.uniqueResult();
     }
 
+    private Campanya getCampanya(int id) {
+        Query q = session.createQuery("from Campanya where idCampanya = :id");
+        q.setInteger("id", id);
+        return (Campanya) q.uniqueResult();
+    }
+
+    private Familia getFamilia(int id) {
+        Query q = session.createQuery("from Familia where idFamilia = :id");
+        q.setInteger("id", id);
+        return (Familia) q.uniqueResult();
+    }
+
+    private SubFamilia getSubFamilia(int id) {
+        Query q = session.createQuery("from SubFamilia where idSubfamilia = :id");
+        q.setInteger("id", id);
+        return (SubFamilia) q.uniqueResult();
+    }
+
     private void showActualitzarArticle(Scanner sc) {
         showObtenirArticle(sc);
-        System.out.println("Dona'm l'idArticle:");
-        int id = sc.nextInt();
-        
-        Article a = getArticle(id);
-        
-        System.out.println("talla:");
-        sc.nextLine();
-        String talla = sc.nextLine();
-        System.out.println("color:");
-        String color = sc.nextLine();
-        System.out.println("stock:");
-        int stock = sc.nextInt();
-        System.out.println("preu:");
-        float preu = sc.nextFloat();
-        System.out.println("iva:");
-        float iva = sc.nextFloat();
-        
-        a.setTalla(talla);
-        a.setColor(color);
-        a.setStock(stock);
-        a.setPreu(preu);
-        a.setIva(iva);
-        tx.commit();
-        
-        
-        
+        try {
+            tx = session.beginTransaction();
+            System.out.println("Dona'm l'idArticle:");
+            int id = sc.nextInt();
+
+            Article a = getArticle(id);
+
+            System.out.println("talla:");
+            sc.nextLine();
+            String talla = sc.nextLine();
+            System.out.println("color:");
+            String color = sc.nextLine();
+            System.out.println("stock:");
+            int stock = sc.nextInt();
+            System.out.println("preu:");
+            float preu = sc.nextFloat();
+            System.out.println("iva:");
+            float iva = sc.nextFloat();
+
+            a.setTalla(talla);
+            a.setColor(color);
+            a.setStock(stock);
+            a.setPreu(preu);
+            a.setIva(iva);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
+
     }
 
     private void showEliminarArticle(Scanner sc) {
-
+        showObtenirArticle(sc);
+        try {
+            tx = session.beginTransaction();
+            System.out.println("Dona'm l'idArticle:");
+            int id = sc.nextInt();
+            Article a = getArticle(id);
+            session.delete(a);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
     }
 
     private void showInsertarCampanya(Scanner sc) {
+        try {
+            tx = session.beginTransaction();
+            System.out.println("nom:");
+            String nom = sc.nextLine();
+            System.out.println("data_fi[dd/mm/aaaa]:");
+            SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+            df.setLenient(false);
+            Date data_fi = df.parse(sc.nextLine());
+            System.out.println("data_inici[dd/mm/aaaa]:");
+            Date data_inici = df.parse(sc.nextLine());
+            System.out.println("numArticles:");
+            int numArticles = sc.nextInt();
+            System.out.println("import:");
+            float imprt = sc.nextFloat();
 
+            Campanya camp = new Campanya(nom, data_fi, data_inici, numArticles, imprt);
+            session.save(camp);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
     }
 
     private void showObtenirCampanya(Scanner sc) {
+        List<Campanya> campanyes = new ArrayList<Campanya>();
+        Query q = session.createQuery("from Campanya");
 
+        campanyes = q.list();
+
+        for (Campanya camp : campanyes) {
+            System.out.println(camp);
+        }
     }
 
     private void showActualitzarCampanya(Scanner sc) {
+        showObtenirCampanya(sc);
+        try {
+            tx = session.beginTransaction();
+            System.out.println("Dona'm l'idCampanya:");
+            int id = sc.nextInt();
 
+            Campanya a = getCampanya(id);
+
+            System.out.println("nom:");
+            String nom = sc.nextLine();
+            System.out.println("data_fi[dd/mm/aaaa]:");
+            SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+            df.setLenient(false);
+            Date data_fi = df.parse(sc.nextLine());
+            System.out.println("data_inici[dd/mm/aaaa]:");
+            Date data_inici = df.parse(sc.nextLine());
+            System.out.println("numArticles:");
+            int numArticles = sc.nextInt();
+            System.out.println("import:");
+            float imprt = sc.nextFloat();
+
+            a.setNom(nom);
+            a.setData_fi(data_fi);
+            a.setData_inici(data_inici);
+            a.setNumArticles(numArticles);
+            a.setImprt(imprt);
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
     }
 
     private void showEliminarCampanya(Scanner sc) {
-
+        showObtenirCampanya(sc);
+        try {
+            tx = session.beginTransaction();
+            System.out.println("Dona'm l'idCampanya:");
+            int id = sc.nextInt();
+            Campanya a = getCampanya(id);
+            session.delete(a);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
     }
 
     private void showInsertarFamilia(Scanner sc) {
+        try {
+            tx = session.beginTransaction();
+            System.out.println("nom:");
+            String nom = sc.nextLine();
+            
 
+            Familia familia = new Familia(nom);
+            session.save(familia);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
     }
 
     private void showObtenirFamilia(Scanner sc) {
+        List<Familia> families = new ArrayList<Familia>();
+        Query q = session.createQuery("from Familia");
 
+        families = q.list();
+
+        for (Familia fam : families) {
+            System.out.println(fam);
+        }
     }
 
     private void showActualitzarFamilia(Scanner sc) {
+        showObtenirFamilia(sc);
+        try {
+            tx = session.beginTransaction();
+            System.out.println("Dona'm l'ifFamilia:");
+            int id = sc.nextInt();
 
+            Familia a = getFamilia(id);
+            System.out.println("nom:");
+            String nom = sc.nextLine();
+            a.setNom(nom);
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
     }
 
     private void showEliminarFamilia(Scanner sc) {
-
+        showObtenirFamilia(sc);
+        try {
+            tx = session.beginTransaction();
+            System.out.println("Dona'm l'idFamilia:");
+            int id = sc.nextInt();
+            Familia a = getFamilia(id);
+            session.delete(a);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
     }
 
     private void showInsertarSubFamilia(Scanner sc) {
+try {
+            tx = session.beginTransaction();
+            System.out.println("nom:");
+            String nom = sc.nextLine();
+            
 
+            SubFamilia familia = new SubFamilia(nom,null);
+            session.save(familia);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
     }
 
     private void showObtenirSubFamilia(Scanner sc) {
+        List<SubFamilia> subfamilies = new ArrayList<SubFamilia>();
+        Query q = session.createQuery("from SubFamilia");
 
+        subfamilies = q.list();
+
+        for (SubFamilia subfamilia : subfamilies) {
+            System.out.println(subfamilia);
+        }
     }
 
     private void showActualitzarSubFamilia(Scanner sc) {
+        showObtenirSubFamilia(sc);
+        try {
+            tx = session.beginTransaction();
+            System.out.println("Dona'm l'idSubfamilia:");
+            int id = sc.nextInt();
 
+            SubFamilia a = getSubFamilia(id);
+
+            System.out.println("nom:");
+            String nom = sc.nextLine();
+            a.setNom(nom);
+
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
     }
 
     private void showEliminarSubFamilia(Scanner sc) {
-
+        showObtenirSubFamilia(sc);
+        try {
+            tx = session.beginTransaction();
+            System.out.println("Dona'm l'idSubFamilia:");
+            int id = sc.nextInt();
+            SubFamilia a = getSubFamilia(id);
+            session.delete(a);
+            tx.commit();
+        } catch (Exception e) {
+            tx.rollback();
+        }
     }
 
 }
