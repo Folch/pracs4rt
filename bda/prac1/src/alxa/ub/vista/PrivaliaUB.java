@@ -13,6 +13,7 @@ import alxa.ub.model.Usuari;
 import com.ub.edu.bda.ConnectorHB;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -59,6 +60,7 @@ public class PrivaliaUB {
     }
 
     private void showLogin(Scanner sc) {
+
         String user, pass;
         Usuari u = null;
         short times = 0;
@@ -305,11 +307,17 @@ public class PrivaliaUB {
             System.out.println("nom:");
             String nom = sc.nextLine();
             System.out.println("data_fi[dd/mm/aaaa]:");
-            SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
-            df.setLenient(false);
-            Date data_fi = df.parse(sc.nextLine());
+            String df = sc.nextLine();
+            Date data_fi = new Date();
+            data_fi.setDate(Integer.parseInt(df.substring(0, 2)));
+            data_fi.setMonth(Integer.parseInt(df.substring(3, 5)) - 1);
+            data_fi.setYear(Integer.parseInt(df.substring(6, 10)) - 1900);
             System.out.println("data_inici[dd/mm/aaaa]:");
-            Date data_inici = df.parse(sc.nextLine());
+            String di = sc.nextLine();
+            Date data_inici = new Date();
+            data_inici.setDate(Integer.parseInt(di.substring(0, 2)));
+            data_inici.setMonth(Integer.parseInt(di.substring(3, 5)) - 1);
+            data_inici.setYear(Integer.parseInt(di.substring(6, 10)) - 1900);
             System.out.println("numArticles:");
             int numArticles = sc.nextInt();
             System.out.println("import:");
@@ -318,7 +326,11 @@ public class PrivaliaUB {
             Campanya camp = new Campanya(nom, data_fi, data_inici, numArticles, imprt);
             session.save(camp);
             tx.commit();
+        } catch (StringIndexOutOfBoundsException ex) {
+            System.err.println("Les dates han de tenir el format dd/mm/aaaa");
+            tx.rollback();
         } catch (Exception e) {
+
             tx.rollback();
         }
     }
@@ -344,13 +356,20 @@ public class PrivaliaUB {
             Campanya a = getCampanya(id);
 
             System.out.println("nom:");
+            sc.nextLine();
             String nom = sc.nextLine();
             System.out.println("data_fi[dd/mm/aaaa]:");
-            SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
-            df.setLenient(false);
-            Date data_fi = df.parse(sc.nextLine());
+            String df = sc.nextLine();
+            Date data_fi = new Date();
+            data_fi.setDate(Integer.parseInt(df.substring(0, 2)));
+            data_fi.setMonth(Integer.parseInt(df.substring(3, 5)) - 1);
+            data_fi.setYear(Integer.parseInt(df.substring(6, 10)) - 1900);
             System.out.println("data_inici[dd/mm/aaaa]:");
-            Date data_inici = df.parse(sc.nextLine());
+            String di = sc.nextLine();
+            Date data_inici = new Date();
+            data_inici.setDate(Integer.parseInt(di.substring(0, 2)));
+            data_inici.setMonth(Integer.parseInt(di.substring(3, 5)) - 1);
+            data_inici.setYear(Integer.parseInt(di.substring(6, 10)) - 1900);
             System.out.println("numArticles:");
             int numArticles = sc.nextInt();
             System.out.println("import:");
@@ -363,6 +382,9 @@ public class PrivaliaUB {
             a.setImprt(imprt);
 
             tx.commit();
+        } catch (StringIndexOutOfBoundsException ex) {
+            System.err.println("Les dates han de tenir el format dd/mm/aaaa");
+            tx.rollback();
         } catch (Exception e) {
             tx.rollback();
         }
@@ -416,6 +438,7 @@ public class PrivaliaUB {
 
             Familia a = getFamilia(id);
             System.out.println("nom:");
+            sc.nextLine();
             String nom = sc.nextLine();
             a.setNom(nom);
 
@@ -474,6 +497,7 @@ public class PrivaliaUB {
             SubFamilia a = getSubFamilia(id);
 
             System.out.println("nom:");
+            sc.nextLine();
             String nom = sc.nextLine();
             a.setNom(nom);
 

@@ -21,7 +21,7 @@ public class ConnectorHB {
             sf = new Configuration().configure().buildSessionFactory();
             //Marcamos la opcion anotaciones
             //sf = new AnnotationConfiguration().configure().buildSessionFactory();
-            System.out.println("Instanciando SF");
+            //System.out.println("Instanciando SF");
         } catch (HibernateException e) {
             System.out.println("Error SF: "+e.getMessage());
             System.out.println("PATH"+e.toString());

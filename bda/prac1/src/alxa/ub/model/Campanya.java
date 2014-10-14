@@ -5,6 +5,7 @@
  */
 package alxa.ub.model;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
@@ -21,11 +22,12 @@ public class Campanya {
     private Date data_inici;
     private int numArticles;
     private float imprt;
-    
+
     private Set<Article> articles;
     private Set<Usuari> usuaris;
-    
-    public Campanya() { }
+
+    public Campanya() {
+    }
 
     public Campanya(String nom, Date data_fi, Date data_inici, int numArticles, float imprt) {
         this.nom = nom;
@@ -103,10 +105,10 @@ public class Campanya {
 
     @Override
     public String toString() {
-        return "Campanya{" + "idCampanya=" + idCampanya + ", nom=" + nom + ", data_fi=" + data_fi + ", data_inici=" + data_inici + ", numArticles=" + numArticles + ", imprt=" + imprt + ", articles=" + articles + ", usuaris=" + usuaris + '}';
+        return "Campanya{" + "idCampanya=" + idCampanya + ", nom=" + nom + ", data_fi=" + formatDate(data_fi) + ", data_inici=" + formatDate(data_inici) + ", numArticles=" + numArticles + ", imprt=" + imprt + '}';
     }
-
-    
-
+    private String formatDate(Date data){
+        return data.getDate()+"/"+(data.getMonth()+1)+"/"+(data.getYear()+1900);
+    }
 
 }
