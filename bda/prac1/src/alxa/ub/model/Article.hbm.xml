@@ -15,21 +15,21 @@
         <property name="preu" column="PREU" />
         <property name="iva" column="IVA" />
         
-        <many-to-one name="producte" class="alxa.ub.model.Producte" fetch="select">
+        <many-to-one name="producte" cascade="save-update" class="alxa.ub.model.Producte" fetch="select">
             <column name="PRODUCTE" />
         </many-to-one>
         
-        <set name="campanyes" table="USUARIARTICLECAMPANYA">
+        <set name="campanyes" cascade="save-update" table="USUARIARTICLECAMPANYA">
             <key column="IDARTICLE"/>
             <many-to-many column="IDuserCAMPANYA" class="alxa.ub.model.Campanya"/>
         </set>
         
-        <set name="usuaris" table="USUARIARTICLECAMPANYA">
+        <set name="usuaris" cascade="save-update" table="USUARIARTICLECAMPANYA">
             <key column="IDARTICLE"/>
             <many-to-many column="NOM" class="alxa.ub.model.Usuari"/>
         </set>
 
-        <many-to-one name="marca" class="alxa.ub.model.Marca" fetch="select">
+        <many-to-one name="marca" cascade="save-update" class="alxa.ub.model.Marca" fetch="select">
             <column name="MARCA" />
         </many-to-one>
     </class>

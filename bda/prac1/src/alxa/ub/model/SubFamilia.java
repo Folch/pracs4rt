@@ -77,7 +77,7 @@ public class SubFamilia implements Serializable{
      */
     @Override
     public String toString() {
-        return "SubFamilia{" + "nom=" + nom + ", idSubFamilia=" + idSubFamilia + ", familia=" + (familia!=null?familia.getNom():"No té una familia referenciada") + '}';
+        return "SubFamilia{" + "nom=" + nom + ", idSubFamilia=" + idSubFamilia + '}';
     }
     
     
