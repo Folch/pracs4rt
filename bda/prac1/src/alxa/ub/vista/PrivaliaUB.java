@@ -457,14 +457,19 @@ public class PrivaliaUB {
                     data_inici.setDate(Integer.parseInt(di.substring(0, 2)));
                     data_inici.setMonth(Integer.parseInt(di.substring(3, 5)) - 1);
                     data_inici.setYear(Integer.parseInt(di.substring(6, 10)) - 1900);
-                    System.out.println("numArticles:");
-                    int numArticles = sc.nextInt();
-                    System.out.println("import:");
-                    float imprt = sc.nextFloat();
+                    if(data_inici.before(data_fi)){
+                        System.out.println("numArticles:");
+                        int numArticles = sc.nextInt();
+                        System.out.println("import:");
+                        float imprt = sc.nextFloat();
 
-                    Campanya camp = new Campanya(nom, data_fi, data_inici, numArticles, imprt);
-                    session.save(camp);
-                    tx.commit();
+                        Campanya camp = new Campanya(nom, data_fi, data_inici, numArticles, imprt);
+                        session.save(camp);
+                        tx.commit();
+                    }else{
+                        System.err.println("la data d'inici ha de ser anterior a la final");
+                        tx.rollback();
+                    }
                 } else {
                     System.err.println("Les dates han de tenir el format dd/mm/aaaa");
                     tx.rollback();
@@ -473,7 +478,6 @@ public class PrivaliaUB {
                 System.err.println("Les dates han de tenir el format dd/mm/aaaa");
                 tx.rollback();
             }
-
         } catch (StringIndexOutOfBoundsException ex) {
             System.err.println("Les dates han de tenir el format dd/mm/aaaa");
             tx.rollback();
