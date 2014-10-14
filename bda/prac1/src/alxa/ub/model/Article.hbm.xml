@@ -21,7 +21,7 @@
         
         <set name="campanyes" table="USUARIARTICLECAMPANYA">
             <key column="IDARTICLE"/>
-            <many-to-many column="IDCAMPANYA" class="alxa.ub.model.Campanya"/>
+            <many-to-many column="IDuserCAMPANYA" class="alxa.ub.model.Campanya"/>
         </set>
         
         <set name="usuaris" table="USUARIARTICLECAMPANYA">

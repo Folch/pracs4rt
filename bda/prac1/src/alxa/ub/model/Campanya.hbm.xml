@@ -17,12 +17,12 @@
         
         
         <set name="articles" table="USUARIARTICLECAMPANYA">
-            <key column="IDCAMPANYA"/>
+            <key column="CAMPANYA"/>
             <many-to-many column="IDARTICLE" class="alxa.ub.model.Article"/>
         </set>
         
         <set name="usuaris" table="USUARIARTICLECAMPANYA">
-            <key column="IDCAMPANYA"/>
+            <key column="CAMPANYA"/>
             <many-to-many column="NOM" class="alxa.ub.model.Usuari"/>
         </set>
     </class>
