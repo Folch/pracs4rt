@@ -8,6 +8,8 @@ package alxa.ub.vista;
 import alxa.ub.model.Article;
 import alxa.ub.model.Campanya;
 import alxa.ub.model.Familia;
+import alxa.ub.model.Marca;
+import alxa.ub.model.Producte;
 import alxa.ub.model.SubFamilia;
 import alxa.ub.model.Usuari;
 import java.util.ArrayList;
@@ -233,14 +235,56 @@ public class PrivaliaUB {
             float preu = sc.nextFloat();
             System.out.println("iva:");
             float iva = sc.nextFloat();
+            showObtenirMarca(sc);
+            System.out.println("Escriu una d'aquestes marques: ");
+            sc.nextLine();
+            String mar = sc.nextLine();
+            Marca marca = getMarca(mar);
 
-            Article a = new Article(talla, color, stock, preu, iva, null, null);
+            showObtenirProducte(sc);
+            System.out.println("Escriu el id d'algun d'aquests productes: ");
+            int id = sc.nextInt();
+            Producte producte = getProducte(id);
+
+            Article a = new Article(talla, color, stock, preu, iva, marca, producte);
             session.save(a);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
         }
 
+    }
+
+    /**
+     * Mètode que fa un select de tots els atributs d'un producte
+     *
+     * @param sc
+     */
+    private void showObtenirProducte(Scanner sc) {
+        List<Producte> productes = new ArrayList<Producte>();
+        Query q = session.createQuery("from Producte");
+
+        productes = q.list();
+
+        for (Producte producte : productes) {
+            System.out.println(producte);
+        }
+    }
+
+    /**
+     * Mètode que fa un select de tots els atributs d'una marca
+     *
+     * @param sc
+     */
+    private void showObtenirMarca(Scanner sc) {
+        List<Marca> marques = new ArrayList<Marca>();
+        Query q = session.createQuery("from Marca");
+
+        marques = q.list();
+
+        for (Marca marca : marques) {
+            System.out.println(marca);
+        }
     }
 
     /**
@@ -269,6 +313,18 @@ public class PrivaliaUB {
         Query q = session.createQuery("from Article where idArticle = :id");
         q.setInteger("id", id);
         return (Article) q.uniqueResult();
+    }
+
+    private Marca getMarca(String nom) {
+        Query q = session.createQuery("from Marca where nom = :name");
+        q.setString("name", nom);
+        return (Marca) q.uniqueResult();
+    }
+
+    private Producte getProducte(int id) {
+        Query q = session.createQuery("from Producte where idProducte = :id");
+        q.setInteger("id", id);
+        return (Producte) q.uniqueResult();
     }
 
     /**
@@ -332,12 +388,25 @@ public class PrivaliaUB {
             float preu = sc.nextFloat();
             System.out.println("iva:");
             float iva = sc.nextFloat();
+            showObtenirMarca(sc);
+            System.out.println("Escriu una d'aquestes marques: ");
+            sc.nextLine();
+            String mar = sc.nextLine();
+            Marca marca = getMarca(mar);
 
+            showObtenirProducte(sc);
+            System.out.println("Escriu el id d'algun d'aquests productes: ");
+            int idp = sc.nextInt();
+            Producte producte = getProducte(idp);
+            
+            
             a.setTalla(talla);
             a.setColor(color);
             a.setStock(stock);
             a.setPreu(preu);
             a.setIva(iva);
+            a.setProducte(producte);
+            a.setMarca(marca);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
