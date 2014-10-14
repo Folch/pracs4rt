@@ -22,10 +22,12 @@ public class SubFamilia implements Serializable{
     public SubFamilia() {}
     /**
      * Constructor
+     * @param idSubFamilia
      * @param nom
      * @param familia 
      */
-    public SubFamilia(String nom, Familia familia) {
+    public SubFamilia(int idSubFamilia, String nom, Familia familia) {
+        this.idSubFamilia = idSubFamilia;
         this.nom = nom;
         this.familia = familia;
     }

@@ -670,8 +670,16 @@ public class PrivaliaUB {
             tx = session.beginTransaction();
             System.out.println("nom:");
             String nom = sc.nextLine();
+            
+            showObtenirFamilia(sc);
+            System.out.println("Diga'm la id de la familia:");
+            int id = sc.nextInt();
+            Familia f = getFamilia(id);
+            
+            Query q = session.createSQLQuery("select * from SubFamilia ORDER BY idsubfamilia DESC limit 1").addEntity(SubFamilia.class);
+            int idSubFamilia = ((SubFamilia)q.uniqueResult()).getIdSubFamilia();
 
-            SubFamilia familia = new SubFamilia(nom, null);
+            SubFamilia familia = new SubFamilia(idSubFamilia+1, nom, f);
             session.save(familia);
             tx.commit();
         } catch (Exception e) {
