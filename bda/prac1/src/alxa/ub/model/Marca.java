@@ -7,26 +7,40 @@ package alxa.ub.model;
 
 /**
  *
- * @author zenbook
+ * @author Albert i Xavi
  */
 public class Marca {
     
     private String nom;
-
+    /**
+     * Constructor
+     */
     public Marca() { }
-    
+    /**
+     * Constructor
+     * @param nom 
+     */
     public Marca(String nom) {
         this.nom = nom;
     }
-
+    /**
+     * Getter
+     * @return 
+     */
     public String getNom() {
         return nom;
     }
-
+    /**
+     * Setter
+     * @param nom 
+     */
     public void setNom(String nom) {
         this.nom = nom;
     }
-
+    /**
+     * Mètode per mostrar per pantalla una marca
+     * @return 
+     */
     @Override
     public String toString() {
         return "Marca{" + "nom=" + nom + '}';

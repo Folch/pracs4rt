@@ -10,10 +10,7 @@ import alxa.ub.model.Campanya;
 import alxa.ub.model.Familia;
 import alxa.ub.model.SubFamilia;
 import alxa.ub.model.Usuari;
-import com.ub.edu.bda.ConnectorHB;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -23,7 +20,7 @@ import org.hibernate.Transaction;
 
 /**
  *
- * @author zenbook
+ * @author Albert i Xavi
  */
 public class PrivaliaUB {
 
@@ -52,13 +49,18 @@ public class PrivaliaUB {
         Scanner sc = new Scanner(System.in);
         new PrivaliaUB().showLogin(sc);
     }
-
+    /**
+     * Constructor
+     */
     public PrivaliaUB() {
         session = ConnectorHB.getSession();
         tx = session.getTransaction();
 
     }
-
+    /**
+     * Mètode per 'logar-se' en el programa, si s'equivoca 3 vegades sortirà del programa
+     * @param sc 
+     */
     private void showLogin(Scanner sc) {
 
         String user, pass;
@@ -95,7 +97,10 @@ public class PrivaliaUB {
 
         showMainMenu(sc);
     }
-
+    /**
+     * Mètode que mostra les entitats que l'usuari pot manipular
+     * @param sc 
+     */
     private void showMainMenu(Scanner sc) {
         Menu<MainMenuOps> mainMenu = new Menu<>(MAIN_MENU_TITOL, MainMenuOps.values(), MAIN_MENU_DESC);
         MainMenuOps op;
@@ -118,7 +123,11 @@ public class PrivaliaUB {
             }
         } while (op != MainMenuOps.SORTIR);
     }
-
+    /**
+     * Mètode per mostrar les operacions CRUD de cadascuna de les entitats demanades
+     * @param sc
+     * @param type 
+     */
     private void showCRUDMenu(Scanner sc, MainMenuOps type) {
         Menu<CRUDMenuOps> crudMenu = new Menu<>(CRUD_MENU_TITOL, CRUDMenuOps.values(), CRUD_MENU_DESC);
 
@@ -195,7 +204,10 @@ public class PrivaliaUB {
             }
         } while (op != CRUDMenuOps.SORTIR);
     }
-
+    /**
+     * Mètode per insertar un nou article amb tots els seus atributs excepte les claus foranies
+     * @param sc 
+     */
     private void showInsertarArticle(Scanner sc) {
         try {
             tx = session.beginTransaction();
@@ -218,7 +230,10 @@ public class PrivaliaUB {
         }
 
     }
-
+    /**
+     * Mètode que fa un select de tots els atributs d'un article
+     * @param sc 
+     */
     private void showObtenirArticle(Scanner sc) {
         List<Article> articles = new ArrayList<Article>();
         Query q = session.createQuery("from Article");
@@ -229,31 +244,50 @@ public class PrivaliaUB {
             System.out.println(article);
         }
     }
-
+    /**
+     * Mètode per obtenir una instancia article donat el seu id
+     * @param id
+     * @return 
+     */
     private Article getArticle(int id) {
         Query q = session.createQuery("from Article where idArticle = :id");
         q.setInteger("id", id);
         return (Article) q.uniqueResult();
     }
-
+    /**
+     * Mètode per obtenir una instancia campanya donada el seu id
+     * @param id
+     * @return 
+     */
     private Campanya getCampanya(int id) {
         Query q = session.createQuery("from Campanya where idCampanya = :id");
         q.setInteger("id", id);
         return (Campanya) q.uniqueResult();
     }
-
+    /**
+     * Mètode per obtenir una instancia familia donada el seu id
+     * @param id
+     * @return 
+     */
     private Familia getFamilia(int id) {
         Query q = session.createQuery("from Familia where idFamilia = :id");
         q.setInteger("id", id);
         return (Familia) q.uniqueResult();
     }
-
+    /**
+     * Mètode per obtenir una instancia subfamilia donada el seu id
+     * @param id
+     * @return 
+     */
     private SubFamilia getSubFamilia(int id) {
         Query q = session.createQuery("from SubFamilia where idSubfamilia = :id");
         q.setInteger("id", id);
         return (SubFamilia) q.uniqueResult();
     }
-
+    /**
+     * Mètode per actualitzar tots els atributs d'un article donat el seu id
+     * @param sc 
+     */
     private void showActualitzarArticle(Scanner sc) {
         showObtenirArticle(sc);
         try {
@@ -286,7 +320,10 @@ public class PrivaliaUB {
         }
 
     }
-
+    /**
+     * Mètode per eliminar un article donat el seu id
+     * @param sc 
+     */
     private void showEliminarArticle(Scanner sc) {
         showObtenirArticle(sc);
         try {
@@ -300,7 +337,10 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
-
+    /**
+     * Mètode per insertar una nova campanya amb tots els seus atributs
+     * @param sc 
+     */
     private void showInsertarCampanya(Scanner sc) {
         try {
             tx = session.beginTransaction();
@@ -334,7 +374,10 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
-
+    /**
+     * Mètode que fa un select de tots els atributs d'una campanya
+     * @param sc 
+     */
     private void showObtenirCampanya(Scanner sc) {
         List<Campanya> campanyes = new ArrayList<Campanya>();
         Query q = session.createQuery("from Campanya");
@@ -345,7 +388,10 @@ public class PrivaliaUB {
             System.out.println(camp);
         }
     }
-
+    /**
+     * Mètode per actualitzar tots els atributs d'una campanya donada el seu id
+     * @param sc 
+     */
     private void showActualitzarCampanya(Scanner sc) {
         showObtenirCampanya(sc);
         try {
@@ -389,7 +435,10 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
-
+    /**
+     * Mètode per eliminar una campanya donada el seu id
+     * @param sc 
+     */
     private void showEliminarCampanya(Scanner sc) {
         showObtenirCampanya(sc);
         try {
@@ -403,7 +452,10 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
-
+    /**
+     * Mètode per insertar una nova familia amb tots els seus atributs
+     * @param sc 
+     */
     private void showInsertarFamilia(Scanner sc) {
         try {
             tx = session.beginTransaction();
@@ -417,7 +469,10 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
-
+    /**
+     * Mètode que fa un select de tots els atributs d'una familia
+     * @param sc 
+     */
     private void showObtenirFamilia(Scanner sc) {
         List<Familia> families = new ArrayList<Familia>();
         Query q = session.createQuery("from Familia");
@@ -428,7 +483,10 @@ public class PrivaliaUB {
             System.out.println(fam);
         }
     }
-
+    /**
+     * Mètode per actualitzar tots els atributs d'una familia donada el seu id
+     * @param sc 
+     */
     private void showActualitzarFamilia(Scanner sc) {
         showObtenirFamilia(sc);
         try {
@@ -447,7 +505,10 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
-
+    /**
+     * Mètode per eliminar una familia donada el seu id
+     * @param sc 
+     */
     private void showEliminarFamilia(Scanner sc) {
         showObtenirFamilia(sc);
         try {
@@ -461,7 +522,10 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
-
+    /**
+     * Mètode per insertar una nova subfamilia amb tots els seus atributs
+     * @param sc 
+     */
     private void showInsertarSubFamilia(Scanner sc) {
         try {
             tx = session.beginTransaction();
@@ -475,7 +539,10 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
-
+    /**
+     * Mètode que fa un select de tots els atributs d'una subfamilia
+     * @param sc 
+     */
     private void showObtenirSubFamilia(Scanner sc) {
         List<SubFamilia> subfamilies = new ArrayList<SubFamilia>();
         Query q = session.createQuery("from SubFamilia");
@@ -486,7 +553,10 @@ public class PrivaliaUB {
             System.out.println(subfamilia);
         }
     }
-
+    /**
+     * Mètode per actualitzar tots els atributs d'una subfamilia donada el seu id
+     * @param sc 
+     */
     private void showActualitzarSubFamilia(Scanner sc) {
         showObtenirSubFamilia(sc);
         try {
@@ -506,7 +576,10 @@ public class PrivaliaUB {
             tx.rollback();
         }
     }
-
+    /**
+     * Mètode per eliminar una subfamilia donada el seu id
+     * @param sc 
+     */
     private void showEliminarSubFamilia(Scanner sc) {
         showObtenirSubFamilia(sc);
         try {
