@@ -9,6 +9,7 @@ import alxa.ub.model.Article;
 import alxa.ub.model.Campanya;
 import alxa.ub.model.Familia;
 import alxa.ub.model.SubFamilia;
+import alxa.ub.model.Usuari;
 import com.ub.edu.bda.ConnectorHB;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,37 +59,37 @@ public class PrivaliaUB {
     }
 
     private void showLogin(Scanner sc) {
-        /*String user, pass;
-         Usuari u = null;
-         short times = 0;
+        String user, pass;
+        Usuari u = null;
+        short times = 0;
 
-         System.out.println("Usuari: userX");
-         System.out.println("Pass: passX");
-         System.out.println("on X varia en enters de 1 a 5");
-         do {
-         System.out.println("usuari:");
-         user = sc.nextLine();
-         System.out.println("contrasenya:");
-         pass = sc.nextLine();
+        System.out.println("Usuari: userX");
+        System.out.println("Pass: passX");
+        System.out.println("on X varia en enters de 1 a 5");
+        do {
+            System.out.println("usuari:");
+            user = sc.nextLine();
+            System.out.println("contrasenya:");
+            pass = sc.nextLine();
 
-         Query q = session.createQuery("from Usuari where nom = :user and contrasenya = :pass");
-         q.setString("user", user);
-         q.setString("pass", pass);
-         u = (Usuari) q.uniqueResult();
+            Query q = session.createQuery("from Usuari where nom = :user and contrasenya = :pass");
+            q.setString("user", user);
+            q.setString("pass", pass);
+            u = (Usuari) q.uniqueResult();
 
-         times++;
+            times++;
 
-         if (u == null) {
-         System.out.println("usuari i/o contrasenya incorrectes. Torna a provar-ho.");
-         }
-         if (times == 3) {
-         System.out.println("Ho has provat ja tres vegades. Adeu.");
-         System.exit(0);
-         }
+            if (u == null) {
+                System.out.println("usuari i/o contrasenya incorrectes. Torna a provar-ho.");
+            }
+            if (times == 3) {
+                System.out.println("Ho has provat ja tres vegades. Adeu.");
+                System.exit(0);
+            }
 
-         } while (u == null);
+        } while (u == null);
 
-         System.out.println("Benvingut " + u.getNom());*/
+        System.out.println("Benvingut " + u.getNom());
 
         showMainMenu(sc);
     }
@@ -386,7 +387,6 @@ public class PrivaliaUB {
             tx = session.beginTransaction();
             System.out.println("nom:");
             String nom = sc.nextLine();
-            
 
             Familia familia = new Familia(nom);
             session.save(familia);
@@ -440,13 +440,12 @@ public class PrivaliaUB {
     }
 
     private void showInsertarSubFamilia(Scanner sc) {
-try {
+        try {
             tx = session.beginTransaction();
             System.out.println("nom:");
             String nom = sc.nextLine();
-            
 
-            SubFamilia familia = new SubFamilia(nom,null);
+            SubFamilia familia = new SubFamilia(nom, null);
             session.save(familia);
             tx.commit();
         } catch (Exception e) {
