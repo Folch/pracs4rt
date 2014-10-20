@@ -54,16 +54,24 @@ public class DiscController implements InternalIDisk {
 
     @Override
     public void saveImage(String path, Imatge img) {
+        try {
+            BufferedImage bi = img.getImage();
+            File outputfile = new File(img.getName() + ".png");
+            ImageIO.write(bi, "png", outputfile);
+            
+
+        } catch (IOException ex) {
+            Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void saveZip(String path, ZipFile zip) {
         
     }
 
     @Override
-    public void saveZip(String path, ArrayList<Imatge> images) {
-        
-    }
-
-    @Override
-    public void saveGZip(String path, ArrayList<Imatge> images) {
+    public void saveGZip(String path, ZipFile zip) {
         
     }
 
