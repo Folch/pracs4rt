@@ -9,6 +9,7 @@ import Model.Imatge;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipFile;
@@ -52,17 +53,17 @@ public class DiscController implements InternalIDisk {
     }
 
     @Override
-    public void saveImage(String path) {
+    public void saveImage(String path, Imatge img) {
+        
+    }
+
+    @Override
+    public void saveZip(String path, ArrayList<Imatge> images) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void saveZip(String path) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void saveGZip(String path) {
+    public void saveGZip(String path, ArrayList<Imatge> images) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
