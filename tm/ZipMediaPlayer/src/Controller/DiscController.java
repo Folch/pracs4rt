@@ -56,7 +56,7 @@ public class DiscController implements InternalIDisk {
     public void saveImage(String path, Imatge img) {
         try {
             BufferedImage bi = img.getImage();
-            File outputfile = new File(img.getName() + ".png");
+            File outputfile = new File(path + ".png");
             ImageIO.write(bi, "png", outputfile);
             
 

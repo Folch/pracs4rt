@@ -23,7 +23,7 @@ import javax.imageio.stream.ImageInputStream;
  *
  * @author albert
  */
-public class CompressorController implements ICompressor {
+public class CompressorController implements ICompressor{
 
     @Override
     public ZipFile CompressGZip(ArrayList<Image> images) {
@@ -37,26 +37,28 @@ public class CompressorController implements ICompressor {
 
     @Override
     public ArrayList<Imatge> decompressZip(ZipFile zFl) {
-        ArrayList<Imatge> images = new ArrayList<>();
+        ArrayList <Imatge> images = new ArrayList<>();
         try {
-            Enumeration<? extends ZipEntry> entries = zFl.entries();
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                Imatge image = new Imatge();
-                String imgName = entry.getName();
-                image.setName(imgName);
-                InputStream is = zFl.getInputStream(entry);
-                ImageInputStream iis = ImageIO.createImageInputStream(is);
-                BufferedImage bufImg = ImageIO.read(iis);
-                image.setImage(bufImg);
-                images.add(image);
+                Enumeration<? extends ZipEntry> entries = zFl.entries();
+                while (entries.hasMoreElements()) {
+                    ZipEntry entry = entries.nextElement();
+                    Imatge image = new Imatge();
+                    String imgName = entry.getName();
+                    image.setName(imgName);
+                    InputStream is = zFl.getInputStream(entry);
+                    ImageInputStream iis = ImageIO.createImageInputStream(is);
+                    BufferedImage bufImg = ImageIO.read(iis);
+                    image.setImage(bufImg);
+                    images.add(image);
 
+                }
+
+            } catch (IOException ex) {
+                Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        } catch (IOException ex) {
-            Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return images;
     }
 
+  
+    
 }
