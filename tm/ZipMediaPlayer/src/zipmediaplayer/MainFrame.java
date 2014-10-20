@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -43,7 +44,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
        /* getLayeredPane().add(imagepanel, 0);
         getLayeredPane().add(menubar, 1);
         getLayeredPane().add(filebar, 2);*/
-        
+        //JPopupMenu.setDefaultLightWeightPopupEnabled(false);
         
     }
 
@@ -145,7 +146,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         filebar.add(openzipmenu);
 
         openimagemenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        openimagemenu.setText("Open image(s)...");
+        openimagemenu.setText("Open image ...");
         openimagemenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openimagemenuActionPerformed(evt);
@@ -326,6 +327,8 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         controller.first();
         prevbtn.setEnabled(true);
         nextbtn.setEnabled(true);
+        
+        playbtn.setIcon(new ImageIcon(getClass().getResource("/zipmediaplayer/Play24.gif")));
         playbtn.setEnabled(true);
         playbtn.setSelected(false);
     }
