@@ -6,7 +6,6 @@
 package Controller;
 
 import Model.Imatge;
-import java.util.ArrayList;
 import java.util.zip.ZipFile;
 
 /**
@@ -17,6 +16,6 @@ public interface InternalIDisk {
     public ZipFile openZip (String path);
     public Imatge openImage (String path);
     public void saveImage(String path, Imatge img);
-    public void saveZip (String path, ArrayList<Imatge> images);
-    public void saveGZip(String path, ArrayList<Imatge> images);
+    public void saveZip (String path, ZipFile zip);
+    public void saveGZip(String path, ZipFile zip);
 }
