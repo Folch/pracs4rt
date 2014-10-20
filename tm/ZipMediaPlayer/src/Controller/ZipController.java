@@ -6,21 +6,11 @@
 package Controller;
 
 import Model.Imatge;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
 
 /**
  *
@@ -36,7 +26,8 @@ public class ZipController implements IPlayer, IFilter, IDisk {
     private DirectionType dir;
     private CompressorController compressor;
     private DiscController disk;
-    private ZipFile zip;
+
+   
 
     public enum DirectionType {
 
@@ -92,8 +83,8 @@ public class ZipController implements IPlayer, IFilter, IDisk {
     @Override
     public void openZip(String path) {
         executor.shutdown();
-        this.zip = disk.openZip(path);
-        this.images = compressor.decompressZip(this.zip);
+        ZipFile zip = disk.openZip(path);
+        this.images = compressor.decompressZip(zip);
     }
 
     @Override
@@ -110,12 +101,12 @@ public class ZipController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void saveZip(String path) {
-        disk.saveZip(path, zip);
+        disk.saveZip(path, images);
     }
 
     @Override
     public void saveGZip(String path) {
-        disk.saveGZip(path, zip);
+        disk.saveGZip(path, images);
     }
 
     @Override
