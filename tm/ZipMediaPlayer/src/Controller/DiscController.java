@@ -7,6 +7,7 @@ package Controller;
 
 import Model.Imatge;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -78,10 +79,9 @@ public class DiscController implements InternalIDisk {
                 ZipEntry e = new ZipEntry(imatge.getName());
                 out.putNextEntry(e);
                 //ImageIO.write(null, path, f)
-                byte[] data = imatge.getImage().toString().getBytes();
+                byte[] data = ((DataBufferByte)imatge.getImage().getData().getDataBuffer()).getData();
                 out.write(data, 0, data.length);
                 out.closeEntry();
-                
             }   
             out.close();
         } catch (FileNotFoundException ex) {
