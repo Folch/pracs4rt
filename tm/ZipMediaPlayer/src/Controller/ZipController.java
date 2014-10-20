@@ -64,7 +64,8 @@ public class ZipController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void pause() {
-        executor.shutdown();
+        if(executor != null)
+            executor.shutdown();
     }
 
     @Override
