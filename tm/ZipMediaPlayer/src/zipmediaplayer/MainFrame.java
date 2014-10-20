@@ -82,7 +82,10 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         filebar = new javax.swing.JMenu();
         openzipmenu = new javax.swing.JMenuItem();
         openimagemenu = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        saveimagemenu = new javax.swing.JMenuItem();
+        savezipmenu = new javax.swing.JMenuItem();
+        savegzipmenu = new javax.swing.JMenuItem();
+        exitmenu = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -150,14 +153,26 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         });
         filebar.add(openimagemenu);
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Save Image (png) ...");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        saveimagemenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveimagemenu.setText("Save Image (png) ...");
+        saveimagemenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                saveimagemenuActionPerformed(evt);
             }
         });
-        filebar.add(jMenuItem1);
+        filebar.add(saveimagemenu);
+
+        savezipmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        savezipmenu.setText("Save Zip ...");
+        filebar.add(savezipmenu);
+
+        savegzipmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        savegzipmenu.setText("Save GZip ...");
+        filebar.add(savegzipmenu);
+
+        exitmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        exitmenu.setText("Exit");
+        filebar.add(exitmenu);
 
         menubar.add(filebar);
 
@@ -234,7 +249,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         createZipController(ZipController.FileType.IMAGE);
     }//GEN-LAST:event_openimagemenuActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void saveimagemenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveimagemenuActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify a path to save");   
         int userSelection = fileChooser.showSaveDialog(this);
@@ -244,12 +259,11 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
             controller.saveImage(fileToSave.getAbsolutePath());
         }
         
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_saveimagemenuActionPerformed
 
     
     @Override
     public void onImage(Imatge imatge) {
-        //update(getGraphics());
         /* TODO : fer update quan es canvia de fitxer*/
         currentImage = imatge.getImage();
         paintImage();
@@ -308,6 +322,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         else if(fileType == ZipController.FileType.ZIP)
             controller.openZip(path);
         
+        imagepanel.update(imagepanel.getGraphics());
         controller.first();
         prevbtn.setEnabled(true);
         nextbtn.setEnabled(true);
@@ -349,16 +364,19 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem exitmenu;
     private javax.swing.JMenu filebar;
     private javax.swing.JPanel imagepanel;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuBar menubar;
     private javax.swing.JButton nextbtn;
     private javax.swing.JMenuItem openimagemenu;
     private javax.swing.JMenuItem openzipmenu;
     private javax.swing.JToggleButton playbtn;
     private javax.swing.JButton prevbtn;
+    private javax.swing.JMenuItem savegzipmenu;
+    private javax.swing.JMenuItem saveimagemenu;
+    private javax.swing.JMenuItem savezipmenu;
     // End of variables declaration//GEN-END:variables
 
 }
