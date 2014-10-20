@@ -26,8 +26,7 @@ public class ZipController implements IPlayer, IFilter, IDisk {
     private DirectionType dir;
     private CompressorController compressor;
     private DiscController disk;
-
-   
+    private ZipFile zip;
 
     public enum DirectionType {
 
@@ -55,7 +54,9 @@ public class ZipController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void pause() {
-        executor.shutdown();
+        if (executor != null) {
+            executor.shutdown();
+        }
     }
 
     @Override
@@ -82,9 +83,11 @@ public class ZipController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void openZip(String path) {
-        executor.shutdown();
-        ZipFile zip = disk.openZip(path);
-        this.images = compressor.decompressZip(zip);
+        if (executor != null) {
+            executor.shutdown();
+        }
+        this.zip = disk.openZip(path);
+        this.images = compressor.decompressZip(this.zip);
     }
 
     @Override
@@ -96,7 +99,7 @@ public class ZipController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void saveImage(String path) {
-        disk.saveImage(path,this.images.get(0));
+        disk.saveImage(path, this.images.get(0));
     }
 
     @Override
