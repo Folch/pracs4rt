@@ -54,9 +54,8 @@ public class ZipController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void pause() {
-        if (executor != null) {
+        if (executor != null)
             executor.shutdown();
-        }
     }
 
     @Override
@@ -83,16 +82,14 @@ public class ZipController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void openZip(String path) {
-        if (executor != null) {
+        if (executor != null)
             executor.shutdown();
-        }
         this.zip = disk.openZip(path);
         this.images = compressor.decompressZip(this.zip);
     }
 
     @Override
     public void openImage(String path) {
-        executor.shutdown();
         Imatge img = disk.openImage(path);
         this.images.add(img);
     }
