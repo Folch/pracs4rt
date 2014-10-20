@@ -11,11 +11,11 @@ import java.awt.image.BufferedImage;
  *
  * @author albert
  */
-public class Image {
+public class Imatge {
     private String name;
     private BufferedImage image;
     
-    public Image(){
+    public Imatge(){
         
     }
 

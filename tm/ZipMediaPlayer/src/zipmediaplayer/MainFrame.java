@@ -7,9 +7,17 @@ package zipmediaplayer;
 
 import Controller.OnImageListener;
 import Controller.ZipController;
-import Model.Image;
+import Model.Imatge;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.URL;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -20,12 +28,22 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class MainFrame extends javax.swing.JFrame implements OnImageListener {
 
     private ZipController controller;
+    private BufferedImage currentImage;
+    private AffineTransform at;
 
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
+        imagepanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent ce) {
+                paintImage();
+            }
+            
+        });
+        //this.prevbtn.setIcon(new ImageIcon(getClass().getResource("file:/lib/jlfgr-1_0.jar!/toolbarButtonGraphics/media/FastForward24.gif")));
     }
 
     public String showFileChooser(ZipController.FileType fileType) {
@@ -56,9 +74,9 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
     private void initComponents() {
 
         imagepanel = new javax.swing.JPanel();
-        prevbtn = new javax.swing.JButton();
-        nextbtn = new javax.swing.JButton();
         automanual = new javax.swing.JToggleButton();
+        nextbtn = new javax.swing.JButton();
+        prevbtn = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileField = new javax.swing.JMenu();
         openzipmenu = new javax.swing.JMenuItem();
@@ -66,7 +84,6 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
 
         imagepanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(74, 62, 254), 2, true));
 
@@ -78,20 +95,20 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         );
         imagepanelLayout.setVerticalGroup(
             imagepanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 330, Short.MAX_VALUE)
+            .addGap(0, 289, Short.MAX_VALUE)
         );
 
-        prevbtn.setForeground(new java.awt.Color(74, 62, 254));
-        prevbtn.setText("<<");
-        prevbtn.setEnabled(false);
-        prevbtn.addActionListener(new java.awt.event.ActionListener() {
+        automanual.setForeground(new java.awt.Color(74, 62, 254));
+        automanual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/zipmediaplayer/Play24.gif"))); // NOI18N
+        automanual.setEnabled(false);
+        automanual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                prevbtnActionPerformed(evt);
+                automanualActionPerformed(evt);
             }
         });
 
         nextbtn.setForeground(new java.awt.Color(74, 62, 254));
-        nextbtn.setText(">>");
+        nextbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/zipmediaplayer/FastForward24.gif"))); // NOI18N
         nextbtn.setEnabled(false);
         nextbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,12 +116,12 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
             }
         });
 
-        automanual.setForeground(new java.awt.Color(74, 62, 254));
-        automanual.setText("Auto");
-        automanual.setEnabled(false);
-        automanual.addActionListener(new java.awt.event.ActionListener() {
+        prevbtn.setForeground(new java.awt.Color(74, 62, 254));
+        prevbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/zipmediaplayer/Rewind24.gif"))); // NOI18N
+        prevbtn.setEnabled(false);
+        prevbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                automanualActionPerformed(evt);
+                prevbtnActionPerformed(evt);
             }
         });
 
@@ -145,24 +162,21 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
                     .addComponent(imagepanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(prevbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(104, 104, 104)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(automanual, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
+                        .addGap(173, 173, 173)
                         .addComponent(nextbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(imagepanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nextbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(prevbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(automanual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addComponent(imagepanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(prevbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                    .addComponent(automanual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(nextbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         pack();
@@ -207,13 +221,54 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
 
     
     @Override
-    public void onImage(Image image) {
+    public void onImage(Imatge imatge) {
         //update(getGraphics());
         /* TODO : fer update quan es canvia de fitxer*/
-        BufferedImage scaledImage = (BufferedImage) image.getImage().getScaledInstance(this.imagepanel.getWidth(),this.imagepanel.getHeight(),BufferedImage.SCALE_SMOOTH);
-        getGraphics().drawImage(scaledImage, 0,0, this);
+        currentImage = imatge.getImage();
+        paintImage();
     }
+    
+    public void paintImage() {
+        if(currentImage != null) {
+            Graphics2D g = (Graphics2D) imagepanel.getGraphics();
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
+            double scaleX = GetScaleX(imagepanel.getWidth(), currentImage.getWidth());
+            double scaleY = GetScaleY(imagepanel.getHeight(), currentImage.getHeight());
+
+            double xPos = ((imagepanel.getWidth() - scaleX * currentImage.getWidth())/2.);
+            double yPos = ((imagepanel.getHeight() - scaleY * currentImage.getHeight())/2.);
+
+            at = AffineTransform.getTranslateInstance(xPos, yPos);
+
+            at.scale(scaleX, scaleY);
+            g.drawRenderedImage(currentImage, at);
+        }
+    }
+    
+    
+
+    private double GetScaleY(int panelHeight, int imageHeight) {
+        double yScale = 1;
+        
+        if (imageHeight > panelHeight) {
+            yScale = (double)imageHeight / panelHeight;
+        } else if (imageHeight < panelHeight) {
+            yScale = (double)panelHeight / imageHeight;
+        }
+        return yScale;
+    }
+    
+    private double GetScaleX(int panelWidth, int imageWidth) {
+        double xScale = 1;
+        if (imageWidth > panelWidth) {
+            xScale = (double)imageWidth  / panelWidth;
+        } else if (imageWidth < panelWidth) {
+            xScale = (double)panelWidth / imageWidth;
+        }
+        return xScale;
+    }
+    
     public void createZipController(ZipController.FileType fileType) {
         String path = showFileChooser(fileType);
         if (path == null) {
@@ -231,7 +286,6 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         nextbtn.setEnabled(true);
         automanual.setEnabled(true);
         automanual.setSelected(false);
-
     }
 
     /**

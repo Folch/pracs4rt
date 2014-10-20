@@ -69,7 +69,7 @@ CREATE TABLE ArticleCampanya (
 	idCampanya int,
 	
 
-	PRIMARY KEY (idArticle),
+	PRIMARY KEY (idArticle, idCampanya),
 	FOREIGN KEY (idArticle) REFERENCES Article(idArticle),
 	FOREIGN KEY (idCampanya) REFERENCES Campanya (idCampanya)
 );

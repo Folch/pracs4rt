@@ -5,7 +5,7 @@
  */
 package Controller;
 
-import Model.Image;
+import Model.Imatge;
 
 /**
  *
@@ -13,7 +13,7 @@ import Model.Image;
  */
 public interface OnImageListener {
     
-    public void onImage(Image i);
+    public void onImage(Imatge i);
     
     
 }

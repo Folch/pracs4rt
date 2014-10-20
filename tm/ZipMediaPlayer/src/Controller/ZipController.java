@@ -5,7 +5,7 @@
  */
 package Controller;
 
-import Model.Image;
+import Model.Imatge;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ import javax.imageio.stream.ImageInputStream;
  */
 public class ZipController {
 
-    private ArrayList<Image> images;
+    private ArrayList<Imatge> images;
     private OnImageListener listener;
     private ScheduledExecutorService executor;
     private int index;
@@ -102,7 +102,7 @@ public class ZipController {
                 Enumeration<? extends ZipEntry> entries = zFl.entries();
                 while (entries.hasMoreElements()) {
                     ZipEntry entry = entries.nextElement();
-                    Image image = new Image();
+                    Imatge image = new Imatge();
                     String imgName = entry.getName();
                     image.setName(imgName);
                     InputStream is = zFl.getInputStream(entry);
@@ -120,7 +120,7 @@ public class ZipController {
             try {
 
                 BufferedImage bufImg = ImageIO.read(file);
-                Image image = new Image();
+                Imatge image = new Imatge();
                 image.setImage(bufImg);
                 image.setName(file.getName());
                 images.add(image);
@@ -131,7 +131,7 @@ public class ZipController {
     }
 
     public void jpgToPng(){//no funciona encara
-        for (Image image : images) {
+        for (Imatge image : images) {
             try {
                 ImageIO.write(image.getImage(), "png", new File(image.getName()));
             } catch (IOException ex) {
