@@ -26,14 +26,22 @@ import javax.imageio.stream.ImageInputStream;
  *
  * @author albert
  */
-public class ZipController {
+public class ZipController implements IPlayer, IFilter, IDisk {
 
     private ArrayList<Imatge> images;
     private OnImageListener listener;
     private ScheduledExecutorService executor;
     private int index;
     private String path;
-    
+    private int time;
+    private DirectionType dir;
+    private CompressorController compressor;
+    private DiscController disk;
+
+    public enum DirectionType {
+
+        BACKWARD, FORWARD
+    };
 
     public enum FileType {
 
@@ -42,9 +50,71 @@ public class ZipController {
 
     public ZipController(String path, FileType f, OnImageListener listener) {
         this.listener = listener;
-        this.setPath(path, f);
+        this.dir = Config.DEFAULT_DIRECTION;
+        this.time = Config.DEFAULT_FRAME_RATE;
+        this.compressor = new CompressorController();
+        this.disk = new DiscController();
     }
 
+    @Override
+    public void setFrameRate(int time) {
+        this.time = time;
+    }
+
+    @Override
+    public void pause() {
+        executor.shutdown();
+    }
+
+    @Override
+    public void play() {
+        Runnable nextRunnable = new Runnable() {
+            public void run() {
+                if (dir == DirectionType.FORWARD) {
+                    next();
+                } else {
+                    previous();
+                }
+            }
+        };
+
+        executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(nextRunnable, 0, this.time, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public void setDirection(DirectionType type) {
+        this.dir = type;
+    }
+
+    @Override
+    public void openZip(String path) {
+        ZipFile zip = disk.openZip(path);
+        this.images = compressor.decompressZip(zip);
+    }
+
+    @Override
+    public void openImage(String path) {
+        Imatge img = disk.openImage(path);
+        this.images.add(img);
+    }
+
+    @Override
+    public void saveImage(String path) {
+        disk.saveImage(path);
+    }
+
+    @Override
+    public void saveZip(String path) {
+        disk.saveZip(path);
+    }
+
+    @Override
+    public void saveGZip(String path) {
+        disk.saveGZip(path);
+    }
+
+    @Override
     public void first() {
         index = 0;
         if (listener != null) {
@@ -52,97 +122,28 @@ public class ZipController {
         }
     }
 
+    @Override
     public void next() {
-        
+        index++;
         if (index == images.size() || index < 0) {
             index = 0;
         }
-        
+
         if (listener != null) {
             listener.onImage(images.get(index));
         }
-        index++;
+
     }
 
+    @Override
     public void previous() {
+        index--;
         if (index == images.size() || index < 0) {
-            index = images.size() -1;
+            index = images.size() - 1;
         }
         if (listener != null) {
             listener.onImage(images.get(index));
         }
-        index--;
-    }
-
-    public void auto(int time) {
-        Runnable nextRunnable = new Runnable() {
-            public void run() {
-                next();
-            }
-        };
-
-        executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(nextRunnable, 0, time, TimeUnit.MILLISECONDS);
-
-    }
-
-    public void manual() {
-        executor.shutdown();
-    }
-
-    public void setPath(String path, FileType f) {
-        this.path = path;
-        this.index = 0;
-        this.images = new ArrayList<>();
-
-        File file = new File(this.path);
-        if (f == FileType.ZIP) {
-            try {
-                ZipFile zFl = new ZipFile(file);
-                Enumeration<? extends ZipEntry> entries = zFl.entries();
-                while (entries.hasMoreElements()) {
-                    ZipEntry entry = entries.nextElement();
-                    Imatge image = new Imatge();
-                    String imgName = entry.getName();
-                    image.setName(imgName);
-                    InputStream is = zFl.getInputStream(entry);
-                    ImageInputStream iis = ImageIO.createImageInputStream(is);
-                    BufferedImage bufImg = ImageIO.read(iis);
-                    image.setImage(bufImg);
-                    images.add(image);
-
-                }
-                
-            } catch (IOException ex) {
-                Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else { //image
-            try {
-
-                BufferedImage bufImg = ImageIO.read(file);
-                Imatge image = new Imatge();
-                image.setImage(bufImg);
-                image.setName(file.getName());
-                images.add(image);
-            } catch (IOException ex) {
-                Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
-    public void jpgToPng(){//no funciona encara
-        for (Imatge image : images) {
-            try {
-                ImageIO.write(image.getImage(), "png", new File(image.getName()));
-            } catch (IOException ex) {
-                Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-    
-    //comprimmeix les imatges i les guarda al mateix path d'entrada amb una altra extensio
-
-    public void saveImages() {
 
     }
 }
