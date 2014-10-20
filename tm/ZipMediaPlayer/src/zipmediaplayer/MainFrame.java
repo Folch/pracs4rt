@@ -206,12 +206,12 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
                 playbtn.setIcon(new ImageIcon(getClass().getResource("/zipmediaplayer/Pause24.gif")));
                 prevbtn.setEnabled(false);
                 nextbtn.setEnabled(false);
-                controller.auto(60);
+                controller.play();
             } else {
                 playbtn.setIcon(new ImageIcon(getClass().getResource("/zipmediaplayer/Play24.gif")));
                 prevbtn.setEnabled(true);
                 nextbtn.setEnabled(true);
-                controller.manual();
+                controller.pause();
             }
         }
     }//GEN-LAST:event_playbtnActionPerformed
@@ -282,9 +282,11 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         if (controller == null) {
             controller = new ZipController(path, fileType, this);
         } else {
-            
-            
-            controller.setPath(path, fileType);
+            if(fileType == ZipController.FileType.IMAGE) {
+                controller.openImage(path);
+            } else if(fileType == ZipController.FileType.ZIP) {
+                controller.openZip(path);
+            }
         }
         controller.first();
         prevbtn.setEnabled(true);
