@@ -32,7 +32,6 @@ public class ZipController implements IPlayer, IFilter, IDisk {
     private OnImageListener listener;
     private ScheduledExecutorService executor;
     private int index;
-    private String path;
     private int time;
     private DirectionType dir;
     private CompressorController compressor;
@@ -54,6 +53,7 @@ public class ZipController implements IPlayer, IFilter, IDisk {
         this.time = Config.DEFAULT_FRAME_RATE;
         this.compressor = new CompressorController();
         this.disk = new DiscController();
+        this.images = new ArrayList<>();
     }
 
     @Override
@@ -101,17 +101,17 @@ public class ZipController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void saveImage(String path) {
-        disk.saveImage(path);
+        disk.saveImage(path,this.images.get(0));
     }
 
     @Override
     public void saveZip(String path) {
-        disk.saveZip(path);
+        disk.saveZip(path, this.images);
     }
 
     @Override
     public void saveGZip(String path) {
-        disk.saveGZip(path);
+        disk.saveGZip(path, this.images);
     }
 
     @Override

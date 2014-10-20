@@ -13,5 +13,5 @@ import Controller.ZipController.DirectionType;
  */
 public class Config {
     public static final DirectionType DEFAULT_DIRECTION = DirectionType.FORWARD;
-    public static int DEFAULT_FRAME_RATE = 500;
+    public static int DEFAULT_FRAME_RATE = 60;
 }
