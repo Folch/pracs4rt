@@ -59,12 +59,12 @@ public class DiscController implements InternalIDisk {
 
     @Override
     public void saveZip(String path, ArrayList<Imatge> images) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void saveGZip(String path, ArrayList<Imatge> images) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
 }

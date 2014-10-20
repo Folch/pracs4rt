@@ -47,7 +47,7 @@ public class ZipController implements IPlayer, IFilter, IDisk {
         IMAGE, ZIP
     };
 
-    public ZipController(String path, FileType f, OnImageListener listener) {
+    public ZipController(OnImageListener listener) {
         this.listener = listener;
         this.dir = Config.DEFAULT_DIRECTION;
         this.time = Config.DEFAULT_FRAME_RATE;
@@ -69,6 +69,7 @@ public class ZipController implements IPlayer, IFilter, IDisk {
     @Override
     public void play() {
         Runnable nextRunnable = new Runnable() {
+            @Override
             public void run() {
                 if (dir == DirectionType.FORWARD) {
                     next();
