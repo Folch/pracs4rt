@@ -280,14 +280,12 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
             return;
         }
         if (controller == null) {
-            controller = new ZipController(path, fileType, this);
-        } else {
-            if(fileType == ZipController.FileType.IMAGE) {
-                controller.openImage(path);
-            } else if(fileType == ZipController.FileType.ZIP) {
-                controller.openZip(path);
-            }
-        }
+            controller = new ZipController(this);
+        if(fileType == ZipController.FileType.IMAGE)
+            controller.openImage(path);
+        else if(fileType == ZipController.FileType.ZIP)
+            controller.openZip(path);
+        
         controller.first();
         prevbtn.setEnabled(true);
         nextbtn.setEnabled(true);
