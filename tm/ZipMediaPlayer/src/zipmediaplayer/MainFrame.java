@@ -82,6 +82,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         filebar = new javax.swing.JMenu();
         openzipmenu = new javax.swing.JMenuItem();
         openimagemenu = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -148,6 +149,15 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
             }
         });
         filebar.add(openimagemenu);
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setText("Save Image (png) ...");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        filebar.add(jMenuItem1);
 
         menubar.add(filebar);
 
@@ -224,6 +234,18 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         createZipController(ZipController.FileType.IMAGE);
     }//GEN-LAST:event_openimagemenuActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a path to save");   
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            controller.saveImage(fileToSave.getAbsolutePath());
+        }
+        
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     
     @Override
     public void onImage(Imatge imatge) {
@@ -279,7 +301,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
         if (path == null) {
             return;
         }
-        if (controller == null) {
+        if (controller == null)
             controller = new ZipController(this);
         if(fileType == ZipController.FileType.IMAGE)
             controller.openImage(path);
@@ -330,6 +352,7 @@ public class MainFrame extends javax.swing.JFrame implements OnImageListener {
     private javax.swing.JMenu filebar;
     private javax.swing.JPanel imagepanel;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuBar menubar;
     private javax.swing.JButton nextbtn;
     private javax.swing.JMenuItem openimagemenu;
