@@ -8,13 +8,15 @@ package Controller;
 import Model.Imatge;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import static java.lang.System.in;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -71,29 +73,37 @@ public class DiscController implements InternalIDisk {
 
     @Override
     public void saveZip(String path, ArrayList<Imatge> imatges) {
-        ZipOutputStream out;
         try {
-            File f = new File(path);
-            out = new ZipOutputStream(new FileOutputStream(f));
+            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(new File(path + ".zip"))));
             for (Imatge imatge : imatges) {
-                ZipEntry e = new ZipEntry(imatge.getName());
-                out.putNextEntry(e);
-                //ImageIO.write(null, path, f)
-                byte[] data = ((DataBufferByte)imatge.getImage().getData().getDataBuffer()).getData();
-                out.write(data, 0, data.length);
-                out.closeEntry();
-            }   
+                ZipEntry entry = new ZipEntry(imatge.getName());
+                out.putNextEntry(entry);
+                ImageIO.write(imatge.getImage(), "png", out);
+            }
+            out.flush();
             out.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DiscController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(DiscController.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
+
     }
 
     @Override
     public void saveGZip(String path, ArrayList<Imatge> imatges) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        try {
+            GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(path + ".gzip"));
 
+            for (Imatge imatge : imatges) {
+                byte[] imageBytes = ((DataBufferByte) imatge.getImage().getData().getDataBuffer()).getData();
+                int len = imageBytes.length;
+                out.write(imageBytes, 0, len);
+            }
+
+            out.finish();
+            out.close();
+        } catch (IOException ex) {
+            Logger.getLogger(DiscController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 }
