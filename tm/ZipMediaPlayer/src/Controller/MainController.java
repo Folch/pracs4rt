@@ -5,6 +5,8 @@
  */
 package Controller;
 
+import Model.Config;
+import Model.FilterDim3;
 import Model.Imatge;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -16,16 +18,18 @@ import java.util.zip.ZipFile;
  *
  * @author albert
  */
-public class ZipController implements IPlayer, IFilter, IDisk {
+public class MainController implements IPlayer, IFilter, IDisk {
 
-    private ArrayList<Imatge> images;
+    private ArrayList<Imatge> images,imagesCopia;
     private OnImageListener listener;
     private ScheduledExecutorService executor;
-    private int index;
-    private int time;
+    private int index, time;
     private DirectionType dir;
     private CompressorController compressor;
     private DiskController disk;
+    private FilterController filter;
+
+    
 
     public enum DirectionType {
 
@@ -37,17 +41,15 @@ public class ZipController implements IPlayer, IFilter, IDisk {
         IMAGE, ZIP
     };
     
-    public enum FilterType {
+    
 
-        AVERAGE, SOBEL_X, SOBEL_Y,SOBEL_XY, LOW_PASS, HIGH_PASS, LAPLACE
-    };
-
-    public ZipController(OnImageListener listener) {
+    public MainController(OnImageListener listener) {
         this.listener = listener;
         this.dir = Config.DEFAULT_DIRECTION;
         this.time = Config.DEFAULT_FRAME_RATE;
         this.compressor = new CompressorController();
         this.disk = new DiskController();
+        this.filter = new FilterController();
         this.images = new ArrayList<>();
     }
 
@@ -90,13 +92,16 @@ public class ZipController implements IPlayer, IFilter, IDisk {
             executor.shutdown();
         ZipFile zip = disk.openZip(path);
         this.images = compressor.decompressZip(zip);
+        this.imagesCopia = (ArrayList<Imatge>)this.images.clone();
     }
 
     @Override
     public void openImage(String path) {
         Imatge img = disk.openImage(path);
         this.images.clear();
+        this.imagesCopia.clear();
         this.images.add(img);
+        this.imagesCopia.add(img);
     }
 
     @Override
@@ -144,6 +149,15 @@ public class ZipController implements IPlayer, IFilter, IDisk {
         if (listener != null) {
             listener.onImage(images.get(index));
         }
-
+        
+        
+    }
+    public void removeFilter(){
+        this.images = this.imagesCopia;
+    }
+    
+    @Override
+    public void applyFilter(FilterDim3 filter) {
+        this.filter.convolveImages(images, filter);
     }
 }

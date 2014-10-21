@@ -5,7 +5,7 @@
  */
 package Controller;
 
-import Controller.ZipController.FilterType;
+import Model.FilterDim3;
 import Model.Imatge;
 import java.util.ArrayList;
 
@@ -14,10 +14,10 @@ import java.util.ArrayList;
  * @author albert
  */
 public interface InternalIFilter {
-    public ArrayList<Imatge> negativeFilter(ArrayList<Imatge> imatges);
-    public ArrayList<Imatge> binaryFilter(ArrayList<Imatge> imatges, int threshold);
-    public ArrayList<Imatge> changeHSB(ArrayList<Imatge> imatges, float hue, float saturation, float brightness);
-    public ArrayList<Imatge> convolveImages(ArrayList<Imatge> imatges, FilterType type);
+    public void negativeFilter(ArrayList<Imatge> imatges);
+    public void binaryFilter(ArrayList<Imatge> imatges, int threshold);
+    public void changeHSB(ArrayList<Imatge> imatges, float hue, float saturation, float brightness);
+    public void convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter);
 
     
     

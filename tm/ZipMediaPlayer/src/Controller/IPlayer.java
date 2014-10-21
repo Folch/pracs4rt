@@ -5,7 +5,7 @@
  */
 package Controller;
 
-import Controller.ZipController.DirectionType;
+import Controller.MainController.DirectionType;
 
 /**
  *

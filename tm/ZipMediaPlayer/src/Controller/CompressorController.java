@@ -43,7 +43,7 @@ public class CompressorController implements ICompressor {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return images;
     }

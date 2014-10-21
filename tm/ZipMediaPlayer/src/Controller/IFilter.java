@@ -5,10 +5,12 @@
  */
 package Controller;
 
+import Model.FilterDim3;
+
 /**
  *
  * @author albert
  */
 public interface IFilter {
-    
+    public void applyFilter(FilterDim3 filter);
 }

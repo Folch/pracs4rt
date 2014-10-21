@@ -53,7 +53,7 @@ public class DiskController implements InternalIDisk {
             image.setName(file.getName());
 
         } catch (IOException ex) {
-            Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return image;
     }
@@ -66,7 +66,7 @@ public class DiskController implements InternalIDisk {
             ImageIO.write(bi, "png", outputfile);
 
         } catch (IOException ex) {
-            Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

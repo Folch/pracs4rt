@@ -6,7 +6,7 @@
 package zipmediaplayer;
 
 import Controller.OnImageListener;
-import Controller.ZipController;
+import Controller.MainController;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -21,7 +21,7 @@ public class MainFrame extends javax.swing.JFrame {
     private enum State {OPEN_ZIP_PLAY, OPEN_ZIP_PAUSE, OPEN_IMAGE, EMPTY};
     
 
-    private ZipController controller;
+    private MainController controller;
 
     /**
      * Creates new form MainFrame
@@ -31,13 +31,13 @@ public class MainFrame extends javax.swing.JFrame {
         changeState(State.EMPTY);
     }
 
-    public String showFileChooser(ZipController.FileType fileType) {
+    public String showFileChooser(MainController.FileType fileType) {
         JFileChooser fc = new JFileChooser();
         fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        if (fileType == ZipController.FileType.ZIP) {
+        if (fileType == MainController.FileType.ZIP) {
             fc.setFileFilter(new FileNameExtensionFilter("Zip", "zip"));
-        } else if (fileType == ZipController.FileType.IMAGE) {
+        } else if (fileType == MainController.FileType.IMAGE) {
             fc.setFileFilter(new FileNameExtensionFilter("Images", new String[]{"png", "jpeg", "jpg"}));
         }
 
@@ -235,11 +235,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_nextbtnActionPerformed
 
     private void openzipmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openzipmenuActionPerformed
-        createZipController(ZipController.FileType.ZIP);
+        createZipController(MainController.FileType.ZIP);
     }//GEN-LAST:event_openzipmenuActionPerformed
 
     private void openimagemenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openimagemenuActionPerformed
-        createZipController(ZipController.FileType.IMAGE);
+        createZipController(MainController.FileType.IMAGE);
     }//GEN-LAST:event_openimagemenuActionPerformed
 
     private void saveimagemenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveimagemenuActionPerformed
@@ -271,17 +271,17 @@ public class MainFrame extends javax.swing.JFrame {
         controller.saveGZip(showSaveFileChooser());
     }//GEN-LAST:event_savegzipmenuActionPerformed
 
-    public void createZipController(ZipController.FileType fileType) {
+    public void createZipController(MainController.FileType fileType) {
         String path = showFileChooser(fileType);
         if (path == null) {
             return;
         }
         if (controller == null)
-            controller = new ZipController((OnImageListener)imagepanel);
-        if(fileType == ZipController.FileType.IMAGE) {
+            controller = new MainController((OnImageListener)imagepanel);
+        if(fileType == MainController.FileType.IMAGE) {
             controller.openImage(path);
             changeState(State.OPEN_IMAGE);
-        } else if(fileType == ZipController.FileType.ZIP) {
+        } else if(fileType == MainController.FileType.ZIP) {
             controller.openZip(path);
             changeState(State.OPEN_ZIP_PAUSE);
         }   

@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Model.FilterDim3;
 import Model.Imatge;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -17,28 +18,42 @@ import java.util.ArrayList;
 public class FilterController implements InternalIFilter {
 
     @Override
-    public ArrayList<Imatge> negativeFilter(ArrayList<Imatge> imatges) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Imatge> binaryFilter(ArrayList<Imatge> imatges, int threshold) {
+    public void negativeFilter(ArrayList<Imatge> imatges) {
         for (Imatge imatge : imatges) {
             BufferedImage img = imatge.getImage();
             for (int i = 0; i < img.getWidth(); i++) {
                 for (int j = 0; j < img.getHeight(); j++) {
-                    if(img.getRGB(i, j) < threshold)
-                        img.setRGB(i, j, 0);
-                    else
-                        img.setRGB(i, j, 255);
+                    Color c = new Color(img.getRGB(i, j));
+                    int r = c.getRed();
+                    int g = c.getGreen();
+                    int b = c.getBlue();
+                    r = 255 - r;
+                    g = 255 - g;
+                    b = 255 - b;
+                    img.setRGB(i, j, new Color(r, g, b).getRGB());
                 }
             }
         }
-        return imatges;
     }
 
     @Override
-    public ArrayList<Imatge> changeHSB(ArrayList<Imatge> imatges, float hue, float saturation, float brightness) {
+    public void binaryFilter(ArrayList<Imatge> imatges, int threshold) {
+        for (Imatge imatge : imatges) {
+            BufferedImage img = imatge.getImage();
+            for (int i = 0; i < img.getWidth(); i++) {
+                for (int j = 0; j < img.getHeight(); j++) {
+                    if (img.getRGB(i, j) < threshold) {
+                        img.setRGB(i, j, 0);
+                    } else {
+                        img.setRGB(i, j, 255);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void changeHSB(ArrayList<Imatge> imatges, float hue, float saturation, float brightness) {
         for (Imatge imatge : imatges) {
             for (int i = 0; i < imatge.getImage().getWidth(); i++) {
                 for (int j = 0; j < imatge.getImage().getHeight(); j++) {
@@ -47,11 +62,18 @@ public class FilterController implements InternalIFilter {
                 }
             }
         }
-        return imatges;
     }
 
     @Override
-    public ArrayList<Imatge> convolveImages(ArrayList<Imatge> imatges, ZipController.FilterType type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter) {
+        for (Imatge imatge : imatges) {
+            BufferedImage img = imatge.getImage();
+            for (int i = 0; i < img.getWidth(); i++) {
+                for (int j = 0; j < img.getHeight(); j++) {
+                    
+                }
+            }
+        }
     }
+
 }
