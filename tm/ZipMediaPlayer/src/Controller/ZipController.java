@@ -25,8 +25,7 @@ public class ZipController implements IPlayer, IFilter, IDisk {
     private int time;
     private DirectionType dir;
     private CompressorController compressor;
-    private DiscController disk;
-    private ZipFile zip;
+    private DiskController disk;
 
     public enum DirectionType {
 
@@ -37,13 +36,18 @@ public class ZipController implements IPlayer, IFilter, IDisk {
 
         IMAGE, ZIP
     };
+    
+    public enum FilterType {
+
+        AVERAGE, SOBEL_X, SOBEL_Y,SOBEL_XY, LOW_PASS, HIGH_PASS, LAPLACE
+    };
 
     public ZipController(OnImageListener listener) {
         this.listener = listener;
         this.dir = Config.DEFAULT_DIRECTION;
         this.time = Config.DEFAULT_FRAME_RATE;
         this.compressor = new CompressorController();
-        this.disk = new DiscController();
+        this.disk = new DiskController();
         this.images = new ArrayList<>();
     }
 
@@ -84,13 +88,14 @@ public class ZipController implements IPlayer, IFilter, IDisk {
     public void openZip(String path) {
         if (executor != null)
             executor.shutdown();
-        this.zip = disk.openZip(path);
-        this.images = compressor.decompressZip(this.zip);
+        ZipFile zip = disk.openZip(path);
+        this.images = compressor.decompressZip(zip);
     }
 
     @Override
     public void openImage(String path) {
         Imatge img = disk.openImage(path);
+        this.images.clear();
         this.images.add(img);
     }
 
