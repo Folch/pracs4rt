@@ -172,6 +172,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         exitmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         exitmenu.setText("Exit");
+        exitmenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitmenuActionPerformed(evt);
+            }
+        });
         filebar.add(exitmenu);
 
         menubar.add(filebar);
@@ -252,6 +257,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void savezipmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savezipmenuActionPerformed
         controller.saveZip(showSaveFileChooser());
     }//GEN-LAST:event_savezipmenuActionPerformed
+
+    private void exitmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitmenuActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_exitmenuActionPerformed
 
     public void createZipController(ZipController.FileType fileType) {
         String path = showFileChooser(fileType);
