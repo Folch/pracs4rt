@@ -168,6 +168,11 @@ public class MainFrame extends javax.swing.JFrame {
         savegzipmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         savegzipmenu.setText("Save GZip ...");
         savegzipmenu.setEnabled(false);
+        savegzipmenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                savegzipmenuActionPerformed(evt);
+            }
+        });
         filebar.add(savegzipmenu);
 
         exitmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
@@ -261,6 +266,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void exitmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitmenuActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitmenuActionPerformed
+
+    private void savegzipmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savegzipmenuActionPerformed
+        controller.saveGZip(showSaveFileChooser());
+    }//GEN-LAST:event_savegzipmenuActionPerformed
 
     public void createZipController(ZipController.FileType fileType) {
         String path = showFileChooser(fileType);
