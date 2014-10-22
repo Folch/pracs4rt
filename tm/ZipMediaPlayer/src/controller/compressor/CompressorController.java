@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller.compressor;
 
-import Model.Imatge;
+import controller.MainController;
+import model.Imatge;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,7 +44,7 @@ public class CompressorController implements ICompressor {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return images;
     }

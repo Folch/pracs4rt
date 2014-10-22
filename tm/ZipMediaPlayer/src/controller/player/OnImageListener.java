@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller.player;
 
-import Controller.ZipController.DirectionType;
+import model.Imatge;
 
 /**
  *
  * @author albert
  */
-public class Config {
-    public static final DirectionType DEFAULT_DIRECTION = DirectionType.FORWARD;
-    public static int DEFAULT_FRAME_RATE = 60;
+public interface OnImageListener {
+    
+    public void onImage(Imatge i);
+    
+    
 }

@@ -93,9 +93,6 @@
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[512, 372]"/>
     </Property>
-    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[513, 373]"/>
-    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="menubar"/>
@@ -155,7 +152,7 @@
           <Color blue="fe" green="3e" red="4a" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/zipmediaplayer/Rewind24.gif"/>
+          <Image iconType="3" name="/view/Rewind24.gif"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -169,7 +166,7 @@
           <Color blue="fe" green="3e" red="4a" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/zipmediaplayer/FastForward24.gif"/>
+          <Image iconType="3" name="/view/FastForward24.gif"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -180,7 +177,7 @@
     <Component class="javax.swing.JButton" name="playbtn">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/zipmediaplayer/Play24.gif"/>
+          <Image iconType="3" name="/view/Play24.gif"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>

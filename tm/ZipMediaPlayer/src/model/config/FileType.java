@@ -3,17 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
-
-import Model.Imatge;
+package model.config;
 
 /**
  *
- * @author albert
+ * @author zenbook
  */
-public interface OnImageListener {
-    
-    public void onImage(Imatge i);
-    
-    
-}
+public enum FileType {
+        IMAGE,
+        ZIP
+};

@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller.disk;
 
-import Model.Imatge;
+import controller.MainController;
+import model.Imatge;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import static java.lang.System.in;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +26,7 @@ import javax.imageio.ImageIO;
  *
  * @author albert
  */
-public class DiscController implements InternalIDisk {
+public class DiskController implements InternalIDisk {
 
     @Override
     public ZipFile openZip(String path) {
@@ -36,7 +36,7 @@ public class DiscController implements InternalIDisk {
             zFl = new ZipFile(file);
 
         } catch (IOException ex) {
-            Logger.getLogger(DiscController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DiskController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return zFl;
 
@@ -54,7 +54,7 @@ public class DiscController implements InternalIDisk {
             image.setName(file.getName());
 
         } catch (IOException ex) {
-            Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return image;
     }
@@ -67,7 +67,7 @@ public class DiscController implements InternalIDisk {
             ImageIO.write(bi, "png", outputfile);
 
         } catch (IOException ex) {
-            Logger.getLogger(ZipController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -83,7 +83,7 @@ public class DiscController implements InternalIDisk {
             out.flush();
             out.close();
         } catch (IOException ex) {
-            Logger.getLogger(DiscController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DiskController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -102,7 +102,7 @@ public class DiscController implements InternalIDisk {
             out.finish();
             out.close();
         } catch (IOException ex) {
-            Logger.getLogger(DiscController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DiskController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

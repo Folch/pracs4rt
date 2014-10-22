@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package zipmediaplayer;
+package view;
 
-import Controller.OnImageListener;
-import Model.Imatge;
+import controller.player.OnImageListener;
+import model.Imatge;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -38,7 +38,6 @@ public class VideoPanel extends JPanel implements OnImageListener{
 
             at.scale(scaleX, scaleY);
             g.drawRenderedImage(currentImage, at);
-            //repaint();
         }
     }
     
