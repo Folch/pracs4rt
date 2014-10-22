@@ -5,6 +5,8 @@
  */
 package zipmediaplayer;
 
+import Controller.IDisk;
+import Controller.IPlayer;
 import Controller.OnImageListener;
 import Controller.ZipController;
 import java.io.File;
@@ -21,7 +23,8 @@ public class MainFrame extends javax.swing.JFrame {
     private enum State {OPEN_ZIP_PLAY, OPEN_ZIP_PAUSE, OPEN_IMAGE, EMPTY};
     
 
-    private ZipController controller;
+    private IDisk saver;
+    private IPlayer player;
 
     /**
      * Creates new form MainFrame
@@ -223,44 +226,44 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void prevbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevbtnActionPerformed
-        if (controller != null) {
-            controller.previous();
+        if (player != null) {
+            player.previous();
         }
     }//GEN-LAST:event_prevbtnActionPerformed
 
     private void nextbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextbtnActionPerformed
-        if (controller != null) {
-            controller.next();
+        if (player != null) {
+            player.next();
         }
     }//GEN-LAST:event_nextbtnActionPerformed
 
     private void openzipmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openzipmenuActionPerformed
-        createZipController(ZipController.FileType.ZIP);
+        openFile(ZipController.FileType.ZIP);
     }//GEN-LAST:event_openzipmenuActionPerformed
 
     private void openimagemenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openimagemenuActionPerformed
-        createZipController(ZipController.FileType.IMAGE);
+        openFile(ZipController.FileType.IMAGE);
     }//GEN-LAST:event_openimagemenuActionPerformed
 
     private void saveimagemenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveimagemenuActionPerformed
-        controller.saveImage(showSaveFileChooser());
+        saver.saveImage(showSaveFileChooser());
     }//GEN-LAST:event_saveimagemenuActionPerformed
 
     private void playbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playbtnActionPerformed
-         if (controller != null) {
+         if (player != null) {
             if (prevbtn.isEnabled()) { // TODO: Marrano!! crear un métode al controller per saber l'estat
                 //Si està pressionat serà auto
                 changeState(State.OPEN_ZIP_PLAY);
-                controller.play();
+                player.play();
             } else {
                 changeState(State.OPEN_ZIP_PAUSE);
-                controller.pause();
+                player.pause();
             }
         }
     }//GEN-LAST:event_playbtnActionPerformed
 
     private void savezipmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savezipmenuActionPerformed
-        controller.saveZip(showSaveFileChooser());
+        saver.saveZip(showSaveFileChooser());
     }//GEN-LAST:event_savezipmenuActionPerformed
 
     private void exitmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitmenuActionPerformed
@@ -268,24 +271,30 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exitmenuActionPerformed
 
     private void savegzipmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savegzipmenuActionPerformed
-        controller.saveGZip(showSaveFileChooser());
+        saver.saveGZip(showSaveFileChooser());
     }//GEN-LAST:event_savegzipmenuActionPerformed
 
-    public void createZipController(ZipController.FileType fileType) {
+    public void openFile(ZipController.FileType fileType) {
+        
+        ZipController controller;
+        if (player == null || saver == null) {
+            controller = new ZipController((OnImageListener)imagepanel);
+            player = controller;
+            saver = controller;
+        }
+        
         String path = showFileChooser(fileType);
         if (path == null) {
             return;
         }
-        if (controller == null)
-            controller = new ZipController((OnImageListener)imagepanel);
         if(fileType == ZipController.FileType.IMAGE) {
-            controller.openImage(path);
+            saver.openImage(path);
             changeState(State.OPEN_IMAGE);
         } else if(fileType == ZipController.FileType.ZIP) {
-            controller.openZip(path);
+            saver.openZip(path);
             changeState(State.OPEN_ZIP_PAUSE);
         }   
-        controller.first();
+        player.first();
     }
 
     private void changeState(State state) {
