@@ -10,16 +10,11 @@ import controller.player.IPlayer;
 import controller.player.OnImageListener;
 import controller.MainController;
 import controller.filter.IFilter;
-import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.config.FileType;
 
@@ -30,10 +25,13 @@ import model.config.FileType;
 public class MainFrame extends javax.swing.JFrame {
     
     private enum State {OPEN_ZIP_PLAY, OPEN_ZIP_PAUSE, OPEN_IMAGE, EMPTY};
+    private enum FilterState {CUSTOM, HSB, NEGATIVE, BINARY, ORIGINAL};
     
     private IDisk saver;
     private IPlayer player;
     private IFilter filter;
+    
+    private JFileChooser fc;
 
     /**
      * Creates new form MainFrame
@@ -41,12 +39,13 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         changeState(State.EMPTY);
+        fc = new JFileChooser();
+        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
 
     public String showFileChooser(FileType fileType) {
-        JFileChooser fc = new JFileChooser();
-        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setDialogTitle("Open");
         if (fileType == FileType.ZIP) {
             fc.setFileFilter(new FileNameExtensionFilter("Zip", "zip"));
         } else if (fileType == FileType.IMAGE) {
@@ -62,9 +61,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     public String showSaveFileChooser() {
-        JFileChooser fc = new JFileChooser();
-        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        fc.setDialogTitle("Specify a path to save");   
+        fc.setDialogTitle("Save");   
         if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             return fc.getSelectedFile().getAbsolutePath();
         }
@@ -92,13 +89,13 @@ public class MainFrame extends javax.swing.JFrame {
         savezipmenu = new javax.swing.JMenuItem();
         savegzipmenu = new javax.swing.JMenuItem();
         exitmenu = new javax.swing.JMenuItem();
-        optionsmenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        playerbar = new javax.swing.JMenu();
+        optionsmenu = new javax.swing.JMenuItem();
         fullscreenmenu = new javax.swing.JCheckBoxMenuItem();
         filterbar = new javax.swing.JMenu();
         customfiltermenu = new javax.swing.JCheckBoxMenuItem();
+        hsbmenu = new javax.swing.JCheckBoxMenuItem();
         negativemenu = new javax.swing.JCheckBoxMenuItem();
-        jCheckBoxMenuItem3 = new javax.swing.JCheckBoxMenuItem();
         binarymenu = new javax.swing.JCheckBoxMenuItem();
         separatonfiltermenu = new javax.swing.JPopupMenu.Separator();
         originalmenu = new javax.swing.JCheckBoxMenuItem();
@@ -208,11 +205,16 @@ public class MainFrame extends javax.swing.JFrame {
 
         menubar.add(filebar);
 
-        optionsmenu.setText("Player");
+        playerbar.setText("Player");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Options");
-        optionsmenu.add(jMenuItem1);
+        optionsmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        optionsmenu.setText("Options");
+        optionsmenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                optionsmenuActionPerformed(evt);
+            }
+        });
+        playerbar.add(optionsmenu);
 
         fullscreenmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         fullscreenmenu.setText("Full screen");
@@ -221,28 +223,53 @@ public class MainFrame extends javax.swing.JFrame {
                 fullscreenmenuActionPerformed(evt);
             }
         });
-        optionsmenu.add(fullscreenmenu);
+        playerbar.add(fullscreenmenu);
 
-        menubar.add(optionsmenu);
+        menubar.add(playerbar);
 
         filterbar.setText("Filter");
 
         customfiltermenu.setText("Custom Filter");
+        customfiltermenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customfiltermenuActionPerformed(evt);
+            }
+        });
         filterbar.add(customfiltermenu);
 
-        negativemenu.setText("HSB");
+        hsbmenu.setText("HSB");
+        hsbmenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hsbmenuActionPerformed(evt);
+            }
+        });
+        filterbar.add(hsbmenu);
+
+        negativemenu.setText("Negative");
+        negativemenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                negativemenuActionPerformed(evt);
+            }
+        });
         filterbar.add(negativemenu);
 
-        jCheckBoxMenuItem3.setText("Negative");
-        filterbar.add(jCheckBoxMenuItem3);
-
         binarymenu.setText("Binary");
+        binarymenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                binarymenuActionPerformed(evt);
+            }
+        });
         filterbar.add(binarymenu);
 
         separatonfiltermenu.setBackground(new java.awt.Color(68, 68, 68));
         filterbar.add(separatonfiltermenu);
 
         originalmenu.setText("Original");
+        originalmenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                originalmenuActionPerformed(evt);
+            }
+        });
         filterbar.add(originalmenu);
 
         menubar.add(filterbar);
@@ -341,6 +368,30 @@ public class MainFrame extends javax.swing.JFrame {
         device.setFullScreenWindow(fullscreenmenu.isSelected() ? this : null);
     }//GEN-LAST:event_fullscreenmenuActionPerformed
 
+    private void optionsmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionsmenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_optionsmenuActionPerformed
+
+    private void customfiltermenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customfiltermenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_customfiltermenuActionPerformed
+
+    private void hsbmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hsbmenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hsbmenuActionPerformed
+
+    private void negativemenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_negativemenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_negativemenuActionPerformed
+
+    private void binarymenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_binarymenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_binarymenuActionPerformed
+
+    private void originalmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originalmenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_originalmenuActionPerformed
+
     public void openFile(FileType fileType) {
         MainController controller;
         if (player == null || saver == null) {
@@ -366,7 +417,33 @@ public class MainFrame extends javax.swing.JFrame {
         player.first();
     }
 
+    private void changeFilterState(FilterState state) {
+        customfiltermenu.setSelected(false);
+        hsbmenu.setSelected(false);
+        negativemenu.setSelected(false);
+        binarymenu.setSelected(false);
+        originalmenu.setSelected(false);
+        switch (state) {
+            case CUSTOM:
+                customfiltermenu.setSelected(true);
+                break;
+            case HSB:
+                hsbmenu.setSelected(true);
+                break;
+            case NEGATIVE:
+                negativemenu.setSelected(true);
+                break;
+            case BINARY:
+                binarymenu.setSelected(true);
+                break;
+            case ORIGINAL:
+                originalmenu.setSelected(true);
+                break;
+        }
+    }
+    
     private void changeState(State state) {
+        changeFilterState(FilterState.ORIGINAL);
         switch (state) {
             case OPEN_IMAGE:
                 //menu item
@@ -377,6 +454,12 @@ public class MainFrame extends javax.swing.JFrame {
                 prevbtn.setEnabled(false);
                 nextbtn.setEnabled(false);
                 playbtn.setEnabled(false);
+                //filter items
+                customfiltermenu.setEnabled(false);
+                hsbmenu.setEnabled(false);
+                negativemenu.setEnabled(false);
+                binarymenu.setEnabled(false);
+                originalmenu.setEnabled(false);
                 break;
             case OPEN_ZIP_PLAY:
                 //menu item
@@ -388,6 +471,12 @@ public class MainFrame extends javax.swing.JFrame {
                 nextbtn.setEnabled(false);
                 playbtn.setEnabled(true);
                 playbtn.setIcon(new ImageIcon(getClass().getResource("/view/resource/Pause24.gif")));
+                //filter items
+                customfiltermenu.setEnabled(true);
+                hsbmenu.setEnabled(true);
+                negativemenu.setEnabled(true);
+                binarymenu.setEnabled(true);
+                originalmenu.setEnabled(true);
                 break;
             case OPEN_ZIP_PAUSE:
                 //menu item
@@ -399,6 +488,12 @@ public class MainFrame extends javax.swing.JFrame {
                 nextbtn.setEnabled(true);
                 playbtn.setEnabled(true);
                 playbtn.setIcon(new ImageIcon(getClass().getResource("/view/resource/Play24.gif")));
+                //filter items
+                customfiltermenu.setEnabled(true);
+                hsbmenu.setEnabled(true);
+                negativemenu.setEnabled(true);
+                binarymenu.setEnabled(true);
+                originalmenu.setEnabled(true);
                 break;
             case EMPTY:
                 //menu item
@@ -409,6 +504,12 @@ public class MainFrame extends javax.swing.JFrame {
                 prevbtn.setEnabled(false);
                 nextbtn.setEnabled(false);
                 playbtn.setEnabled(false);
+                //filter items
+                customfiltermenu.setEnabled(false);
+                hsbmenu.setEnabled(false);
+                negativemenu.setEnabled(false);
+                binarymenu.setEnabled(false);
+                originalmenu.setEnabled(false);
                 break;
         }
         imagepanel.repaint();
@@ -456,17 +557,17 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu filterbar;
     private javax.swing.JCheckBoxMenuItem fullscreenmenu;
     private javax.swing.JMenu helpbar;
+    private javax.swing.JCheckBoxMenuItem hsbmenu;
     private javax.swing.JPanel imagepanel;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem3;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuBar menubar;
     private javax.swing.JCheckBoxMenuItem negativemenu;
     private javax.swing.JButton nextbtn;
     private javax.swing.JMenuItem openimagemenu;
     private javax.swing.JMenuItem openzipmenu;
-    private javax.swing.JMenu optionsmenu;
+    private javax.swing.JMenuItem optionsmenu;
     private javax.swing.JCheckBoxMenuItem originalmenu;
     private javax.swing.JButton playbtn;
+    private javax.swing.JMenu playerbar;
     private javax.swing.JButton prevbtn;
     private javax.swing.JMenuItem savegzipmenu;
     private javax.swing.JMenuItem saveimagemenu;
