@@ -147,6 +147,8 @@ public class MainController implements IPlayer, IFilter, IDisk {
         
         
     }
+    
+    @Override
     public void removeFilter(){
         this.images = this.imagesCopia;
     }
@@ -154,5 +156,20 @@ public class MainController implements IPlayer, IFilter, IDisk {
     @Override
     public void applyFilter(FilterDim3 filter) {
         this.filter.convolveImages(images, filter);
+    }
+
+    @Override
+    public void negativeFilter() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void binaryFilter(int threshold) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void changeHSB(float hue, float saturation, float brightness) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -80,10 +80,82 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="optionsmenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Player"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+O"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Options"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="fullscreenmenu">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="F5"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Full screen"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fullscreenmenuActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="filterbar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Filter"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="customfiltermenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Custom Filter"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="negativemenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="HSB"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="jCheckBoxMenuItem3">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Negative"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="binarymenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Binary"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="separatonfiltermenu">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="44" green="44" red="44" type="rgb"/>
+                </Property>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="originalmenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Original"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="helpbar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Help"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="aboutmenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="About"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>
@@ -152,7 +224,7 @@
           <Color blue="fe" green="3e" red="4a" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/view/Rewind24.gif"/>
+          <Image iconType="3" name="/view/resource/Rewind24.gif"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -166,7 +238,7 @@
           <Color blue="fe" green="3e" red="4a" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/view/FastForward24.gif"/>
+          <Image iconType="3" name="/view/resource/FastForward24.gif"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -177,7 +249,7 @@
     <Component class="javax.swing.JButton" name="playbtn">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/view/Play24.gif"/>
+          <Image iconType="3" name="/view/resource/Play24.gif"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -189,8 +261,8 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-            <LineBorder roundedCorners="true" thickness="2">
-              <Color PropertyName="color" blue="fe" green="3e" red="4a" type="rgb"/>
+            <LineBorder>
+              <Color PropertyName="color" blue="9c" green="9c" red="9c" type="rgb"/>
             </LineBorder>
           </Border>
         </Property>
@@ -207,7 +279,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="282" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="284" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>

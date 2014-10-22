@@ -13,4 +13,8 @@ import model.FilterDim3;
  */
 public interface IFilter {
     public void applyFilter(FilterDim3 filter);
+    public void negativeFilter();
+    public void binaryFilter(int threshold);
+    public void changeHSB(float hue, float saturation, float brightness);
+    public void removeFilter();
 }
