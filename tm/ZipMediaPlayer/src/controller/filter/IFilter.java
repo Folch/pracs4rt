@@ -12,9 +12,19 @@ import model.FilterDim3;
  * @author albert
  */
 public interface IFilter {
+    // TODO: define defaults values.
+    
+    
     public void applyFilter(FilterDim3 filter);
     public void negativeFilter();
     public void binaryFilter(int threshold);
     public void changeHSB(float hue, float saturation, float brightness);
     public void removeFilter();
+    
+    public float getHue();
+    public float getSaturation();
+    public float getBrightness();
+    public int getThreshold();
+    public FilterDim3 getFilterDim3();
+    
 }

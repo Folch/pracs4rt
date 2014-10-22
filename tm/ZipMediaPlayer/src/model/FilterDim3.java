@@ -17,6 +17,7 @@ public class FilterDim3 {
     public final static FilterDim3 LOW_PASS = new FilterDim3(1, 1, 1, 1, 1, 1, 1, 1, 1);
     public final static FilterDim3 HIGH_PASS = new FilterDim3(-1, -1, -1, -1, 8, -1, -1, -1, -1);
     public final static FilterDim3 LAPLACIAN = new FilterDim3(0, -1, 0, -1, 4, -1, 0, -1, 0);
+    public final static FilterDim3 IDENTITY = new FilterDim3(0, 0, 0, 0, 1, 0, 0, 0, 0);
 
     private final float[][] customFilter;
 
@@ -24,7 +25,7 @@ public class FilterDim3 {
         this.customFilter = new float[][]{{a, b, c}, {d, e, f}, {g, h, i}};
     }
 
-    public float[][] getCustomFilter() {
+    public float[][] getFilter() {
         return customFilter;
     }
 
