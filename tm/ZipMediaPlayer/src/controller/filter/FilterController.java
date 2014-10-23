@@ -5,24 +5,25 @@
  */
 package controller.filter;
 
-import fourier.FastFourierTransform;
 import model.FilterDim3;
 import model.Imatge;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import fourier.FastFourierTransform;
 
 /**
  *
  * @author albert
  */
 public class FilterController implements InternalIFilter {
+
     private int threshold;
-    
-    public FilterController(){
+
+    public FilterController() {
         this.threshold = -1;
     }
-    
+
     @Override
     public void negativeFilter(ArrayList<Imatge> imatges) {
         for (Imatge imatge : imatges) {
@@ -71,7 +72,7 @@ public class FilterController implements InternalIFilter {
         }
     }
 
-     @Override
+    @Override
     public void convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter) {
         double[][] filtre = filter.getFilter();
         FastFourierTransform.fastFT(filtre, filtre, true);
@@ -111,26 +112,23 @@ public class FilterController implements InternalIFilter {
             imatges.set(k, null);
 
         }
-        
-        /*
+
         for (Imatge imatge : imatges) {
             BufferedImage img = imatge.getImage();
             for (int i = 0; i < img.getWidth(); i++) {
                 for (int j = 0; j < img.getHeight(); j++) {
                     for (int xfiltre = 0; xfiltre < filtre.length; xfiltre++) {
                         for (int yfiltre = 0; yfiltre < filtre.length; yfiltre++) {
-                            int rgb = (int)(img.getRGB(i, j)*filtre[xfiltre][yfiltre]);
+                            int rgb = (int) (img.getRGB(i, j) * filtre[xfiltre][yfiltre]);
                             img.setRGB(i, j, rgb);
-                            
+
                         }
-                        
+
                     }
-                    
+
                 }
             }
         }
-        */
-
     }
 
     @Override
@@ -148,7 +146,8 @@ public class FilterController implements InternalIFilter {
     public float getBrightness(Imatge img) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    public int getThreshold(){
+
+    public int getThreshold() {
         return this.threshold;
     }
 
