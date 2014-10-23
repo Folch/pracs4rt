@@ -12,4 +12,5 @@ package model.config;
 public class Config {
     public static final DirectionType DEFAULT_DIRECTION = DirectionType.FORWARD;
     public static int DEFAULT_FRAME_RATE = 60;
+    public static int DEFAULT_THRESHOLD = 128;
 }

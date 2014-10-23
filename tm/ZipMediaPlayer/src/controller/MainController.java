@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package controller;
-
+ 
 import controller.player.OnImageListener;
 import controller.compressor.CompressorController;
 import controller.player.IPlayer;
@@ -160,37 +160,37 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void negativeFilter() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.filter.negativeFilter(images);
     }
 
     @Override
     public void binaryFilter(int threshold) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.filter.binaryFilter(images, threshold);
     }
 
     @Override
     public void changeHSB(float hue, float saturation, float brightness) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.filter.changeHSB(images, hue, saturation, brightness);
     }
 
     @Override
     public float getHue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.filter.getHue(images.get(index));
     }
 
     @Override
     public float getSaturation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.filter.getSaturation(images.get(index));
     }
 
     @Override
     public float getBrightness() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.filter.getBrightness(images.get(index));
     }
 
     @Override
     public int getThreshold() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.filter.getThreshold() == -1 ? Config.DEFAULT_THRESHOLD : this.filter.getThreshold();
     }
 
     @Override
@@ -205,11 +205,11 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public int getFrameRate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.time;
     }
 
     @Override
     public DirectionType getDirection() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.dir;
     }
 }
