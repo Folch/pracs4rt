@@ -71,22 +71,48 @@ public class FilterController implements InternalIFilter {
         }
     }
 
-    @Override
+     @Override
     public void convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter) {
-        double [][]filtre = filter.getFilter();
-        FastFourierTransform.fastFT(filtre,filtre,true);
-        for (Imatge imatge : imatges) {
+        double[][] filtre = filter.getFilter();
+        FastFourierTransform.fastFT(filtre, filtre, true);
+        double[][] imaginaryFilter = new double[filtre.length][filtre[0].length];
+        for (int i = 0; i < imaginaryFilter.length; i++) {
+            for (int j = 0; j < imaginaryFilter[0].length; j++) {
+                imaginaryFilter[i][j] = 0;
+
+            }
+
+        }
+        FastFourierTransform.fastFT(filtre, imaginaryFilter, true);
+
+        for (int k = 0; k < imatges.size(); k++) {
+
             //FastFourierTransform.fastFT(imatge.getImage(), imatge.getImage(), true);//posar la imatge com a matriu de doubles
             //FastFourierTransform
+            BufferedImage img = imatges.get(k).getImage();
+            double[][] imgD = new double[img.getWidth()][img.getHeight()];
+
+            for (int i = 0; i < img.getWidth(); i++) {
+                for (int j = 0; j < img.getHeight(); j++) {
+                    imgD[i][j] = img.getRGB(i, j);
+                }
+            }
+            double[][] imaginary = new double[imgD.length][imgD[0].length];
+            for (int i = 0; i < imaginary.length; i++) {
+                for (int j = 0; j < imaginary[0].length; j++) {
+                    imaginary[i][j] = 0;
+
+                }
+
+            }
+            FastFourierTransform.fastFT(imgD, imaginary, true);
+            //multiplico freq de filtre * freq de imatge (mateixa mida)
+            //inversa fft del producte
+            imatges.set(k, null);
+
         }
         
-        
-        
-        
-        
-        
-        
-        
+        /*
         for (Imatge imatge : imatges) {
             BufferedImage img = imatge.getImage();
             for (int i = 0; i < img.getWidth(); i++) {
@@ -103,6 +129,8 @@ public class FilterController implements InternalIFilter {
                 }
             }
         }
+        */
+
     }
 
     @Override
