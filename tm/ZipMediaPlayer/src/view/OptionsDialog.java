@@ -5,21 +5,35 @@
  */
 package view;
 
+import controller.player.IPlayer;
+import model.config.DirectionType;
+
 /**
  *
  * @author zenbook
  */
 public class OptionsDialog extends javax.swing.JDialog {
 
+    private IPlayer player;
+    
     /**
      * Creates new form OptionsDialog
      * @param parent
      * @param modal
+     * @param player
      */
-    public OptionsDialog(java.awt.Frame parent, boolean modal) {
+    public OptionsDialog(java.awt.Frame parent, boolean modal, IPlayer player) {
         super(parent, modal);
         initComponents();
-        setVisible(true);
+        
+        this.player =  player;
+        
+        slider.setValue(player.getFrameRate());
+        if(player.getDirection() == DirectionType.FORWARD) {
+            forwardrb.setSelected(true);
+        } else{
+            backwardrb.setSelected(true);
+        }
     }
 
     /**
@@ -31,14 +45,54 @@ public class OptionsDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        frameratelabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jSlider1 = new javax.swing.JSlider();
+        slider = new javax.swing.JSlider();
+        directionlabel = new javax.swing.JLabel();
+        forwardrb = new javax.swing.JRadioButton();
+        backwardrb = new javax.swing.JRadioButton();
+        cancelbtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
-        jLabel1.setText("Frame Rate");
+        frameratelabel.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
+        frameratelabel.setText("Frame Rate (fps)");
+
+        slider.setMinimum(1);
+        slider.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+                sliderCaretPositionChanged(evt);
+            }
+        });
+
+        directionlabel.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
+        directionlabel.setText("Direction");
+
+        buttonGroup1.add(forwardrb);
+        forwardrb.setText("Forward");
+        forwardrb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                forwardrbActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(backwardrb);
+        backwardrb.setText("Backward");
+        backwardrb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backwardrbActionPerformed(evt);
+            }
+        });
+
+        cancelbtn.setText("Cancel");
+        cancelbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelbtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -48,30 +102,69 @@ public class OptionsDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
+                    .addComponent(slider, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(frameratelabel)
+                            .addComponent(directionlabel))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jSlider1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(backwardrb)
+                            .addComponent(forwardrb))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cancelbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(frameratelabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addComponent(slider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(directionlabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(forwardrb)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(backwardrb))
+                    .addComponent(cancelbtn))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void forwardrbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardrbActionPerformed
+        player.setDirection(DirectionType.FORWARD);
+    }//GEN-LAST:event_forwardrbActionPerformed
+
+    private void backwardrbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backwardrbActionPerformed
+        player.setDirection(DirectionType.BACKWARD);
+    }//GEN-LAST:event_backwardrbActionPerformed
+
+    private void sliderCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_sliderCaretPositionChanged
+        player.setFrameRate(slider.getValue());
+    }//GEN-LAST:event_sliderCaretPositionChanged
+
+    private void cancelbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelbtnActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_cancelbtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JRadioButton backwardrb;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton cancelbtn;
+    private javax.swing.JLabel directionlabel;
+    private javax.swing.JRadioButton forwardrb;
+    private javax.swing.JLabel frameratelabel;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSlider jSlider1;
+    private javax.swing.JSlider slider;
     // End of variables declaration//GEN-END:variables
 }
