@@ -5,12 +5,12 @@
  */
 package controller.filter;
 
+import fourier.FastFourierTransform;
 import model.FilterDim3;
 import model.Imatge;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import fourier.FastFourierTransform;
 
 /**
  *
