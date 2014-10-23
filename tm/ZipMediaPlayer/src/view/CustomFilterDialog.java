@@ -24,7 +24,6 @@ public class CustomFilterDialog extends javax.swing.JDialog {
     public CustomFilterDialog(java.awt.Frame parent, boolean modal, IFilter filter) {
         super(parent, modal);
         initComponents();
-        
         this.filter =  filter;
     }
 
