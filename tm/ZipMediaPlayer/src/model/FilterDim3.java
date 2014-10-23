@@ -19,14 +19,14 @@ public class FilterDim3 {
     public final static FilterDim3 LAPLACIAN = new FilterDim3(0, -1, 0, -1, 4, -1, 0, -1, 0);
     public final static FilterDim3 IDENTITY = new FilterDim3(0, 0, 0, 0, 1, 0, 0, 0, 0);
 
-    private final float[][] customFilter;
+    private final double[][] filter;
 
-    public FilterDim3(float a, float b, float c, float d, float e, float f, float g, float h, float i) {
-        this.customFilter = new float[][]{{a, b, c}, {d, e, f}, {g, h, i}};
+    public FilterDim3(double a, double b, double c, double d, double e, double f, double g, double h, double i) {
+        this.filter = new double[][]{{a, b, c}, {d, e, f}, {g, h, i}};
     }
 
-    public float[][] getFilter() {
-        return customFilter;
+    public double[][] getFilter() {
+        return filter;
     }
 
 }

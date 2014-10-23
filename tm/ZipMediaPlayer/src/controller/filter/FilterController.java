@@ -10,13 +10,19 @@ import model.Imatge;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import fourier.FastFourierTransform;
 
 /**
  *
  * @author albert
  */
 public class FilterController implements InternalIFilter {
-
+    private int threshold;
+    
+    public FilterController(){
+        this.threshold = -1;
+    }
+    
     @Override
     public void negativeFilter(ArrayList<Imatge> imatges) {
         for (Imatge imatge : imatges) {
@@ -38,6 +44,7 @@ public class FilterController implements InternalIFilter {
 
     @Override
     public void binaryFilter(ArrayList<Imatge> imatges, int threshold) {
+        this.threshold = threshold;
         for (Imatge imatge : imatges) {
             BufferedImage img = imatge.getImage();
             for (int i = 0; i < img.getWidth(); i++) {
@@ -66,14 +73,55 @@ public class FilterController implements InternalIFilter {
 
     @Override
     public void convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter) {
+        double [][]filtre = filter.getFilter();
+        FastFourierTransform.fastFT(filtre,filtre,true);
+        for (Imatge imatge : imatges) {
+            //FastFourierTransform.fastFT(imatge.getImage(), imatge.getImage(), true);//posar la imatge com a matriu de doubles
+            //FastFourierTransform
+        }
+        
+        
+        
+        
+        
+        
+        
+        
         for (Imatge imatge : imatges) {
             BufferedImage img = imatge.getImage();
             for (int i = 0; i < img.getWidth(); i++) {
                 for (int j = 0; j < img.getHeight(); j++) {
+                    for (int xfiltre = 0; xfiltre < filtre.length; xfiltre++) {
+                        for (int yfiltre = 0; yfiltre < filtre.length; yfiltre++) {
+                            int rgb = (int)(img.getRGB(i, j)*filtre[xfiltre][yfiltre]);
+                            img.setRGB(i, j, rgb);
+                            
+                        }
+                        
+                    }
                     
                 }
             }
         }
+    }
+
+    @Override
+    public float getHue(Imatge img) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //Color c = new Color(img.getImage());
+    }
+
+    @Override
+    public float getSaturation(Imatge img) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public float getBrightness(Imatge img) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    public int getThreshold(){
+        return this.threshold;
     }
 
 }
