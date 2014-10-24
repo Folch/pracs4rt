@@ -8,7 +8,6 @@ package controller.disk;
 import controller.MainController;
 import model.Imatge;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,11 +15,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 import javax.imageio.ImageIO;
+import org.apache.commons.compress.compressors.CompressorStreamFactory;
+import org.rauschig.jarchivelib.Archiver;
+import org.rauschig.jarchivelib.ArchiverFactory;
+import org.rauschig.jarchivelib.CompressorFactory;
 
 /**
  *
@@ -90,20 +92,30 @@ public class DiskController implements InternalIDisk {
 
     @Override
     public void saveGZip(String path, ArrayList<Imatge> imatges) {
-        try {
-            GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(path + ".gzip"));
+        //mirar http://rauschig.org/jarchivelib/apidocs/
+        for (Imatge imatge : imatges) {
+            
 
-            for (Imatge imatge : imatges) {
-                byte[] imageBytes = ((DataBufferByte) imatge.getImage().getData().getDataBuffer()).getData();
-                int len = imageBytes.length;
-                out.write(imageBytes, 0, len);
-            }
+            Archiver archiver = ArchiverFactory.createArchiver("tar", "gz");
+            //archiver.create(path, null, files)
+            CompressorFactory.createCompressor("gz");
+            
 
-            out.finish();
-            out.close();
-        } catch (IOException ex) {
-            Logger.getLogger(DiskController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        /*try {
+         GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(path + ".gzip"));
+
+         for (Imatge imatge : imatges) {
+         byte[] imageBytes = ((DataBufferByte) imatge.getImage().getData().getDataBuffer()).getData();
+         int len = imageBytes.length;
+         out.write(imageBytes, 0, len);
+         }
+
+         out.finish();
+         out.close();
+         } catch (IOException ex) {
+         Logger.getLogger(DiskController.class.getName()).log(Level.SEVERE, null, ex);
+         }*/
     }
 }
