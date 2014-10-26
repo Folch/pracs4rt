@@ -64,6 +64,15 @@ public class FilterController implements InternalIFilter {
         for (Imatge imatge : imatges) {
             for (int i = 0; i < imatge.getImage().getWidth(); i++) {
                 for (int j = 0; j < imatge.getImage().getHeight(); j++) {
+                    int rgbCurrent = imatge.getImage().getRGB(i, j);
+                    float[] hsb = Color.RGBtoHSB((rgbCurrent>>16)&0xff, (rgbCurrent>>8)&0xff, rgbCurrent&0xff, null);
+                    if(hue == -1){//si algun dels 3 valors es -1, deixem el mateix valor
+                        hue = hsb[0];
+                    }else if(saturation == -1){
+                        saturation = hsb[1];
+                    }else if(brightness == -1){
+                        brightness = hsb[2];
+                    }
                     int rgb = Color.HSBtoRGB(hue, saturation, brightness);
                     imatge.getImage().setRGB(i, j, rgb);
                 }

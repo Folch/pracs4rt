@@ -168,7 +168,13 @@ public class MainController implements IPlayer, IFilter, IDisk {
     public void binaryFilter(int threshold) {
         this.filter.binaryFilter(images, threshold);
     }
-
+    /**
+     * Mètode per canviar els valors de HSB de totes les imatges, si algun dels
+     * 3 paràmetres no es volen modificar s'ha de passar -1.
+     * @param hue
+     * @param saturation
+     * @param brightness 
+     */
     @Override
     public void changeHSB(float hue, float saturation, float brightness) {
         this.filter.changeHSB(images, hue, saturation, brightness);
