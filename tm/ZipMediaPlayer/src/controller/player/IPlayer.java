@@ -21,7 +21,7 @@ public interface IPlayer {
     public void play();
     
     public void setDirection(DirectionType type);
-    public void isPlaying();
+    public boolean isPlaying();
     public int getFrameRate();
     public DirectionType getDirection();
 }

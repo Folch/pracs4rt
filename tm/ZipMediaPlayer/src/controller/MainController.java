@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package controller;
- 
+
 import controller.player.OnImageListener;
 import controller.compressor.CompressorController;
 import controller.player.IPlayer;
@@ -28,15 +28,14 @@ import java.util.zip.ZipFile;
  */
 public class MainController implements IPlayer, IFilter, IDisk {
 
-    private ArrayList<Imatge> images,imagesCopia;
-    private OnImageListener listener;
+    private ArrayList<Imatge> images, imagesCopia;
     private ScheduledExecutorService executor;
     private int index, time;
     private DirectionType dir;
-    private CompressorController compressor;
-    private DiskController disk;
-    private FilterController filter;
-
+    private final OnImageListener listener;
+    private final CompressorController compressor;
+    private final DiskController disk;
+    private final FilterController filter;
 
     public MainController(OnImageListener listener) {
         this.listener = listener;
@@ -55,8 +54,9 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void pause() {
-        if (executor != null)
+        if (executor != null) {
             executor.shutdown();
+        }
     }
 
     @Override
@@ -83,11 +83,12 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void openZip(String path) {
-        if (executor != null)
+        if (executor != null) {
             executor.shutdown();
+        }
         ZipFile zip = disk.openZip(path);
         this.images = compressor.decompressZip(zip);
-        this.imagesCopia = (ArrayList<Imatge>)this.images.clone();
+        this.imagesCopia = (ArrayList<Imatge>) this.images.clone();
         this.filter.convolveImages(images, FilterDim3.AVERAGE);//per borrar
     }
 
@@ -145,15 +146,14 @@ public class MainController implements IPlayer, IFilter, IDisk {
         if (listener != null) {
             listener.onImage(images.get(index));
         }
-        
-        
+
     }
-    
+
     @Override
-    public void removeFilter(){
+    public void removeFilter() {
         this.images = this.imagesCopia;
     }
-    
+
     @Override
     public void applyFilter(FilterDim3 filter) {
         this.filter.convolveImages(images, filter);
@@ -168,31 +168,18 @@ public class MainController implements IPlayer, IFilter, IDisk {
     public void binaryFilter(int threshold) {
         this.filter.binaryFilter(images, threshold);
     }
+
     /**
      * Mètode per canviar els valors de HSB de totes les imatges, si algun dels
      * 3 paràmetres no es volen modificar s'ha de passar -1.
+     *
      * @param hue
      * @param saturation
-     * @param brightness 
+     * @param brightness
      */
     @Override
     public void changeHSB(float hue, float saturation, float brightness) {
         this.filter.changeHSB(images, hue, saturation, brightness);
-    }
-
-    @Override
-    public float getHue() {
-        return this.filter.getHue(images.get(index));
-    }
-
-    @Override
-    public float getSaturation() {
-        return this.filter.getSaturation(images.get(index));
-    }
-
-    @Override
-    public float getBrightness() {
-        return this.filter.getBrightness(images.get(index));
     }
 
     @Override
@@ -202,12 +189,12 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public FilterDim3 getFilterDim3() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.filter.getLastFilterApplied();
     }
 
     @Override
-    public void isPlaying() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean isPlaying() {
+        return this.executor.isShutdown();
     }
 
     @Override

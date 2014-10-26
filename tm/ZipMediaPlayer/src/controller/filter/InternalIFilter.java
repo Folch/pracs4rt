@@ -18,7 +18,9 @@ public interface InternalIFilter {
     public void binaryFilter(ArrayList<Imatge> imatges, int threshold);
     public void changeHSB(ArrayList<Imatge> imatges, float hue, float saturation, float brightness);
     public void convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter);
+    /*
     public float getHue(Imatge img);
     public float getSaturation(Imatge img);
     public float getBrightness(Imatge img);
+    */
 }

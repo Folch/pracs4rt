@@ -10,6 +10,7 @@ import model.Imatge;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import model.config.Config;
 
 /**
  *
@@ -18,10 +19,17 @@ import java.util.ArrayList;
 public class FilterController implements InternalIFilter {
 
     private int threshold;
-
+    private FilterDim3 lastFilterApplied;
+    
     public FilterController() {
         this.threshold = -1;
+        this.lastFilterApplied = Config.DEFAULT_FILTER;
     }
+
+    public FilterDim3 getLastFilterApplied() {
+        return lastFilterApplied;
+    }
+    
 
     @Override
     public void negativeFilter(ArrayList<Imatge> imatges) {
@@ -82,6 +90,7 @@ public class FilterController implements InternalIFilter {
 
     @Override
     public void convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter) {
+        this.lastFilterApplied = filter;
         double[][] filtre = filter.getFilter();
         for (int k = 0; k < imatges.size(); k++) {
             Imatge img = imatges.get(k);
@@ -128,21 +137,6 @@ public class FilterController implements InternalIFilter {
         }
     }
 
-    @Override
-    public float getHue(Imatge img) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        //Color c = new Color(img.getImage());
-    }
-
-    @Override
-    public float getSaturation(Imatge img) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public float getBrightness(Imatge img) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     public int getThreshold() {
         return this.threshold;
