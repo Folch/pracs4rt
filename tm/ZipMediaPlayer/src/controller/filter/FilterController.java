@@ -57,11 +57,27 @@ public class FilterController implements InternalIFilter {
             BufferedImage img = imatge.getImage();
             for (int i = 0; i < img.getWidth(); i++) {
                 for (int j = 0; j < img.getHeight(); j++) {
-                    if (img.getRGB(i, j) < threshold) {
-                        img.setRGB(i, j, 0);
+                    Color c = new Color(img.getRGB(i, j));
+                    int r = c.getRed();
+                    int g = c.getGreen();
+                    int b = c.getBlue();
+                    if (r < threshold) {
+                        r = 0;
                     } else {
-                        img.setRGB(i, j, 255);
+                        r = 255;
                     }
+                    if (g < threshold) {
+                        g = 0;
+                    } else {
+                        g = 255;
+                    }
+                    if (b < threshold) {
+                        b = 0;
+                    } else {
+                        b = 255;
+                    }
+                    int rgb = new Color(r, g, b).getRGB();
+                    img.setRGB(i, j, rgb);
                 }
             }
         }
