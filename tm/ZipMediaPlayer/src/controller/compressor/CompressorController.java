@@ -57,7 +57,7 @@ public class CompressorController implements ICompressor {
 
     /**
      * Aquest mètode fa: - Descomprimir Zip - Guardar imatges com a files (cal?)
-     * - Carregar files - Borrar files
+     * - Guardar referencies files
      *
      * @param path
      * @param zipFile

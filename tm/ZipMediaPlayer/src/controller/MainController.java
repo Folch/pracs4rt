@@ -91,9 +91,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
         this.zip = disk.openZip(path);
         this.images = compressor.decompressZip(zip);
         this.imagesCopia = (ArrayList<Imatge>) this.images.clone();
-        ArrayList<File> files = compressor.getFilesFromZip(path, this.zip);//per borrar
         //this.filter.convolveImages(images, FilterDim3.AVERAGE);//per borrar
-        disk.saveGZip(path, files);//per borrar
     }
 
     @Override
@@ -119,7 +117,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
     public void saveGZip(String path) {
         if (zip != null) {
             ArrayList<File> files = compressor.getFilesFromZip(path, this.zip);
-           // disk.saveGZip(path, files);
+            disk.saveGZip(path, files);
         }
 
     }
