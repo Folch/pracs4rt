@@ -9,14 +9,10 @@ import controller.MainController;
 import model.Imatge;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -96,60 +92,35 @@ public class DiskController implements InternalIDisk {
     public void saveGZip(String path, ArrayList<File> files) {
         for (File file : files) {
             String outFilename = file.getName() + ".gz";
-            String inFilename = file.getName();
-            BufferedWriter bufferedWriter = null;
-            BufferedReader bufferedReader = null;
+            byte[] buffer = new byte[1024];
+
             try {
 
-                //Construct the BufferedWriter object
-                bufferedWriter = new BufferedWriter(
-                        new OutputStreamWriter(
-                                new GZIPOutputStream(new FileOutputStream(outFilename))
-                        ));
+                GZIPOutputStream gzos
+                        = new GZIPOutputStream(new FileOutputStream(outFilename));
 
-                //Construct the BufferedReader object
-                bufferedReader = new BufferedReader(new FileReader(inFilename));
+                FileInputStream in
+                        = new FileInputStream(file);
 
-                String line = null;
-
-                // from the input file to the GZIP output file
-                while ((line = bufferedReader.readLine()) != null) {
-                    bufferedWriter.write(line);
-                    bufferedWriter.newLine();
+                int len;
+                while ((len = in.read(buffer)) > 0) {
+                    gzos.write(buffer, 0, len);
                 }
 
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                //Close the BufferedWrter
-                if (bufferedWriter != null) {
-                    try {
-                        bufferedWriter.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                in.close();
 
-                //Close the BufferedReader
-                if (bufferedReader != null) {
-                    try {
-                        bufferedReader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(file.delete()){
-    			System.out.println(file.getName() + " is deleted!");
-    		}else{
-    			System.out.println("Delete operation is failed.");
-    		}
-                
+                gzos.finish();
+                gzos.close();
+
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
+            file.delete();
+
         }
 
-        //mirar http://rauschig.org/jarchivelib/apidocs/
+    //mirar http://rauschig.org/jarchivelib/apidocs/
         //File archive = new File("/home/thrau/archive.tar.gz");
         //File destination = new File(path + "tar.gz");
         //Archiver archiver = ArchiverFactory.createArchiver("tar", "gz");
@@ -171,5 +142,4 @@ public class DiskController implements InternalIDisk {
          }*/
     }
 
-    
 }
