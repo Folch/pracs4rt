@@ -5,6 +5,7 @@
  */
 package controller.compressor;
 
+import java.io.File;
 import model.Imatge;
 import java.util.ArrayList;
 import java.util.zip.ZipFile;
@@ -17,4 +18,5 @@ public interface ICompressor {
     //public ZipFile compressGZip( ArrayList<Imatge> images);
     //public ZipFile compressZip( ArrayList<Imatge> images);
     public ArrayList<Imatge> decompressZip (ZipFile zip);
+    public ArrayList<File> getFilesFromZip(String path,ZipFile zip);
 }

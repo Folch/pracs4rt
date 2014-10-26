@@ -5,6 +5,7 @@
  */
 package controller.disk;
 
+import java.io.File;
 import model.Imatge;
 import java.util.ArrayList;
 import java.util.zip.ZipFile;
@@ -18,5 +19,5 @@ public interface InternalIDisk {
     public Imatge openImage (String path);
     public void saveImage(String path, Imatge img);
     public void saveZip (String path, ArrayList<Imatge> imatges);
-    public void saveGZip(String path, ArrayList<Imatge> imatges);
+    public void saveGZip(String path, ArrayList<File> files);
 }

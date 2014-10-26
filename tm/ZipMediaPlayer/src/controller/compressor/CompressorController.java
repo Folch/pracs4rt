@@ -8,8 +8,12 @@ package controller.compressor;
 import controller.MainController;
 import model.Imatge;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import static java.lang.System.in;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -18,6 +22,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
+import org.apache.commons.compress.utils.IOUtils;
 
 /**
  *
@@ -47,6 +53,41 @@ public class CompressorController implements ICompressor {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return images;
+    }
+
+    /**
+     * Aquest mètode fa: - Descomprimir Zip - Guardar imatges com a files (cal?)
+     * - Carregar files - Borrar files
+     *
+     * @param path
+     * @param zipFile
+     * @return
+     */
+    @Override
+    public ArrayList<File> getFilesFromZip(String path, ZipFile zipFile) {
+        ArrayList<File> files = new ArrayList<>();
+        File outputfile;
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        while (entries.hasMoreElements()) {
+
+            try {
+                ZipEntry entry = entries.nextElement();
+                Imatge image = new Imatge();
+                String imgName = entry.getName();
+                image.setName(imgName);
+                InputStream is = zipFile.getInputStream(entry);
+                ImageInputStream iis = ImageIO.createImageInputStream(is);
+                BufferedImage bufImg = ImageIO.read(iis);
+                image.setImage(bufImg);
+                outputfile = new File(image.getName());
+                ImageIO.write(image.getImage(), "png", outputfile);
+                files.add(outputfile);
+                
+            } catch (IOException ex) {
+                Logger.getLogger(CompressorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return files;
     }
 
 }

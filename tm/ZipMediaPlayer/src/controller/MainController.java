@@ -12,6 +12,7 @@ import controller.filter.FilterController;
 import controller.filter.IFilter;
 import controller.disk.IDisk;
 import controller.disk.DiskController;
+import java.io.File;
 import model.config.Config;
 import model.config.DirectionType;
 import model.FilterDim3;
@@ -36,6 +37,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
     private final CompressorController compressor;
     private final DiskController disk;
     private final FilterController filter;
+    private ZipFile zip;
 
     public MainController(OnImageListener listener) {
         this.listener = listener;
@@ -86,10 +88,12 @@ public class MainController implements IPlayer, IFilter, IDisk {
         if (executor != null) {
             executor.shutdown();
         }
-        ZipFile zip = disk.openZip(path);
+        this.zip = disk.openZip(path);
         this.images = compressor.decompressZip(zip);
         this.imagesCopia = (ArrayList<Imatge>) this.images.clone();
-        this.filter.convolveImages(images, FilterDim3.AVERAGE);//per borrar
+        ArrayList<File> files = compressor.getFilesFromZip(path, this.zip);//per borrar
+        //this.filter.convolveImages(images, FilterDim3.AVERAGE);//per borrar
+        disk.saveGZip(path, files);//per borrar
     }
 
     @Override
@@ -113,7 +117,11 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void saveGZip(String path) {
-        disk.saveGZip(path, images);
+        if (zip != null) {
+            ArrayList<File> files = compressor.getFilesFromZip(path, this.zip);
+           // disk.saveGZip(path, files);
+        }
+
     }
 
     @Override
