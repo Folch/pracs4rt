@@ -19,10 +19,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 import javax.imageio.ImageIO;
-import org.apache.commons.compress.compressors.CompressorStreamFactory;
 import org.rauschig.jarchivelib.Archiver;
 import org.rauschig.jarchivelib.ArchiverFactory;
-import org.rauschig.jarchivelib.CompressorFactory;
 
 /**
  *
@@ -93,15 +91,12 @@ public class DiskController implements InternalIDisk {
     @Override
     public void saveGZip(String path, ArrayList<Imatge> imatges) {
         //mirar http://rauschig.org/jarchivelib/apidocs/
-        for (Imatge imatge : imatges) {
-            
 
-            Archiver archiver = ArchiverFactory.createArchiver("tar", "gz");
-            //archiver.create(path, null, files)
-            CompressorFactory.createCompressor("gz");
-            
+        File archive = new File("/home/thrau/archive.tar.gz");
+        File destination = new File(path + "tar.gz");
 
-        }
+        Archiver archiver = ArchiverFactory.createArchiver("tar", "gz");
+        //archiver.create(path + "tar.gz", destination, files);
 
         /*try {
          GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(path + ".gzip"));

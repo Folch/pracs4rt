@@ -11,7 +11,7 @@ package model;
  */
 public class FilterDim3 {
 
-    public final static FilterDim3 AVERAGE = new FilterDim3(1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9);
+    public final static FilterDim3 AVERAGE = new FilterDim3(1 / 9.0, 1 / 9.0, 1 / 9.0, 1 / 9.0, 1 / 9.0, 1 / 9.0, 1 / 9.0, 1 / 9.0, 1 / 9.0);
     public final static FilterDim3 SOBEL_X = new FilterDim3(-1, 0, 1, -2, 0, 2, -1, 0, 1);
     public final static FilterDim3 SOBEL_Y = new FilterDim3(1, 2, 1, 0, 0, 0, -1, -2, -1);
     public final static FilterDim3 LOW_PASS = new FilterDim3(1, 1, 1, 1, 1, 1, 1, 1, 1);

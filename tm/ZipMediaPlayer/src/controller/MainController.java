@@ -88,6 +88,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
         ZipFile zip = disk.openZip(path);
         this.images = compressor.decompressZip(zip);
         this.imagesCopia = (ArrayList<Imatge>)this.images.clone();
+        this.filter.convolveImages(images, FilterDim3.AVERAGE);//per borrar
     }
 
     @Override

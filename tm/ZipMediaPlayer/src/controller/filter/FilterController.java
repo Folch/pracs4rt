@@ -10,7 +10,6 @@ import model.Imatge;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import fourier.FastFourierTransform;
 
 /**
  *
@@ -75,57 +74,46 @@ public class FilterController implements InternalIFilter {
     @Override
     public void convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter) {
         double[][] filtre = filter.getFilter();
-        FastFourierTransform.fastFT(filtre, filtre, true);
-        double[][] imaginaryFilter = new double[filtre.length][filtre[0].length];
-        for (int i = 0; i < imaginaryFilter.length; i++) {
-            for (int j = 0; j < imaginaryFilter[0].length; j++) {
-                imaginaryFilter[i][j] = 0;
-
-            }
-
-        }
-        FastFourierTransform.fastFT(filtre, imaginaryFilter, true);
-
         for (int k = 0; k < imatges.size(); k++) {
+            Imatge img = imatges.get(k);
+            int[][] imgR = new int[img.getImage().getWidth()][img.getImage().getHeight()];
+            int[][] imgG = new int[img.getImage().getWidth()][img.getImage().getHeight()];
+            int[][] imgB = new int[img.getImage().getWidth()][img.getImage().getHeight()];
 
-            //FastFourierTransform.fastFT(imatge.getImage(), imatge.getImage(), true);//posar la imatge com a matriu de doubles
-            //FastFourierTransform
-            BufferedImage img = imatges.get(k).getImage();
-            double[][] imgD = new double[img.getWidth()][img.getHeight()];
-
-            for (int i = 0; i < img.getWidth(); i++) {
-                for (int j = 0; j < img.getHeight(); j++) {
-                    imgD[i][j] = img.getRGB(i, j);
+            for (int i = 0; i < img.getImage().getWidth(); i++) {
+                for (int j = 0; j < img.getImage().getHeight(); j++) {
+                    Color c = new Color(img.getImage().getRGB(i, j));
+                    int red = c.getRed();
+                    int green = c.getGreen();
+                    int blue = c.getBlue();
+                    imgR[i][j] = red;
+                    imgG[i][j] = green;
+                    imgB[i][j] = blue;
                 }
             }
-            double[][] imaginary = new double[imgD.length][imgD[0].length];
-            for (int i = 0; i < imaginary.length; i++) {
-                for (int j = 0; j < imaginary[0].length; j++) {
-                    imaginary[i][j] = 0;
-
-                }
-
-            }
-            FastFourierTransform.fastFT(imgD, imaginary, true);
-            //multiplico freq de filtre * freq de imatge (mateixa mida)
-            //inversa fft del producte
-            imatges.set(k, null);
-
-        }
-
-        for (Imatge imatge : imatges) {
-            BufferedImage img = imatge.getImage();
-            for (int i = 0; i < img.getWidth(); i++) {
-                for (int j = 0; j < img.getHeight(); j++) {
-                    for (int xfiltre = 0; xfiltre < filtre.length; xfiltre++) {
-                        for (int yfiltre = 0; yfiltre < filtre.length; yfiltre++) {
-                            int rgb = (int) (img.getRGB(i, j) * filtre[xfiltre][yfiltre]);
-                            img.setRGB(i, j, rgb);
-
-                        }
-
+            imgR = convolve(imgR, filtre);
+            imgG = convolve(imgG, filtre);
+            imgB = convolve(imgB, filtre);
+            for (int i = 0; i < img.getImage().getWidth(); i++) {
+                for (int j = 0; j < img.getImage().getHeight(); j++) {
+                    byte red2 = (byte)imgR[i][j];
+                    byte green2 = (byte)imgG[i][j];
+                    byte blue2 = (byte)imgB[i][j];
+                    //System.out.println("red ="+red);
+                    int red =red2,green=green2,blue=blue2;
+                    if(red2 < 0){
+                        red += 128;
                     }
-
+                    if(green2 < 0){
+                        green += 128;
+                    }
+                    if(blue2 < 0){
+                        blue += 128;
+                    }
+                    //System.out.println(red);
+                    Color c2 = new Color(red, green,blue);
+                    int rgb = c2.getRGB();
+                    img.getImage().setRGB(i, j, rgb);
                 }
             }
         }
@@ -149,6 +137,54 @@ public class FilterController implements InternalIFilter {
 
     public int getThreshold() {
         return this.threshold;
+    }
+
+    public int[][] convolve(int[][] img, double[][] kernel) {
+
+        int xn, yn;
+        float average;
+
+        int w = img.length;
+        int h = img[0].length;
+        int[][] output = new int[w][h];
+
+        //--- IMAGE: Iterate through image pixels ---//
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+
+                //--- KERNEL: Iterate through kernel ---//
+                average = 0;
+                for (int u = 0; u < kernel.length; u++) {
+                    for (int v = 0; v < kernel[0].length; v++) {
+
+                        //--- Get associated neighbor pixel coordinates ---//
+                        xn = x + u - kernel.length / 2;
+                        yn = y + v - kernel[0].length / 2;
+
+                        //--  Make sure we don't go off of an edge of the image ---//
+                        xn = constrain(xn, 0, w - 1);
+                        yn = constrain(yn, 0, h - 1);
+                        //--- Add weighted neighbor to average ---//
+                        average += img[xn][yn] * kernel[u][v];
+                    }
+                } /*--- KERNEL ---*/
+                //System.out.println("average="+(int)average);
+                //--- Set output pixel to weighted average value ---//
+                output[x][y] = (int) average;
+            }
+        } /*--- IMAGE ---*/
+
+        return output;
+    }
+
+    private int constrain(int x, int a, int b) {
+        if (x < a) {
+            return a;
+        } else if (b < x) {
+            return b;
+        } else {
+            return x;
+        }
     }
 
 }
