@@ -370,8 +370,10 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_fullscreenmenuActionPerformed
 
     private void optionsmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionsmenuActionPerformed
-        OptionsDialog dialog = new OptionsDialog(this, true, player);
-        dialog.setVisible(true);
+        if(player != null) {
+            OptionsDialog dialog = new OptionsDialog(this, false, player);
+            dialog.setVisible(true);
+        }
     }//GEN-LAST:event_optionsmenuActionPerformed
 
     private void customfiltermenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customfiltermenuActionPerformed
@@ -453,6 +455,7 @@ public class MainFrame extends javax.swing.JFrame {
                 savegzipmenu.setEnabled(false);
                 saveimagemenu.setEnabled(true);
                 //player items
+                optionsmenu.setEnabled(false);
                 prevbtn.setEnabled(false);
                 nextbtn.setEnabled(false);
                 playbtn.setEnabled(false);
@@ -469,6 +472,7 @@ public class MainFrame extends javax.swing.JFrame {
                 savegzipmenu.setEnabled(true);
                 saveimagemenu.setEnabled(false);
                 //player items
+                optionsmenu.setEnabled(true);
                 prevbtn.setEnabled(false);
                 nextbtn.setEnabled(false);
                 playbtn.setEnabled(true);
@@ -486,6 +490,7 @@ public class MainFrame extends javax.swing.JFrame {
                 savegzipmenu.setEnabled(true);
                 saveimagemenu.setEnabled(false);
                 //player items
+                optionsmenu.setEnabled(true);
                 prevbtn.setEnabled(true);
                 nextbtn.setEnabled(true);
                 playbtn.setEnabled(true);
@@ -503,6 +508,7 @@ public class MainFrame extends javax.swing.JFrame {
                 savegzipmenu.setEnabled(true);
                 saveimagemenu.setEnabled(true);
                 //player items
+                optionsmenu.setEnabled(false);
                 prevbtn.setEnabled(false);
                 nextbtn.setEnabled(false);
                 playbtn.setEnabled(false);
