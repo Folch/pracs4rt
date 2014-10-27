@@ -9,9 +9,13 @@ import controller.player.OnImageListener;
 import model.Imatge;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -21,9 +25,18 @@ import javax.swing.JPanel;
 public class VideoPanel extends JPanel implements OnImageListener{
     
     private BufferedImage currentImage;
+    private boolean isLoading;
+    
+    private Image image;
+    
+    public VideoPanel() {
+        image = Toolkit.getDefaultToolkit().createImage("/view/resource/loading.gif");  
+        isLoading = false;
+    }
     
     @Override
     public void paintComponent(Graphics grphcs) {
+        
         if(currentImage != null) {
             Graphics2D g = (Graphics2D) grphcs;
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
@@ -39,6 +52,13 @@ public class VideoPanel extends JPanel implements OnImageListener{
             at.scale(scaleX, scaleY);
             g.drawRenderedImage(currentImage, at);
         }
+        if(isLoading) {
+            grphcs.drawImage(image, 0, 0, this);  
+        } 
+    }
+    
+    public void loading(boolean load) {
+        this.isLoading = load;
     }
     
     private double getScaleY(int panelHeight, int imageHeight) {

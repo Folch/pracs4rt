@@ -31,6 +31,8 @@ public class MainFrame extends javax.swing.JFrame {
     private IPlayer player;
     private IFilter filter;
     
+    private FilterState currentFilterState;
+    
     private JFileChooser fc;
 
     /**
@@ -39,9 +41,12 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         changeState(State.EMPTY);
+        currentFilterState = FilterState.ORIGINAL;
         fc = new JFileChooser();
         fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        
+        //((VideoPanel)imagepanel).loading(true);
     }
 
     public String showFileChooser(FileType fileType) {
@@ -377,23 +382,34 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_optionsmenuActionPerformed
 
     private void customfiltermenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customfiltermenuActionPerformed
-        // TODO add your handling code here:
+        if(!changeFilterState(FilterState.CUSTOM))
+            return;
+        
     }//GEN-LAST:event_customfiltermenuActionPerformed
 
     private void hsbmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hsbmenuActionPerformed
-        // TODO add your handling code here:
+        if(!changeFilterState(FilterState.HSB))
+            return;
+        
     }//GEN-LAST:event_hsbmenuActionPerformed
 
     private void negativemenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_negativemenuActionPerformed
+        if(!changeFilterState(FilterState.NEGATIVE))
+            return;
         filter.negativeFilter();
     }//GEN-LAST:event_negativemenuActionPerformed
 
     private void binarymenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_binarymenuActionPerformed
-        //filter.binaryFilter(WIDTH);
+        if(!changeFilterState(FilterState.BINARY))
+            return;
+        BinaryFilterDialog dialog = new BinaryFilterDialog(this, true, filter);
+        dialog.setVisible(true);
     }//GEN-LAST:event_binarymenuActionPerformed
 
     private void originalmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originalmenuActionPerformed
-        // TODO add your handling code here:
+        if(!changeFilterState(FilterState.ORIGINAL))
+            return;
+        
     }//GEN-LAST:event_originalmenuActionPerformed
 
     public void openFile(FileType fileType) {
@@ -421,29 +437,33 @@ public class MainFrame extends javax.swing.JFrame {
         player.first();
     }
 
-    private void changeFilterState(FilterState state) {
-        customfiltermenu.setSelected(false);
-        hsbmenu.setSelected(false);
-        negativemenu.setSelected(false);
-        binarymenu.setSelected(false);
-        originalmenu.setSelected(false);
+    private boolean changeFilterState(FilterState state) {
+        if(state == currentFilterState)
+            return false;
+        customfiltermenu.setState(false);
+        hsbmenu.setState(false);
+        negativemenu.setState(false);
+        binarymenu.setState(false);
+        originalmenu.setState(false);
         switch (state) {
             case CUSTOM:
-                customfiltermenu.setSelected(true);
+                customfiltermenu.setState(true);
                 break;
             case HSB:
-                hsbmenu.setSelected(true);
+                hsbmenu.setState(true);
                 break;
             case NEGATIVE:
-                negativemenu.setSelected(true);
+                negativemenu.setState(true);
                 break;
             case BINARY:
-                binarymenu.setSelected(true);
+                binarymenu.setState(true);
                 break;
             case ORIGINAL:
-                originalmenu.setSelected(true);
+                originalmenu.setState(true);
                 break;
         }
+        currentFilterState = state;
+        return true;
     }
     
     private void changeState(State state) {
