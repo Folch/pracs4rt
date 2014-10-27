@@ -29,11 +29,15 @@ public class OptionsDialog extends javax.swing.JDialog {
         this.player =  player;
         
         slider.setValue(player.getFrameRate());
+        fpslabel.setText(player.getFrameRate()+"");
+        
         if(player.getDirection() == DirectionType.FORWARD) {
             forwardrb.setSelected(true);
         } else{
             backwardrb.setSelected(true);
         }
+        
+        //player.setFrameRate(slider.getValue());
     }
 
     /**
@@ -53,6 +57,7 @@ public class OptionsDialog extends javax.swing.JDialog {
         forwardrb = new javax.swing.JRadioButton();
         backwardrb = new javax.swing.JRadioButton();
         cancelbtn = new javax.swing.JButton();
+        fpslabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -60,6 +65,11 @@ public class OptionsDialog extends javax.swing.JDialog {
         frameratelabel.setText("Frame Rate (fps)");
 
         slider.setMinimum(1);
+        slider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderStateChanged(evt);
+            }
+        });
         slider.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
@@ -94,6 +104,8 @@ public class OptionsDialog extends javax.swing.JDialog {
             }
         });
 
+        fpslabel.setText("100");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -102,19 +114,22 @@ public class OptionsDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
-                    .addComponent(slider, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(frameratelabel)
-                            .addComponent(directionlabel))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(slider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fpslabel))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(backwardrb)
                             .addComponent(forwardrb))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cancelbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 204, Short.MAX_VALUE)
+                        .addComponent(cancelbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(frameratelabel)
+                            .addComponent(directionlabel))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -122,9 +137,14 @@ public class OptionsDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(frameratelabel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(slider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(fpslabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(slider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -150,12 +170,17 @@ public class OptionsDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_backwardrbActionPerformed
 
     private void sliderCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_sliderCaretPositionChanged
-        player.setFrameRate(slider.getValue());
+        
     }//GEN-LAST:event_sliderCaretPositionChanged
 
     private void cancelbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelbtnActionPerformed
         this.dispose();
     }//GEN-LAST:event_cancelbtnActionPerformed
+
+    private void sliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderStateChanged
+        player.setFrameRate(slider.getValue());
+        fpslabel.setText(slider.getValue()+"");
+    }//GEN-LAST:event_sliderStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton backwardrb;
@@ -163,6 +188,7 @@ public class OptionsDialog extends javax.swing.JDialog {
     private javax.swing.JButton cancelbtn;
     private javax.swing.JLabel directionlabel;
     private javax.swing.JRadioButton forwardrb;
+    private javax.swing.JLabel fpslabel;
     private javax.swing.JLabel frameratelabel;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSlider slider;
