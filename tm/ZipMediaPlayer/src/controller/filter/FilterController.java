@@ -8,7 +8,9 @@ package controller.filter;
 import model.FilterDim3;
 import model.Imatge;
 import java.awt.Color;
+import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.util.ArrayList;
 import model.config.Config;
 
@@ -20,7 +22,7 @@ public class FilterController implements InternalIFilter {
 
     private int threshold;
     private FilterDim3 lastFilterApplied;
-    
+
     public FilterController() {
         this.threshold = -1;
         this.lastFilterApplied = Config.DEFAULT_FILTER;
@@ -29,7 +31,6 @@ public class FilterController implements InternalIFilter {
     public FilterDim3 getLastFilterApplied() {
         return lastFilterApplied;
     }
-    
 
     @Override
     public void negativeFilter(ArrayList<Imatge> imatges) {
@@ -55,57 +56,73 @@ public class FilterController implements InternalIFilter {
         this.threshold = threshold;
         for (Imatge imatge : imatges) {
             BufferedImage img = imatge.getImage();
+            ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+            op.filter(img, img);
             for (int i = 0; i < img.getWidth(); i++) {
                 for (int j = 0; j < img.getHeight(); j++) {
                     Color c = new Color(img.getRGB(i, j));
-                    int r = c.getRed();
-                    int g = c.getGreen();
-                    int b = c.getBlue();
+                    int g, b, r;
+                    r = c.getRed();
                     if (r < threshold) {
                         r = 0;
-                    } else {
-                        r = 255;
-                    }
-                    if (g < threshold) {
                         g = 0;
-                    } else {
-                        g = 255;
-                    }
-                    if (b < threshold) {
                         b = 0;
                     } else {
+                        r = 255;
+                        g = 255;
                         b = 255;
                     }
                     int rgb = new Color(r, g, b).getRGB();
                     img.setRGB(i, j, rgb);
                 }
+
             }
+
         }
     }
 
     @Override
     public void changeHSB(ArrayList<Imatge> imatges, float hue, float saturation, float brightness) {
+        float hu,sa,br;
         for (Imatge imatge : imatges) {
             for (int i = 0; i < imatge.getImage().getWidth(); i++) {
                 for (int j = 0; j < imatge.getImage().getHeight(); j++) {
                     int rgbCurrent = imatge.getImage().getRGB(i, j);
-                    float[] hsb = Color.RGBtoHSB((rgbCurrent>>16)&0xff, (rgbCurrent>>8)&0xff, rgbCurrent&0xff, null);
-                    if(hue == -1){//si algun dels 3 valors es -1, deixem el mateix valor
-                        hue = hsb[0];
-                    }else if(saturation == -1){
-                        saturation = hsb[1];
-                    }else if(brightness == -1){
-                        brightness = hsb[2];
+                    Color c = new Color(rgbCurrent);
+                    int g, b, r;
+                    r = c.getRed();
+                    g = c.getGreen();
+                    b = c.getBlue();
+                    float[] hsb = Color.RGBtoHSB(r, g, b, null);
+                    
+                    hu = hsb[0];
+                    if (hue != -1) { //si algun dels 3 valors es -1, deixem el mateix valor
+                        hu += hue;
+                        hu = Math.max(hu, 1);
                     }
-                    int rgb = Color.HSBtoRGB(hue, saturation, brightness);
+                    sa = hsb[1];
+                    if (saturation != -1) {
+                        sa += saturation;
+                        sa = Math.max(sa, 1);
+                    }
+                    br = hsb[2];
+                    if (brightness != -1) {
+                        br += brightness;
+                        br = Math.max(br, 1);
+
+                    }
+
+                    int rgb = Color.HSBtoRGB(hu, sa, br);
                     imatge.getImage().setRGB(i, j, rgb);
+
                 }
             }
         }
     }
 
     @Override
-    public void convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter) {
+    public void convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter
+    ) {
         this.lastFilterApplied = filter;
         double[][] filtre = filter.getFilter();
         for (int k = 0; k < imatges.size(); k++) {
@@ -130,29 +147,28 @@ public class FilterController implements InternalIFilter {
             imgB = convolve(imgB, filtre);
             for (int i = 0; i < img.getImage().getWidth(); i++) {
                 for (int j = 0; j < img.getImage().getHeight(); j++) {
-                    byte red2 = (byte)imgR[i][j];
-                    byte green2 = (byte)imgG[i][j];
-                    byte blue2 = (byte)imgB[i][j];
+                    byte red2 = (byte) imgR[i][j];
+                    byte green2 = (byte) imgG[i][j];
+                    byte blue2 = (byte) imgB[i][j];
                     //System.out.println("red ="+red);
-                    int red =red2,green=green2,blue=blue2;
-                    if(red2 < 0){
+                    int red = red2, green = green2, blue = blue2;
+                    if (red2 < 0) {
                         red += 128;
                     }
-                    if(green2 < 0){
+                    if (green2 < 0) {
                         green += 128;
                     }
-                    if(blue2 < 0){
+                    if (blue2 < 0) {
                         blue += 128;
                     }
                     //System.out.println(red);
-                    Color c2 = new Color(red, green,blue);
+                    Color c2 = new Color(red, green, blue);
                     int rgb = c2.getRGB();
                     img.getImage().setRGB(i, j, rgb);
                 }
             }
         }
     }
-
 
     public int getThreshold() {
         return this.threshold;
@@ -187,8 +203,10 @@ public class FilterController implements InternalIFilter {
                         average += img[xn][yn] * kernel[u][v];
                     }
                 } /*--- KERNEL ---*/
+
                 //System.out.println("average="+(int)average);
                 //--- Set output pixel to weighted average value ---//
+
                 output[x][y] = (int) average;
             }
         } /*--- IMAGE ---*/

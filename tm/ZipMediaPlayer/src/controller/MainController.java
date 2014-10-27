@@ -52,6 +52,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
     @Override
     public void setFrameRate(int time) {
         this.time = time;
+        
     }
 
     @Override
@@ -91,8 +92,9 @@ public class MainController implements IPlayer, IFilter, IDisk {
         this.zip = disk.openZip(path);
         this.images = compressor.decompressZip(zip);
         this.imagesCopia = (ArrayList<Imatge>) this.images.clone();
-        //this.filter.convolveImages(images, FilterDim3.AVERAGE);//per testejar i borrar
-        //this.filter.changeHSB(images, -1, -1, 10);//per testejar i borrar
+        //this.filter.convolveImages(images, FilterDim3.LOW_PASS);//per testejar i borrar
+        this.filter.changeHSB(images, 0.1f, -1, -1);//per testejar i borrar
+        //this.filter.binaryFilter(images, 128);
     }
 
     @Override
