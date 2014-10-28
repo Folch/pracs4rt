@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.SQLiteDialect</property>
+    <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
+    <property name="hibernate.connection.url">jdbc:sqlite:p1bda.db</property>
+    
+    <!-- Definimos propiedades de Hibernate para SQL -->
+    <property name="show_sql">false</property>
+    <property name="format_sql">true</property>
+    <!-- Definimos que Hibernate cree las tablas none : no actualiza, update : act las dif, create :> machaca todo en la bd-->
+    <!-- none, update, create -->
+    <property name="hibernate.hbm2ddl.auto">none</property>
+    
+    
+    <!-- Declaramos los archivos de mapping-->
+    <mapping resource="alxa/ub/model/Producte.hbm.xml"/>
+    <mapping resource="alxa/ub/model/Familia.hbm.xml"/>
+    <mapping resource="alxa/ub/model/SubFamilia.hbm.xml"/>
+    <mapping resource="alxa/ub/model/Marca.hbm.xml"/>
+    <mapping resource="alxa/ub/model/Usuari.hbm.xml"/>
+    <mapping resource="alxa/ub/model/Campanya.hbm.xml"/>
+    <mapping resource="alxa/ub/model/Article.hbm.xml"/>
+    <mapping resource="alxa/ub/model/UsuariArticleCampanya.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

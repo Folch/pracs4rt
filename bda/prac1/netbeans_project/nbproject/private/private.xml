@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/Article.hbm.xml</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/Campanya.hbm.xml</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/Familia.hbm.xml</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/Marca.hbm.xml</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/Producte.hbm.xml</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/SubFamilia.hbm.xml</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/Usuari.hbm.xml</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/UsuariArticleCampanya.hbm.xml</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/hibernate.cfg.xml</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/Article.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/Campanya.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/Familia.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/Marca.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/Producte.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/SubFamilia.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/Usuari.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/model/UsuariArticleCampanya.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/vista/PrivaliaUB.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/bda/prac1/src/alxa/ub/vista/ConnectorHB.java</file>
+        </group>
+    </open-files>
+</project-private>
