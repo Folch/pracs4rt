@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="alxa.ub.model.SubFamilia" table="SUBFAMILIA">
+        <composite-id>
+            <key-property name="idSubFamilia" 
+                          column="IDSUBFAMILIA"/>
+            <key-many-to-one name="familia" class="alxa.ub.model.Familia">
+                <column name="FAMILIA" />
+            </key-many-to-one>
+        </composite-id>
+        
+        <property name="nom" column="NOM" />
+    </class>
+</hibernate-mapping>
