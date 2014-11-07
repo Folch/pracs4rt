@@ -93,7 +93,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
         this.images = compressor.decompressZip(zip);
         this.imagesCopia = (ArrayList<Imatge>) this.images.clone();
         //this.filter.convolveImages(images, FilterDim3.LOW_PASS);//per testejar i borrar
-        this.filter.changeHSB(images, 0.1f, -1, -1);//per testejar i borrar
+        this.filter.changeHSB(images, -1, -1, 0.01f);//per testejar i borrar
         //this.filter.binaryFilter(images, 128);
     }
 
