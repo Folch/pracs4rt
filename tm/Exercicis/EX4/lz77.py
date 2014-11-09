@@ -22,7 +22,6 @@ def decompress(compressed,Mdes, Ment):
     bitsL = int(math.log(Ment,2))
     bitsD = int(math.log(Mdes,2))
     i = Mdes
-#    i = 0
     j = 0
     while len(compressed[i:]) > Ment:
     #while len(compressed[i:]) >= (bitsL+bitsD):
@@ -32,9 +31,9 @@ def decompress(compressed,Mdes, Ment):
         d = int(compressed[i+bitsL:i+bitsL+bitsD],2)
         if d == 0:
             d = 2**bitsD
-        j = i - d # per agafar els bits que s'afegiran
+        j = len(data) - d # per agafar els bits que s'afegiran
 
-        bits = compressed[j:j+l]
+        bits = data[j:j+l]
         data += bits
         i += bitsL+bitsD
 
@@ -56,7 +55,7 @@ def compress(data,Mdes, Ment):
     dataCompressed = data[:Mdes]
     iDes = 0#index deslizante
     iEnt = Mdes#index entrada
-    print "data=",dataCompressed
+
     #print "iEnt inicial:",iEnt
     bitsL = int(math.log(Ment,2))
     bitsD = int(math.log(Mdes,2))
@@ -104,18 +103,29 @@ def randomBits(n):
     return bits
 
 
-#input = randomBits(10000)
-input1 = '0101010011101010111001100110011001100'
+input1 = randomBits(10000)
+#input1 = '0101010011101010111001100110011001100'
 #input2= '01010100000001110100100001000010000111'
 #input3 = '11110000'
-Mdes = 8
-Ment = 4
+Mdes = 1024
+Ment = 32
 print "Entrada a comprimir ",len(input1),":",input1
+
 t1 = time.time()
 output = compress(input1,Mdes,Ment)
 print "Temps compressio:",time.time()-t1
-print "Compressio: ",len(output),":",output
+print "Compressio: ",len(output)#,":",output
+'''
 t1 = time.time()
 decompressed = decompress(output,Mdes,Ment)
 print "Temps descompressio:",time.time()-t1
 print "Descompressio: ",len(decompressed),":",decompressed
+'''
+
+#1024 256 16502
+#2048 1024 15792
+#512 256 17509
+#256 128 18079
+#1024 512 17245
+#2048 64 13960
+#2048 16 12579
