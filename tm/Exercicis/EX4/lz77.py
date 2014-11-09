@@ -9,7 +9,7 @@ def find(bits, pattern):
             return len(bits[iBit:]) + patternL
     return -1
 def decompress(compressed,Mdes, Ment):
-    if(Mdes % 2 != 0 or Ment % 2 != 0):
+    if(int(math.log(Mdes,2)) != math.log(Mdes,2) or int(math.log(Ment,2)) != math.log(Ment,2)):
         print "Mdes i Ment han de ser potencies de 2"
         return -1
     if(Ment > Mdes):
@@ -22,9 +22,10 @@ def decompress(compressed,Mdes, Ment):
     bitsL = int(math.log(Ment,2))
     bitsD = int(math.log(Mdes,2))
     i = Mdes
+#    i = 0
     j = 0
-    #while len(compressed[i:]) > Ment:
-    while len(compressed[i:]) >= (bitsL+bitsD):
+    while len(compressed[i:]) > Ment:
+    #while len(compressed[i:]) >= (bitsL+bitsD):
         l = int(compressed[i:i+bitsL],2)
         if l == 0:
             l = 2**bitsL
@@ -43,7 +44,7 @@ def decompress(compressed,Mdes, Ment):
     return data
 
 def compress(data,Mdes, Ment):
-    if(Mdes % 2 != 0 or Ment % 2 != 0):
+    if(int(math.log(Mdes,2)) != math.log(Mdes,2) or int(math.log(Ment,2)) != math.log(Ment,2)):
         print "Mdes i Ment han de ser potencies de 2"
         return -1
     if(Ment > Mdes):
@@ -53,9 +54,9 @@ def compress(data,Mdes, Ment):
         print "La longitud de les dades ha de ser <= a Mdes+Ment"
         return -1
     dataCompressed = data[:Mdes]
-    iDes = Mdes#index deslizante
-    iEnt = Mdes*2#index entrada
-
+    iDes = 0#index deslizante
+    iEnt = Mdes#index entrada
+    print "data=",dataCompressed
     #print "iEnt inicial:",iEnt
     bitsL = int(math.log(Ment,2))
     bitsD = int(math.log(Mdes,2))
@@ -93,6 +94,7 @@ def compress(data,Mdes, Ment):
 
     if len(data[iEnt:]) > 0:
         dataCompressed += data[iEnt:]
+    
 
     return dataCompressed
 def randomBits(n):
@@ -103,14 +105,14 @@ def randomBits(n):
 
 
 #input = randomBits(10000)
-#input = '0101010011101010111001100110011001100'
+input1 = '0101010011101010111001100110011001100'
 #input2= '01010100000001110100100001000010000111'
-input3 = '11110000'
-Mdes = 4
-Ment = 2
-print "Entrada a comprimir ",len(input3),":",input3
+#input3 = '11110000'
+Mdes = 8
+Ment = 4
+print "Entrada a comprimir ",len(input1),":",input1
 t1 = time.time()
-output = compress(input3,Mdes,Ment)
+output = compress(input1,Mdes,Ment)
 print "Temps compressio:",time.time()-t1
 print "Compressio: ",len(output),":",output
 t1 = time.time()
