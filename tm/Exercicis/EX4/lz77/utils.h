@@ -2,7 +2,9 @@
 #define _UTILS_H
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 char *intToBits(int, int size);
 int BitsToInt(char*, int size);

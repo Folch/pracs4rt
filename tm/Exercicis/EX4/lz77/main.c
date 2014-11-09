@@ -7,7 +7,7 @@
 #include "decompressor.h"
 
 int size_ent = 8;
-int size_llis = 4;
+int size_llis = 16;
 
 void parse_opt(int argc,char *argv[]) {
 	int c;
@@ -16,7 +16,7 @@ void parse_opt(int argc,char *argv[]) {
 		{"size_llis",  required_argument, 0, 'l'},
 		{0, 0, 0, 0}
 	};
-	
+
 
 	while (1) {
 		/* getopt_long stores the option index here. */
@@ -44,17 +44,22 @@ void parse_opt(int argc,char *argv[]) {
 }
 
 int main(int argc,char *argv[]) {
-	
-	
+
+
 	parse_opt(argc, argv);
-	
 
-	char * in = malloc(7*sizeof(char));
-	strcpy(in,"111010");
-	
-	
 
-	printf("%s\n", in);
+	char* in = malloc(100*sizeof(char));
+	strcpy(in,"0101010011101010111001100110011001100");
+
+	char* c = compress(in, size_llis, size_ent);
+	//char* sub = substr(in, 10, 4);
+	//char* p = intToBits(3,8);
+
+	//printf("size: %d\n", sizeof(sub));
+
+	printf("entrada: %s\n", in);
+	printf("compress: %s\n", c);
 	printf("%d entrada\n", size_ent);
 	printf("%d lliscant\n", size_llis);
 	return 0;

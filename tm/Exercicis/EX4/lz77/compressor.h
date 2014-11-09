@@ -3,12 +3,12 @@
 
 #include <stdlib.h>
 
-typedef struct CompressStruct_
-{
-  int distance;     
-  char size;
-} CompressStruct;
+#include "utils.h"
 
+typedef struct CompressStruct_ {
+  char* size;
+  char* distance;
+} CompressStruct;
 
 char *compress(char* input, int llis_size, int ent_size);
 
