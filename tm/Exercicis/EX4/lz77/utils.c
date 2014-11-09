@@ -22,12 +22,9 @@ char *intToBits(int i, int size) {
 }
 
 int bitsToInt(char* bits, int size) {
-	int i;
-	for(i=0;i<size;i++) {
-		if(bits[i] != '0') break;
-	}
-	if(i==size) return (int)pow(2,size);
-	return (int) strtol(bits, NULL, 2);
+	int out = (int) strtol(bits, NULL, 2);
+	if(out == 0) return (int)pow(2,size);
+	return out;
 }
 
 char *substr(char* text, int pos, int size) {
