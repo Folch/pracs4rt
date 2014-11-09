@@ -59,9 +59,11 @@ int main(int argc,char *argv[]) {
 
 	//printf("size: %d\n", sizeof(sub));
 
+
+
 	printf("entrada: %s\n", in);
 	printf("compress: %s\n", c);
-	printf("decompress: %s\n", d);
+	printf("decompr: %s\n", d);
 	printf("%d entrada\n", size_ent);
 	printf("%d lliscant\n", size_llis);
 	return 0;
