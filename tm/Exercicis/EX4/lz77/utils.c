@@ -22,8 +22,12 @@ char *intToBits(int i, int size) {
 }
 
 int bitsToInt(char* bits, int size) {
-
-	return 0;
+	int i;
+	for(i=0;i<size;i++) {
+		if(bits[i] != '0') break;
+	}
+	if(i==size) return (int)pow(2,size);
+	return (int) strtol(bits, NULL, 2);
 }
 
 char *substr(char* text, int pos, int size) {
@@ -38,10 +42,11 @@ char *substr(char* text, int pos, int size) {
 
 char* randomInput(int n){
 	int i;
-	char* in = malloc(n*sizeof(char));
+	char* in = malloc((n+1)*sizeof(char));
 	srand(time(NULL));
 	for (i = 0;i < n; i++)
 		in[i] = rand()%2 + '0';
 
+	in[n] = '\0';
 	return in;
 }
