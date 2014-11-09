@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 
+#include "utils.h"
+
 char *decompress(char* input, int llis_size, int ent_size);
 
 

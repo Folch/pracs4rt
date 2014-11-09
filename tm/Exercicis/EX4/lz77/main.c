@@ -53,6 +53,7 @@ int main(int argc,char *argv[]) {
 	strcpy(in,"0101010011101010111001100110011001100");
 
 	char* c = compress(in, size_llis, size_ent);
+	char* d = decompress(c, size_llis, size_ent);
 	//char* sub = substr(in, 10, 4);
 	//char* p = intToBits(3,8);
 
@@ -60,6 +61,7 @@ int main(int argc,char *argv[]) {
 
 	printf("entrada: %s\n", in);
 	printf("compress: %s\n", c);
+	printf("decompress: %s\n", d);
 	printf("%d entrada\n", size_ent);
 	printf("%d lliscant\n", size_llis);
 	return 0;

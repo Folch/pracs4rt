@@ -7,7 +7,8 @@
 #include <math.h>
 
 char *intToBits(int, int size);
-int BitsToInt(char*, int size);
+int bitsToInt(char*, int size);
 char *substr(char*, int pos, int size);
+char* randomInput(int n);
 
 #endif
