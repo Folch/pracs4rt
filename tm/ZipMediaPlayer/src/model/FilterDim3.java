@@ -28,29 +28,4 @@ public class FilterDim3 {
     public float[][] getFilter() {
         return filter;
     }
-
-    public float[] getDataKernel() {
-        float[] kernel = new float[filter.length * filter[0].length];
-        for (int k = 0; k < kernel.length; k++) {
-            for (int i = 0; i < filter.length; i++) {
-                for (int j = 0; j < filter[0].length; j++) {
-                    kernel[k] = filter[i][j];
-                
-                }
-
-            }
-
-        }
-        return kernel;
-
-    }
-
-    public int getWidth() {
-        return filter[0].length;
-    }
-
-    public int getHeight() {
-        return filter.length;
-    }
-
 }

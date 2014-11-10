@@ -164,17 +164,20 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void applyFilter(FilterDim3 filter) {
-        this.filter.convolveImages(images, filter);
+        this.images = this.filter.convolveImages((ArrayList<Imatge>) this.imagesCopia.clone(), filter);
+        first();
     }
 
     @Override
     public void negativeFilter() {
         this.filter.negativeFilter(images);
+        first();
     }
 
     @Override
     public void binaryFilter(int threshold) {
-        this.filter.binaryFilter(images, threshold);
+        this.filter.binaryFilter((ArrayList<Imatge>) this.imagesCopia.clone(), threshold);
+        first();
     }
 
     /**
@@ -187,7 +190,8 @@ public class MainController implements IPlayer, IFilter, IDisk {
      */
     @Override
     public void changeHSB(float hue, float saturation, float brightness) {
-        this.filter.changeHSB(images, hue, saturation, brightness);
+        this.images = this.filter.changeHSB((ArrayList<Imatge>) this.imagesCopia.clone(), hue, saturation, brightness);
+        first();
     }
 
     @Override
