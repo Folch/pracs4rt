@@ -78,7 +78,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
         };
 
         executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(nextRunnable, 0, this.time, TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(nextRunnable, 0, (long)((1.0f/this.time)*1000), TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -94,9 +94,6 @@ public class MainController implements IPlayer, IFilter, IDisk {
         this.zip = disk.openZip(path);
         this.images = compressor.decompressZip(zip);
         this.imagesCopia = (ArrayList<Imatge>) this.images.clone();
-        //this.filter.convolveImages(images, FilterDim3.AVERAGE);//per testejar i borrar
-        //this.filter.changeHSB(images, -1, -1, 0.01f);//per testejar i borrar
-        //this.filter.binaryFilter(images, 128);
     }
 
     @Override
