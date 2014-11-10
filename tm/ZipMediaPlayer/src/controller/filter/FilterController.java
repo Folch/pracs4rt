@@ -182,7 +182,7 @@ public class FilterController implements InternalIFilter {
         Kernel kernel = new Kernel(width, height, filtroK);
         ConvolveOp cop = new ConvolveOp(kernel, tratBordes, null);
 
-        //Creamos la imagen nova semblant a l'antiga
+        //Creem la imatge nova semblant a l'antiga
         res = new BufferedImage(imatge.getWidth(), imatge.getHeight(), imatge.getType());
 
         //Apliquem el filtre
