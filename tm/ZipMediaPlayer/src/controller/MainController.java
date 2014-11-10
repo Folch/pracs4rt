@@ -217,7 +217,9 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public boolean isPlaying() {
-        return this.executor.isShutdown();
+        if(executor != null)
+            return this.executor.isShutdown();
+        return false;
     }
 
     @Override
