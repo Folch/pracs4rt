@@ -219,6 +219,7 @@ public class CustomFilterDialog extends javax.swing.JDialog {
         switch (item) {
             case "Average":
                 enablePanel(false);
+                this.currentFilter = FilterDim3.AVERAGE;
                 showValue("1/9");
                 break;
             case "Sobel X":
