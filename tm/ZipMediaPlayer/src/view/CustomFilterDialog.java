@@ -16,6 +16,8 @@ public class CustomFilterDialog extends javax.swing.JDialog {
 
     private IFilter filter;
     
+    private FilterDim3 currentFilter;
+    
     /**
      * Creates new form OptionsDialog
      * @param parent
@@ -56,6 +58,7 @@ public class CustomFilterDialog extends javax.swing.JDialog {
     }
     
     private void showFilter(FilterDim3 f) {
+        this.currentFilter = f;
         field1.setText((int)f.getFilter()[0][0]+"");
         field2.setText((int)f.getFilter()[0][1]+"");
         field3.setText((int)f.getFilter()[0][2]+"");
@@ -65,6 +68,18 @@ public class CustomFilterDialog extends javax.swing.JDialog {
         field7.setText((int)f.getFilter()[2][0]+"");
         field8.setText((int)f.getFilter()[2][1]+"");
         field9.setText((int)f.getFilter()[2][2]+"");
+    }
+    
+    private FilterDim3 getPanelFilter() {
+        return new FilterDim3(Integer.parseInt(field1.getText()), 
+                Integer.parseInt(field2.getText()), 
+                Integer.parseInt(field3.getText()), 
+                Integer.parseInt(field4.getText()), 
+                Integer.parseInt(field5.getText()), 
+                Integer.parseInt(field6.getText()), 
+                Integer.parseInt(field7.getText()), 
+                Integer.parseInt(field8.getText()), 
+                Integer.parseInt(field9.getText()));      
     }
 
     /**
@@ -126,6 +141,11 @@ public class CustomFilterDialog extends javax.swing.JDialog {
         });
 
         applybtn.setText("Apply");
+        applybtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                applybtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -230,6 +250,13 @@ public class CustomFilterDialog extends javax.swing.JDialog {
     private void cancelbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelbtnActionPerformed
         this.dispose();
     }//GEN-LAST:event_cancelbtnActionPerformed
+
+    private void applybtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applybtnActionPerformed
+        FilterDim3 f = this.currentFilter;
+        if(((String)filterbox.getSelectedItem()).equals("Custom"))
+            f = getPanelFilter();
+        filter.applyFilter(f);
+    }//GEN-LAST:event_applybtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton applybtn;
