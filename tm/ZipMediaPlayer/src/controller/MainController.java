@@ -159,7 +159,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void removeFilter() {
-        this.images = (ArrayList<Imatge>) this.images.clone();
+        this.images = deepCopyArrayList(imagesCopia);
     }
 
     @Override
