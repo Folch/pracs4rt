@@ -176,7 +176,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void binaryFilter(int threshold) {
-        this.filter.binaryFilter((ArrayList<Imatge>) this.imagesCopia.clone(), threshold);
+        this.images = this.filter.binaryFilter((ArrayList<Imatge>) this.imagesCopia.clone(), threshold);
         first();
     }
 
