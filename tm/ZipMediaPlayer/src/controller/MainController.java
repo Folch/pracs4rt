@@ -159,13 +159,24 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void removeFilter() {
-        this.images = this.imagesCopia;
+        this.images = (ArrayList<Imatge>) this.images.clone();
     }
 
     @Override
     public void applyFilter(FilterDim3 filter) {
-        this.images = this.filter.convolveImages((ArrayList<Imatge>) this.imagesCopia.clone(), filter);
+        
+        this.images = this.filter.convolveImages(deepCopyArrayList(imagesCopia), filter);
         first();
+    }
+    private ArrayList<Imatge> deepCopyArrayList(ArrayList<Imatge> original){
+        ArrayList<Imatge> copia = new ArrayList<>(original.size());
+        for (Imatge img : original) {
+            Imatge im = new Imatge();
+            im.setName(img.getName());
+            im.setImage(img.deepCopy());
+            copia.add(im);
+        }
+        return copia;
     }
 
     @Override
@@ -176,7 +187,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void binaryFilter(int threshold) {
-        this.filter.binaryFilter((ArrayList<Imatge>) this.imagesCopia.clone(), threshold);
+        this.images = this.filter.binaryFilter(deepCopyArrayList(imagesCopia), threshold);
         first();
     }
 
@@ -190,7 +201,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
      */
     @Override
     public void changeHSB(float hue, float saturation, float brightness) {
-        this.images = this.filter.changeHSB((ArrayList<Imatge>) this.imagesCopia.clone(), hue, saturation, brightness);
+        this.images = this.filter.changeHSB(deepCopyArrayList(imagesCopia), hue, saturation, brightness);
         first();
     }
 
