@@ -384,7 +384,8 @@ public class MainFrame extends javax.swing.JFrame {
     private void customfiltermenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customfiltermenuActionPerformed
         if(!changeFilterState(FilterState.CUSTOM))
             return;
-        
+        CustomFilterDialog dialog = new CustomFilterDialog(this, true, filter);
+        dialog.setVisible(true);
     }//GEN-LAST:event_customfiltermenuActionPerformed
 
     private void hsbmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hsbmenuActionPerformed
@@ -409,7 +410,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void originalmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originalmenuActionPerformed
         if(!changeFilterState(FilterState.ORIGINAL))
             return;
-        
+        filter.removeFilter();
     }//GEN-LAST:event_originalmenuActionPerformed
 
     public void openFile(FileType fileType) {

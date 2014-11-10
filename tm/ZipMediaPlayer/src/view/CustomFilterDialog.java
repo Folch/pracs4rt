@@ -6,6 +6,7 @@
 package view;
 
 import controller.filter.IFilter;
+import model.FilterDim3;
 
 /**
  *
@@ -25,6 +26,45 @@ public class CustomFilterDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.filter =  filter;
+        
+        showFilter(FilterDim3.IDENTITY);
+    }
+    
+    
+    private void showValue(String value) {
+        field1.setText(value);
+        field2.setText(value);
+        field3.setText(value);
+        field4.setText(value);
+        field5.setText(value);
+        field6.setText(value);
+        field7.setText(value);
+        field8.setText(value);
+        field9.setText(value);
+    }
+    
+    private void enablePanel(boolean enabled) {
+        field1.setEnabled(enabled);
+        field2.setEnabled(enabled);
+        field3.setEnabled(enabled);
+        field4.setEnabled(enabled);
+        field5.setEnabled(enabled);
+        field6.setEnabled(enabled);
+        field7.setEnabled(enabled);
+        field8.setEnabled(enabled);
+        field9.setEnabled(enabled);
+    }
+    
+    private void showFilter(FilterDim3 f) {
+        field1.setText((int)f.getFilter()[0][0]+"");
+        field2.setText((int)f.getFilter()[0][1]+"");
+        field3.setText((int)f.getFilter()[0][2]+"");
+        field4.setText((int)f.getFilter()[1][0]+"");
+        field5.setText((int)f.getFilter()[1][1]+"");
+        field6.setText((int)f.getFilter()[1][2]+"");
+        field7.setText((int)f.getFilter()[2][0]+"");
+        field8.setText((int)f.getFilter()[2][1]+"");
+        field9.setText((int)f.getFilter()[2][2]+"");
     }
 
     /**
@@ -37,35 +77,44 @@ public class CustomFilterDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
+        field1 = new javax.swing.JTextField();
+        field2 = new javax.swing.JTextField();
+        field3 = new javax.swing.JTextField();
+        field4 = new javax.swing.JTextField();
+        field5 = new javax.swing.JTextField();
+        field6 = new javax.swing.JTextField();
+        field7 = new javax.swing.JTextField();
+        field8 = new javax.swing.JTextField();
+        field9 = new javax.swing.JTextField();
+        filterbox = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        field1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        field2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        field3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        field4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        field5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        field6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        field7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        field8.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jTextField9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        field9.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        filterbox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Average", "Sobel X", "Sobel Y", "Low Pass", "High Pass", "Laplacian", "Custom" }));
+        filterbox.setSelectedIndex(6);
+        filterbox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                filterboxItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,59 +124,100 @@ public class CustomFilterDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(field4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(field5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(field6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(field1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(field2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(field3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(filterbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(field7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(field8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(369, Short.MAX_VALUE))
+                        .addComponent(field9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(field1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(field2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(field3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(filterbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(field4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(field5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(field6, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(field7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(field8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(field9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void filterboxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_filterboxItemStateChanged
+        String item = (String) filterbox.getSelectedItem();
+        switch (item) {
+            case "Average":
+                enablePanel(false);
+                showValue("1/9");
+                break;
+            case "Sobel X":
+                enablePanel(false);
+                showFilter(FilterDim3.SOBEL_X);
+                break;
+            case "Sobel Y":
+                enablePanel(false);
+                showFilter(FilterDim3.SOBEL_Y);
+                break;
+            case "Low Pass":
+                enablePanel(false);
+                showFilter(FilterDim3.LOW_PASS);
+                break;
+            case "High Pass":
+                enablePanel(false);
+                showFilter(FilterDim3.HIGH_PASS);
+                break;
+            case "Laplacian":
+                enablePanel(false);
+                showFilter(FilterDim3.LAPLACIAN);
+                break;
+            case "Custom":
+                enablePanel(true);
+                break;
+        }
+    }//GEN-LAST:event_filterboxItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField field1;
+    private javax.swing.JTextField field2;
+    private javax.swing.JTextField field3;
+    private javax.swing.JTextField field4;
+    private javax.swing.JTextField field5;
+    private javax.swing.JTextField field6;
+    private javax.swing.JTextField field7;
+    private javax.swing.JTextField field8;
+    private javax.swing.JTextField field9;
+    private javax.swing.JComboBox filterbox;
     // End of variables declaration//GEN-END:variables
 }
