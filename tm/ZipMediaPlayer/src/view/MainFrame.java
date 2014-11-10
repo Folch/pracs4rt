@@ -346,7 +346,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void playbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playbtnActionPerformed
          if (player != null) {
-            if (prevbtn.isEnabled()) { // TODO: Marrano!! crear un métode al controller per saber l'estat
+            if (!player.isPlaying()) {
                 //Si està pressionat serà auto
                 changeState(State.OPEN_ZIP_PLAY);
                 player.play();
@@ -466,9 +466,10 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private void changeState(State state) {
-        changeFilterState(FilterState.ORIGINAL);
+        
         switch (state) {
             case OPEN_IMAGE:
+                changeFilterState(FilterState.ORIGINAL);
                 //menu item
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
@@ -522,6 +523,7 @@ public class MainFrame extends javax.swing.JFrame {
                 originalmenu.setEnabled(true);
                 break;
             case EMPTY:
+                changeFilterState(FilterState.ORIGINAL);
                 //menu item
                 savezipmenu.setEnabled(true);
                 savegzipmenu.setEnabled(true);
