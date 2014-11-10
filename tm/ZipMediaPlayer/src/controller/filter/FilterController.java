@@ -53,13 +53,17 @@ public class FilterController implements InternalIFilter {
         }
     }
 
+    private void grayScale(BufferedImage img) {
+        ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+        op.filter(img, img);
+    }
+
     @Override
-    public void binaryFilter(ArrayList<Imatge> imatges, int threshold) {
+    public ArrayList<Imatge> binaryFilter(ArrayList<Imatge> imatges, int threshold) {
         this.threshold = threshold;
         for (Imatge imatge : imatges) {
             BufferedImage img = imatge.getImage();
-            ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-            op.filter(img, img);
+            grayScale(img);
             for (int i = 0; i < img.getWidth(); i++) {
                 for (int j = 0; j < img.getHeight(); j++) {
                     Color c = new Color(img.getRGB(i, j));
@@ -81,10 +85,11 @@ public class FilterController implements InternalIFilter {
             }
 
         }
+        return imatges;
     }
 
     @Override
-    public void changeHSB(ArrayList<Imatge> imatges, float hue, float saturation, float brightness) {
+    public ArrayList<Imatge> changeHSB(ArrayList<Imatge> imatges, float hue, float saturation, float brightness) {
         float hu, sa, br;
         for (Imatge imatge : imatges) {
             for (int i = 0; i < imatge.getImage().getWidth(); i++) {
@@ -100,145 +105,94 @@ public class FilterController implements InternalIFilter {
                     hu = hsb[0];
                     if (hue != -1) { //si algun dels 3 valors es -1, deixem el mateix valor
                         hu += hue;
-                        hu = Math.max(hu, 1);
+                        hu = Math.min(hu, 1);
                     }
                     sa = hsb[1];
                     if (saturation != -1) {
                         sa += saturation;
-                        sa = Math.max(sa, 1);
+                        sa = Math.min(sa, 1);
                     }
                     br = hsb[2];
                     if (brightness != -1) {
                         br += brightness;
-                        br = Math.max(br, 1);
+                        br = Math.min(br, 1);
 
                     }
 
                     int rgb = Color.HSBtoRGB(hu, sa, br);
                     imatge.getImage().setRGB(i, j, rgb);
+                    
 
                 }
             }
         }
+        return imatges;
     }
-//copia dimatge original
-    //framerate
+
     @Override
-    public void convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter
+    public ArrayList<Imatge> convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter
     ) {
         this.lastFilterApplied = filter;
 
-        float[] filtre = filter.getDataKernel();
-        int width = filter.getWidth();
-        int height = filter.getHeight();
+        for (Imatge imatge : imatges) {
+            if (filter == FilterDim3.SOBEL_X || filter == FilterDim3.SOBEL_Y || filter == FilterDim3.HIGH_PASS || filter == FilterDim3.LAPLACIAN) {
+                grayScale(imatge.getImage());
+            }
+            imatge.setImage(this.convolve(filter.getFilter(), imatge.getImage(), BORDES_0));
+        }
+        return imatges;
+    }
+    /**
+     * Als bordes que surten de la imatge no s'els aplica el filtre
+     */
+    public static final int SENSE_BORDES = ConvolveOp.EDGE_NO_OP;
+    /**
+     * Els borders que es surten de la imatge s'avaluen com si tinguéssin valor
+     * 0
+     */
+    public static final int BORDES_0 = ConvolveOp.EDGE_ZERO_FILL;
 
-        Kernel kernel = new Kernel(width, height, filtre);
-        ConvolveOp conv = new ConvolveOp(kernel);
-        for (Imatge img : imatges) {
-            BufferedImage convolved = img.deepCopy();
-            conv.filter(img.getImage(), convolved);
-            img.setImage(convolved);
+    public BufferedImage convolve(float filtre[][], BufferedImage imatge, int tratBordes) {
+        BufferedImage res;
+
+        if (imatge == null) {
+            throw new IllegalArgumentException("La imatge no pot ser nula");
+        }
+        if (filtre == null || filtre.length == 0) {
+            throw new IllegalArgumentException("S'ha de passar algun filtre vàlid");
         }
 
-        /*
-         for (int k = 0; k < imatges.size(); k++) {
-         Imatge img = imatges.get(k);
-         int[][] imgR = new int[img.getImage().getWidth()][img.getImage().getHeight()];
-         int[][] imgG = new int[img.getImage().getWidth()][img.getImage().getHeight()];
-         int[][] imgB = new int[img.getImage().getWidth()][img.getImage().getHeight()];
+        if (tratBordes != SENSE_BORDES || tratBordes != BORDES_0) {
+            tratBordes = SENSE_BORDES;
+        }
 
-         for (int i = 0; i < img.getImage().getWidth(); i++) {
-         for (int j = 0; j < img.getImage().getHeight(); j++) {
-         Color c = new Color(img.getImage().getRGB(i, j));
-         int red = c.getRed();
-         int green = c.getGreen();
-         int blue = c.getBlue();
-         imgR[i][j] = red;
-         imgG[i][j] = green;
-         imgB[i][j] = blue;
-         }
-         }
-            
-         imgR = convolve(imgR, filtre);
-         imgG = convolve(imgG, filtre);
-         imgB = convolve(imgB, filtre);
-         for (int i = 0; i < img.getImage().getWidth(); i++) {
-         for (int j = 0; j < img.getImage().getHeight(); j++) {
-         byte red2 = (byte) imgR[i][j];
-         byte green2 = (byte) imgG[i][j];
-         byte blue2 = (byte) imgB[i][j];
-         //System.out.println("red ="+red);
-         int red = red2, green = green2, blue = blue2;
-         if (red2 < 0) {
-         red += 128;
-         }
-         if (green2 < 0) {
-         green += 128;
-         }
-         if (blue2 < 0) {
-         blue += 128;
-         }
-         //System.out.println(red);
-         Color c2 = new Color(red, green, blue);
-         int rgb = c2.getRGB();
-         img.getImage().setRGB(i, j, rgb);
-         }
-         }
-         }*/
+        int width = filtre.length;
+        int height = filtre[0].length;
+        int tam = width * height;
+        float filtroK[] = new float[tam];
+
+        //Creem el filtre
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                filtroK[i * width + j] = filtre[i][j];
+            }
+        }
+
+        //Creem l'operació de convolució
+        Kernel kernel = new Kernel(width, height, filtroK);
+        ConvolveOp cop = new ConvolveOp(kernel, tratBordes, null);
+
+        //Creem la imatge nova semblant a l'antiga
+        res = new BufferedImage(imatge.getWidth(), imatge.getHeight(), imatge.getType());
+
+        //Apliquem el filtre
+        cop.filter(imatge, res);
+
+        return res;
     }
 
     public int getThreshold() {
         return this.threshold;
-    }
-
-    public int[][] convolve(int[][] img, double[][] kernel) {
-
-        int xn, yn;
-        float average;
-
-        int w = img.length;
-        int h = img[0].length;
-        int[][] output = new int[w][h];
-
-        //--- IMAGE: Iterate through image pixels ---//
-        for (int x = 0; x < w; x++) {
-            for (int y = 0; y < h; y++) {
-
-                //--- KERNEL: Iterate through kernel ---//
-                average = 0;
-                for (int u = 0; u < kernel.length; u++) {
-                    for (int v = 0; v < kernel[0].length; v++) {
-
-                        //--- Get associated neighbor pixel coordinates ---//
-                        xn = x + u - kernel.length / 2;
-                        yn = y + v - kernel[0].length / 2;
-
-                        //--  Make sure we don't go off of an edge of the image ---//
-                        xn = constrain(xn, 0, w - 1);
-                        yn = constrain(yn, 0, h - 1);
-                        //--- Add weighted neighbor to average ---//
-                        average += img[xn][yn] * kernel[u][v];
-                    }
-                } /*--- KERNEL ---*/
-
-                //System.out.println("average="+(int)average);
-                //--- Set output pixel to weighted average value ---//
-
-                output[x][y] = (int) average;
-            }
-        } /*--- IMAGE ---*/
-
-        return output;
-    }
-
-    private int constrain(int x, int a, int b) {
-        if (x < a) {
-            return a;
-        } else if (b < x) {
-            return b;
-        } else {
-            return x;
-        }
     }
 
 }
