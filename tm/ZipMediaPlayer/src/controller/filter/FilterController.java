@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.util.ArrayList;
 import model.config.Config;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 
 /**
  *
@@ -83,7 +85,7 @@ public class FilterController implements InternalIFilter {
 
     @Override
     public void changeHSB(ArrayList<Imatge> imatges, float hue, float saturation, float brightness) {
-        float hu,sa,br;
+        float hu, sa, br;
         for (Imatge imatge : imatges) {
             for (int i = 0; i < imatge.getImage().getWidth(); i++) {
                 for (int j = 0; j < imatge.getImage().getHeight(); j++) {
@@ -94,7 +96,7 @@ public class FilterController implements InternalIFilter {
                     g = c.getGreen();
                     b = c.getBlue();
                     float[] hsb = Color.RGBtoHSB(r, g, b, null);
-                    
+
                     hu = hsb[0];
                     if (hue != -1) { //si algun dels 3 valors es -1, deixem el mateix valor
                         hu += hue;
@@ -119,55 +121,70 @@ public class FilterController implements InternalIFilter {
             }
         }
     }
-
+//copia dimatge original
+    //framerate
     @Override
     public void convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter
     ) {
         this.lastFilterApplied = filter;
-        double[][] filtre = filter.getFilter();
-        for (int k = 0; k < imatges.size(); k++) {
-            Imatge img = imatges.get(k);
-            int[][] imgR = new int[img.getImage().getWidth()][img.getImage().getHeight()];
-            int[][] imgG = new int[img.getImage().getWidth()][img.getImage().getHeight()];
-            int[][] imgB = new int[img.getImage().getWidth()][img.getImage().getHeight()];
 
-            for (int i = 0; i < img.getImage().getWidth(); i++) {
-                for (int j = 0; j < img.getImage().getHeight(); j++) {
-                    Color c = new Color(img.getImage().getRGB(i, j));
-                    int red = c.getRed();
-                    int green = c.getGreen();
-                    int blue = c.getBlue();
-                    imgR[i][j] = red;
-                    imgG[i][j] = green;
-                    imgB[i][j] = blue;
-                }
-            }
-            imgR = convolve(imgR, filtre);
-            imgG = convolve(imgG, filtre);
-            imgB = convolve(imgB, filtre);
-            for (int i = 0; i < img.getImage().getWidth(); i++) {
-                for (int j = 0; j < img.getImage().getHeight(); j++) {
-                    byte red2 = (byte) imgR[i][j];
-                    byte green2 = (byte) imgG[i][j];
-                    byte blue2 = (byte) imgB[i][j];
-                    //System.out.println("red ="+red);
-                    int red = red2, green = green2, blue = blue2;
-                    if (red2 < 0) {
-                        red += 128;
-                    }
-                    if (green2 < 0) {
-                        green += 128;
-                    }
-                    if (blue2 < 0) {
-                        blue += 128;
-                    }
-                    //System.out.println(red);
-                    Color c2 = new Color(red, green, blue);
-                    int rgb = c2.getRGB();
-                    img.getImage().setRGB(i, j, rgb);
-                }
-            }
+        float[] filtre = filter.getDataKernel();
+        int width = filter.getWidth();
+        int height = filter.getHeight();
+
+        Kernel kernel = new Kernel(width, height, filtre);
+        ConvolveOp conv = new ConvolveOp(kernel);
+        for (Imatge img : imatges) {
+            BufferedImage convolved = img.deepCopy();
+            conv.filter(img.getImage(), convolved);
+            img.setImage(convolved);
         }
+
+        /*
+         for (int k = 0; k < imatges.size(); k++) {
+         Imatge img = imatges.get(k);
+         int[][] imgR = new int[img.getImage().getWidth()][img.getImage().getHeight()];
+         int[][] imgG = new int[img.getImage().getWidth()][img.getImage().getHeight()];
+         int[][] imgB = new int[img.getImage().getWidth()][img.getImage().getHeight()];
+
+         for (int i = 0; i < img.getImage().getWidth(); i++) {
+         for (int j = 0; j < img.getImage().getHeight(); j++) {
+         Color c = new Color(img.getImage().getRGB(i, j));
+         int red = c.getRed();
+         int green = c.getGreen();
+         int blue = c.getBlue();
+         imgR[i][j] = red;
+         imgG[i][j] = green;
+         imgB[i][j] = blue;
+         }
+         }
+            
+         imgR = convolve(imgR, filtre);
+         imgG = convolve(imgG, filtre);
+         imgB = convolve(imgB, filtre);
+         for (int i = 0; i < img.getImage().getWidth(); i++) {
+         for (int j = 0; j < img.getImage().getHeight(); j++) {
+         byte red2 = (byte) imgR[i][j];
+         byte green2 = (byte) imgG[i][j];
+         byte blue2 = (byte) imgB[i][j];
+         //System.out.println("red ="+red);
+         int red = red2, green = green2, blue = blue2;
+         if (red2 < 0) {
+         red += 128;
+         }
+         if (green2 < 0) {
+         green += 128;
+         }
+         if (blue2 < 0) {
+         blue += 128;
+         }
+         //System.out.println(red);
+         Color c2 = new Color(red, green, blue);
+         int rgb = c2.getRGB();
+         img.getImage().setRGB(i, j, rgb);
+         }
+         }
+         }*/
     }
 
     public int getThreshold() {
