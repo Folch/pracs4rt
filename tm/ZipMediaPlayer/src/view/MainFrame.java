@@ -382,16 +382,15 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_optionsmenuActionPerformed
 
     private void customfiltermenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customfiltermenuActionPerformed
-        if(!changeFilterState(FilterState.CUSTOM))
-            return;
+        changeFilterState(FilterState.CUSTOM);
         CustomFilterDialog dialog = new CustomFilterDialog(this, true, filter);
         dialog.setVisible(true);
     }//GEN-LAST:event_customfiltermenuActionPerformed
 
     private void hsbmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hsbmenuActionPerformed
-        if(!changeFilterState(FilterState.HSB))
-            return;
-        
+        changeFilterState(FilterState.HSB);
+        HSBFilterDialog dialog = new HSBFilterDialog(this, true, filter);
+        dialog.setVisible(true);
     }//GEN-LAST:event_hsbmenuActionPerformed
 
     private void negativemenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_negativemenuActionPerformed
@@ -401,8 +400,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_negativemenuActionPerformed
 
     private void binarymenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_binarymenuActionPerformed
-        if(!changeFilterState(FilterState.BINARY))
-            return;
+        changeFilterState(FilterState.BINARY);
         BinaryFilterDialog dialog = new BinaryFilterDialog(this, true, filter);
         dialog.setVisible(true);
     }//GEN-LAST:event_binarymenuActionPerformed
@@ -439,8 +437,6 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private boolean changeFilterState(FilterState state) {
-        if(state == currentFilterState)
-            return false;
         customfiltermenu.setState(false);
         hsbmenu.setState(false);
         negativemenu.setState(false);
@@ -463,6 +459,8 @@ public class MainFrame extends javax.swing.JFrame {
                 originalmenu.setState(true);
                 break;
         }
+        if(state == currentFilterState)
+            return false;
         currentFilterState = state;
         return true;
     }
