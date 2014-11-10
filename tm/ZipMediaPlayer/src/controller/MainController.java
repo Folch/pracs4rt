@@ -59,9 +59,8 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void pause() {
-        if (executor != null) {
+        if (executor != null) 
             executor.shutdown();
-        }
     }
 
     @Override
@@ -217,8 +216,9 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public boolean isPlaying() {
-        if(executor != null)
-            return this.executor.isShutdown();
+        if(executor != null){
+            return !this.executor.isShutdown();
+        }
         return false;
     }
 
