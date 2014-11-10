@@ -171,7 +171,7 @@ public class FilterController implements InternalIFilter {
         int tam = width * height;
         float filtroK[] = new float[tam];
 
-        //Creamos el filtro
+        //Creem el filtre
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 filtroK[i * width + j] = filtre[i][j];
