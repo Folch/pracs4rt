@@ -11,7 +11,7 @@ package model;
  */
 public class FilterDim3 {
 
-    public final static FilterDim3 AVERAGE = new FilterDim3(1 / 9.0, 1 / 9.0, 1 / 9.0, 1 / 9.0, 1 / 9.0, 1 / 9.0, 1 / 9.0, 1 / 9.0, 1 / 9.0);
+    public final static FilterDim3 AVERAGE = new FilterDim3(1 / 9.0f, 1 / 9.0f, 1 / 9.0f, 1 / 9.0f, 1 / 9.0f, 1 / 9.0f, 1 / 9.0f, 1 / 9.0f, 1 / 9.0f);
     public final static FilterDim3 SOBEL_X = new FilterDim3(-1, 0, 1, -2, 0, 2, -1, 0, 1);
     public final static FilterDim3 SOBEL_Y = new FilterDim3(1, 2, 1, 0, 0, 0, -1, -2, -1);
     public final static FilterDim3 LOW_PASS = new FilterDim3(1, 1, 1, 1, 1, 1, 1, 1, 1);
@@ -19,14 +19,38 @@ public class FilterDim3 {
     public final static FilterDim3 LAPLACIAN = new FilterDim3(0, -1, 0, -1, 4, -1, 0, -1, 0);
     public final static FilterDim3 IDENTITY = new FilterDim3(0, 0, 0, 0, 1, 0, 0, 0, 0);
 
-    private final double[][] filter;
+    private final float[][] filter;
 
-    public FilterDim3(double a, double b, double c, double d, double e, double f, double g, double h, double i) {
-        this.filter = new double[][]{{a, b, c}, {d, e, f}, {g, h, i}};
+    public FilterDim3(float a, float b, float c, float d, float e, float f, float g, float h, float i) {
+        this.filter = new float[][]{{a, b, c}, {d, e, f}, {g, h, i}};
     }
 
-    public double[][] getFilter() {
+    public float[][] getFilter() {
         return filter;
+    }
+
+    public float[] getDataKernel() {
+        float[] kernel = new float[filter.length * filter[0].length];
+        for (int k = 0; k < kernel.length; k++) {
+            for (int i = 0; i < filter.length; i++) {
+                for (int j = 0; j < filter[0].length; j++) {
+                    kernel[k] = filter[i][j];
+                
+                }
+
+            }
+
+        }
+        return kernel;
+
+    }
+
+    public int getWidth() {
+        return filter[0].length;
+    }
+
+    public int getHeight() {
+        return filter.length;
     }
 
 }
