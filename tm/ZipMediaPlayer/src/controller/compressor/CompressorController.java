@@ -80,7 +80,7 @@ public class CompressorController implements ICompressor {
                 BufferedImage bufImg = ImageIO.read(iis);
                 image.setImage(bufImg);
                 outputfile = new File(image.getName());
-                ImageIO.write(image.getImage(), "png", outputfile);
+                ImageIO.write(image.getImage(), "jpg", outputfile);
                 files.add(outputfile);
                 
             } catch (IOException ex) {
