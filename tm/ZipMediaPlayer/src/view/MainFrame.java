@@ -383,13 +383,13 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void customfiltermenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customfiltermenuActionPerformed
         changeFilterState(FilterState.CUSTOM);
-        CustomFilterDialog dialog = new CustomFilterDialog(this, true, filter);
+        CustomFilterDialog dialog = new CustomFilterDialog(this, false, filter);
         dialog.setVisible(true);
     }//GEN-LAST:event_customfiltermenuActionPerformed
 
     private void hsbmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hsbmenuActionPerformed
         changeFilterState(FilterState.HSB);
-        HSBFilterDialog dialog = new HSBFilterDialog(this, true, filter);
+        HSBFilterDialog dialog = new HSBFilterDialog(this, false, filter);
         dialog.setVisible(true);
     }//GEN-LAST:event_hsbmenuActionPerformed
 
@@ -401,7 +401,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void binarymenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_binarymenuActionPerformed
         changeFilterState(FilterState.BINARY);
-        BinaryFilterDialog dialog = new BinaryFilterDialog(this, true, filter);
+        BinaryFilterDialog dialog = new BinaryFilterDialog(this, false, filter);
         dialog.setVisible(true);
     }//GEN-LAST:event_binarymenuActionPerformed
 
