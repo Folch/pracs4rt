@@ -21,11 +21,10 @@ public interface IFilter {
     public void changeHSB(float hue, float saturation, float brightness);
     public void removeFilter();
     
-    /*
+
     public float getHue();
     public float getSaturation();
     public float getBrightness();
-    */
     public int getThreshold();
     public FilterDim3 getFilterDim3();
     

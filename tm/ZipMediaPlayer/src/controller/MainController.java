@@ -232,4 +232,19 @@ public class MainController implements IPlayer, IFilter, IDisk {
     public DirectionType getDirection() {
         return this.dir;
     }
+
+    @Override
+    public float getHue() {
+        return 0.0f;
+    }
+
+    @Override
+    public float getSaturation() {
+        return 0.0f;
+    }
+
+    @Override
+    public float getBrightness() {
+        return 0.0f;
+    }
 }

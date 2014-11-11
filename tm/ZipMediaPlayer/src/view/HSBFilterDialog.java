@@ -27,6 +27,14 @@ public class HSBFilterDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.filter =  filter;
+        
+        float h = filter.getHue();
+        float s = filter.getSaturation();
+        float b = filter.getBrightness();
+        
+        hueslider.setValue((int) (h*100));
+        saturationslider.setValue((int) (s*100));
+        brightnessslider.setValue((int) (b*100));
     }
     
     
