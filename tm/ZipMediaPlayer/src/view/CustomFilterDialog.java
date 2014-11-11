@@ -29,7 +29,7 @@ public class CustomFilterDialog extends javax.swing.JDialog {
         initComponents();
         this.filter =  filter;
         
-        showFilter(FilterDim3.IDENTITY);
+        showFilter(filter.getFilterDim3());
     }
     
     

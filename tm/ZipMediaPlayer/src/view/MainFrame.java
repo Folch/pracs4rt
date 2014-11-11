@@ -199,7 +199,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         filebar.add(savegzipmenu);
 
-        exitmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        exitmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         exitmenu.setText("Exit");
         exitmenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -358,7 +358,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_playbtnActionPerformed
 
     private void savezipmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savezipmenuActionPerformed
-        saver.saveZip(showSaveFileChooser());
+        String path = showSaveFileChooser();
+        if(path != null)
+            saver.saveZip(path);
     }//GEN-LAST:event_savezipmenuActionPerformed
 
     private void exitmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitmenuActionPerformed
@@ -366,7 +368,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exitmenuActionPerformed
 
     private void savegzipmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savegzipmenuActionPerformed
-        saver.saveGZip(showSaveFileChooser());
+        String path = showSaveFileChooser();
+        if(path != null)
+            saver.saveGZip(path);
     }//GEN-LAST:event_savegzipmenuActionPerformed
 
     private void fullscreenmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullscreenmenuActionPerformed
@@ -525,9 +529,9 @@ public class MainFrame extends javax.swing.JFrame {
             case EMPTY:
                 changeFilterState(FilterState.ORIGINAL);
                 //menu item
-                savezipmenu.setEnabled(true);
-                savegzipmenu.setEnabled(true);
-                saveimagemenu.setEnabled(true);
+                savezipmenu.setEnabled(false);
+                savegzipmenu.setEnabled(false);
+                saveimagemenu.setEnabled(false);
                 //player items
                 optionsmenu.setEnabled(false);
                 prevbtn.setEnabled(false);
