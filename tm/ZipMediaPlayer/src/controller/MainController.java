@@ -52,9 +52,10 @@ public class MainController implements IPlayer, IFilter, IDisk {
     @Override
     public void setFrameRate(int time) {
         this.time = time;
+        boolean isPlaying = isPlaying();
         pause();
-        play();
-        
+        if(isPlaying)
+            play();
     }
 
     @Override
