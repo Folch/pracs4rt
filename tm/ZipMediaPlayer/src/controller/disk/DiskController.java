@@ -61,6 +61,9 @@ public class DiskController implements InternalIDisk {
 
     @Override
     public void saveImage(String path, Imatge img) {
+        while (path.endsWith(".png")) {
+            path = path.substring(0, path.length() - 4);
+        }
         try {
             BufferedImage bi = img.getImage();
             File outputfile = new File(path + ".png");
@@ -73,6 +76,9 @@ public class DiskController implements InternalIDisk {
 
     @Override
     public void saveZip(String path, ArrayList<Imatge> imatges) {
+        while (path.endsWith(".zip")) {
+            path = path.substring(0, path.length() - 4);
+        }
         try {
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(new File(path + ".zip"))));
             for (Imatge imatge : imatges) {
@@ -112,7 +118,6 @@ public class DiskController implements InternalIDisk {
                 gzos.finish();
                 gzos.close();
 
-
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -120,7 +125,7 @@ public class DiskController implements InternalIDisk {
 
         }
 
-    //mirar http://rauschig.org/jarchivelib/apidocs/
+        //mirar http://rauschig.org/jarchivelib/apidocs/
         //File archive = new File("/home/thrau/archive.tar.gz");
         //File destination = new File(path + "tar.gz");
         //Archiver archiver = ArchiverFactory.createArchiver("tar", "gz");
