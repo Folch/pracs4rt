@@ -47,6 +47,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
         this.disk = new DiskController();
         this.filter = new FilterController();
         this.images = new ArrayList<>();
+        this.imagesCopia = new ArrayList<>();
     }
 
     @Override
@@ -95,7 +96,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
         }
         this.zip = disk.openZip(path);
         this.images = compressor.decompressZip(zip);
-        this.imagesCopia = (ArrayList<Imatge>) this.images.clone();
+        this.imagesCopia = deepCopyArrayList(images);
     }
 
     @Override
