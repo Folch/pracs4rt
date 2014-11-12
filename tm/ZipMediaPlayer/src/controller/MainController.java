@@ -54,14 +54,16 @@ public class MainController implements IPlayer, IFilter, IDisk {
         this.time = time;
         boolean isPlaying = isPlaying();
         pause();
-        if(isPlaying)
+        if (isPlaying) {
             play();
+        }
     }
 
     @Override
     public void pause() {
-        if (executor != null) 
+        if (executor != null) {
             executor.shutdown();
+        }
     }
 
     @Override
@@ -78,7 +80,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
         };
 
         executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(nextRunnable, 0, (long)((1.0f/this.time)*1000), TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(nextRunnable, 0, (long) ((1.0f / this.time) * 1000), TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -164,11 +166,12 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void applyFilter(FilterDim3 filter) {
-        
+
         this.images = this.filter.convolveImages(deepCopyArrayList(imagesCopia), filter);
         first();
     }
-    private ArrayList<Imatge> deepCopyArrayList(ArrayList<Imatge> original){
+
+    private ArrayList<Imatge> deepCopyArrayList(ArrayList<Imatge> original) {
         ArrayList<Imatge> copia = new ArrayList<>(original.size());
         for (Imatge img : original) {
             Imatge im = new Imatge();
@@ -193,7 +196,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     /**
      * Mètode per canviar els valors de HSB de totes les imatges, si algun dels
-     * 3 paràmetres no es volen modificar s'ha de passar -1.
+     * 3 paràmetres no es volen modificar s'ha de passar 0.
      *
      * @param hue
      * @param saturation
@@ -207,7 +210,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public int getThreshold() {
-        return this.filter.getThreshold() == -1 ? Config.DEFAULT_THRESHOLD : this.filter.getThreshold();
+        return this.filter.getThreshold();
     }
 
     @Override
@@ -217,7 +220,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public boolean isPlaying() {
-        if(executor != null){
+        if (executor != null) {
             return !this.executor.isShutdown();
         }
         return false;
@@ -235,16 +238,16 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public float getHue() {
-        return 0.0f;
+        return this.filter.getLastHue();
     }
 
     @Override
     public float getSaturation() {
-        return 0.0f;
+        return this.filter.getLastSaturation();
     }
 
     @Override
     public float getBrightness() {
-        return 0.0f;
+        return this.filter.getLastValue();
     }
 }
