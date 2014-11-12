@@ -24,10 +24,16 @@ public class FilterController implements InternalIFilter {
 
     private int threshold;
     private FilterDim3 lastFilterApplied;
+    private float lastHue;
+    private float lastSaturation;
+    private float lastValue;
 
     public FilterController() {
-        this.threshold = -1;
+        this.threshold = Config.DEFAULT_THRESHOLD;
         this.lastFilterApplied = Config.DEFAULT_FILTER;
+        this.lastHue = Config.DEFAULT_HUE;
+        this.lastSaturation = Config.DEFAULT_SATURATION;
+        this.lastValue = Config.DEFAULT_VALUE;
     }
 
     public FilterDim3 getLastFilterApplied() {
@@ -90,6 +96,9 @@ public class FilterController implements InternalIFilter {
 
     @Override
     public ArrayList<Imatge> changeHSB(ArrayList<Imatge> imatges, float hue, float saturation, float brightness) {
+        lastHue = hue;
+        lastSaturation = saturation;
+        lastValue = brightness;
         float hu, sa, br;
         for (Imatge imatge : imatges) {
             for (int i = 0; i < imatge.getImage().getWidth(); i++) {
@@ -103,17 +112,17 @@ public class FilterController implements InternalIFilter {
                     float[] hsb = Color.RGBtoHSB(r, g, b, null);
 
                     hu = hsb[0];
-                    if (hue != -1) { //si algun dels 3 valors es -1, deixem el mateix valor
+                    if (hue != 0) { //si algun dels 3 valors es -1, deixem el mateix valor
                         hu += hue;
                         hu = Math.min(hu, 1);
                     }
                     sa = hsb[1];
-                    if (saturation != -1) {
+                    if (saturation != 0) {
                         sa += saturation;
                         sa = Math.min(sa, 1);
                     }
                     br = hsb[2];
-                    if (brightness != -1) {
+                    if (brightness != 0) {
                         br += brightness;
                         br = Math.min(br, 1);
 
@@ -193,6 +202,18 @@ public class FilterController implements InternalIFilter {
 
     public int getThreshold() {
         return this.threshold;
+    }
+
+    public float getLastHue() {
+        return lastHue;
+    }
+
+    public float getLastSaturation() {
+        return lastSaturation;
+    }
+
+    public float getLastValue() {
+        return lastValue;
     }
 
 }

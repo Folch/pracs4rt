@@ -16,4 +16,7 @@ public class Config {
     public static int DEFAULT_FRAME_RATE = 60;
     public static int DEFAULT_THRESHOLD = 128;
     public static FilterDim3 DEFAULT_FILTER = FilterDim3.IDENTITY;
+    public static float DEFAULT_HUE = 0;
+    public static float DEFAULT_VALUE = 0;
+    public static float DEFAULT_SATURATION = 0;
 }
