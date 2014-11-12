@@ -3,26 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.filter;
+package controller.filter.threads;
 
+import controller.filter.FilterController;
 import static controller.filter.FilterController.BORDES_0;
-import java.util.ArrayList;
 import model.FilterDim3;
-import model.Imatge;
 
 /**
  *
  * @author albert
  */
-public class FilterThead implements Runnable {
+public class ConvolveThread implements Runnable {
 
     private final FilterController filter;
-    private final int start,end;
-    public FilterThead(FilterController filter,int start,int end) {
+    private final int start, end;
+
+    public ConvolveThread(FilterController filter, int start, int end) {
         this.filter = filter;
         this.start = start;
         this.end = end;
-        
     }
 
     @Override
@@ -34,5 +33,6 @@ public class FilterThead implements Runnable {
             }
             this.filter.getImatges().get(i).setImage(this.filter.convolve(this.filter.getLastFilterApplied().getFilter(), this.filter.getImatges().get(i).getImage(), BORDES_0));
         }
+
     }
 }
