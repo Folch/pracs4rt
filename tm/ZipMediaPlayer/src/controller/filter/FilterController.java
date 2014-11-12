@@ -5,6 +5,10 @@
  */
 package controller.filter;
 
+import controller.filter.threads.BinaryThread;
+import controller.filter.threads.ConvolveThread;
+import controller.filter.threads.HsbThread;
+import controller.filter.threads.NegativeThread;
 import model.FilterDim3;
 import model.Imatge;
 import java.awt.Color;
@@ -51,25 +55,33 @@ public class FilterController implements InternalIFilter {
 
     @Override
     public ArrayList<Imatge> negativeFilter(ArrayList<Imatge> imatges) {
-        for (Imatge imatge : imatges) {
-            BufferedImage img = imatge.getImage();
-            for (int i = 0; i < img.getWidth(); i++) {
-                for (int j = 0; j < img.getHeight(); j++) {
-                    Color c = new Color(img.getRGB(i, j));
-                    int r = c.getRed();
-                    int g = c.getGreen();
-                    int b = c.getBlue();
-                    r = 255 - r;
-                    g = 255 - g;
-                    b = 255 - b;
-                    img.setRGB(i, j, new Color(r, g, b).getRGB());
-                }
+        try {
+            int cadaQuan = imatges.size() / numProcessors;
+            int inici = 0, end = cadaQuan;
+            this.imatges = imatges;
+
+            ArrayList<Thread> threads = new ArrayList<>();
+            for (int i = 0; i < numProcessors; i++) {
+                Runnable r = new NegativeThread(this, inici, end);
+                Thread a = new Thread(r);
+                a.start();
+                threads.add(a);
+                inici += cadaQuan;
+                end += cadaQuan;
+
             }
+            for (int i = 0; i < numProcessors; i++) {
+                threads.get(i).join();
+
+            }
+
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FilterController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return imatges;
     }
 
-    void grayScale(BufferedImage img) {
+    public void grayScale(BufferedImage img) {
         for (int i = 0; i < img.getWidth(); i++) {
             for (int j = 0; j < img.getHeight(); j++) {
                 Color c = new Color(img.getRGB(i, j));
@@ -93,29 +105,28 @@ public class FilterController implements InternalIFilter {
     @Override
     public ArrayList<Imatge> binaryFilter(ArrayList<Imatge> imatges, int threshold) {
         this.threshold = threshold;
-        for (Imatge imatge : imatges) {
-            BufferedImage img = imatge.getImage();
-            grayScale(img);
-            for (int i = 0; i < img.getWidth(); i++) {
-                for (int j = 0; j < img.getHeight(); j++) {
-                    Color c = new Color(img.getRGB(i, j));
-                    int g, b, r;
-                    r = c.getRed();
-                    if (r < threshold) {
-                        r = 0;
-                        g = 0;
-                        b = 0;
-                    } else {
-                        r = 255;
-                        g = 255;
-                        b = 255;
-                    }
-                    int rgb = new Color(r, g, b).getRGB();
-                    img.setRGB(i, j, rgb);
-                }
+        try {
+            int cadaQuan = imatges.size() / numProcessors;
+            int inici = 0, end = cadaQuan;
+            this.imatges = imatges;
+
+            ArrayList<Thread> threads = new ArrayList<>();
+            for (int i = 0; i < numProcessors; i++) {
+                Runnable r = new BinaryThread(this, inici, end);
+                Thread a = new Thread(r);
+                a.start();
+                threads.add(a);
+                inici += cadaQuan;
+                end += cadaQuan;
+
+            }
+            for (int i = 0; i < numProcessors; i++) {
+                threads.get(i).join();
 
             }
 
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FilterController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return imatges;
     }
@@ -125,40 +136,29 @@ public class FilterController implements InternalIFilter {
         lastHue = hue;
         lastSaturation = saturation;
         lastValue = brightness;
-        float hu, sa, br;
-        for (Imatge imatge : imatges) {
-            for (int i = 0; i < imatge.getImage().getWidth(); i++) {
-                for (int j = 0; j < imatge.getImage().getHeight(); j++) {
-                    int rgbCurrent = imatge.getImage().getRGB(i, j);
-                    Color c = new Color(rgbCurrent);
-                    int g, b, r;
-                    r = c.getRed();
-                    g = c.getGreen();
-                    b = c.getBlue();
-                    float[] hsb = Color.RGBtoHSB(r, g, b, null);
+        
+        try {
+            int cadaQuan = imatges.size() / numProcessors;
+            int inici = 0, end = cadaQuan;
+            this.imatges = imatges;
 
-                    hu = hsb[0];
-                    if (hue != 0) { //si algun dels 3 valors es -1, deixem el mateix valor
-                        hu += hue;
-                        hu = Math.min(hu, 1);
-                    }
-                    sa = hsb[1];
-                    if (saturation != 0) {
-                        sa += saturation;
-                        sa = Math.min(sa, 1);
-                    }
-                    br = hsb[2];
-                    if (brightness != 0) {
-                        br += brightness;
-                        br = Math.min(br, 1);
+            ArrayList<Thread> threads = new ArrayList<>();
+            for (int i = 0; i < numProcessors; i++) {
+                Runnable r = new HsbThread(this, inici, end);
+                Thread a = new Thread(r);
+                a.start();
+                threads.add(a);
+                inici += cadaQuan;
+                end += cadaQuan;
 
-                    }
-
-                    int rgb = Color.HSBtoRGB(hu, sa, br);
-                    imatge.getImage().setRGB(i, j, rgb);
-
-                }
             }
+            for (int i = 0; i < numProcessors; i++) {
+                threads.get(i).join();
+
+            }
+
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FilterController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return imatges;
     }
@@ -174,7 +174,7 @@ public class FilterController implements InternalIFilter {
 
             ArrayList<Thread> threads = new ArrayList<>();
             for (int i = 0; i < numProcessors; i++) {
-                Runnable r = new FilterThead(this, inici, end);
+                Runnable r = new ConvolveThread(this, inici, end);
                 Thread a = new Thread(r);
                 a.start();
                 threads.add(a);
