@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import model.config.Config;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,6 +31,9 @@ public class FilterController implements InternalIFilter {
     private float lastHue;
     private float lastSaturation;
     private float lastValue;
+    private ExecutorService executorFilter;
+    private int numProcessors;
+    private ArrayList<Imatge> imatges;
 
     public FilterController() {
         this.threshold = Config.DEFAULT_THRESHOLD;
@@ -34,6 +41,8 @@ public class FilterController implements InternalIFilter {
         this.lastHue = Config.DEFAULT_HUE;
         this.lastSaturation = Config.DEFAULT_SATURATION;
         this.lastValue = Config.DEFAULT_VALUE;
+        this.numProcessors = Runtime.getRuntime().availableProcessors();
+        this.executorFilter = Executors.newFixedThreadPool(numProcessors);
     }
 
     public FilterDim3 getLastFilterApplied() {
@@ -60,9 +69,25 @@ public class FilterController implements InternalIFilter {
         return imatges;
     }
 
-    private void grayScale(BufferedImage img) {
-        ColorConvertOp op = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-        op.filter(img, img);
+    void grayScale(BufferedImage img) {
+        for (int i = 0; i < img.getWidth(); i++) {
+            for (int j = 0; j < img.getHeight(); j++) {
+                Color c = new Color(img.getRGB(i, j));
+                int g, b, r;
+                r = c.getRed();
+                g = c.getGreen();
+                b = c.getBlue();
+                int mean = (int) (((float) r) + g + b) / 3;
+                r = mean;
+                g = mean;
+                b = mean;
+
+                int rgb = new Color(r, g, b).getRGB();
+                img.setRGB(i, j, rgb);
+            }
+
+        }
+
     }
 
     @Override
@@ -131,7 +156,6 @@ public class FilterController implements InternalIFilter {
 
                     int rgb = Color.HSBtoRGB(hu, sa, br);
                     imatge.getImage().setRGB(i, j, rgb);
-                    
 
                 }
             }
@@ -142,13 +166,29 @@ public class FilterController implements InternalIFilter {
     @Override
     public ArrayList<Imatge> convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter
     ) {
-        this.lastFilterApplied = filter;
+        try {
+            this.lastFilterApplied = filter;
+            int cadaQuan = imatges.size() / numProcessors;
+            int inici = 0, end = cadaQuan;
+            this.imatges = imatges;
 
-        for (Imatge imatge : imatges) {
-            if (filter == FilterDim3.SOBEL_X || filter == FilterDim3.SOBEL_Y || filter == FilterDim3.HIGH_PASS || filter == FilterDim3.LAPLACIAN) {
-                grayScale(imatge.getImage());
+            ArrayList<Thread> threads = new ArrayList<>();
+            for (int i = 0; i < numProcessors; i++) {
+                Runnable r = new FilterThead(this, inici, end);
+                Thread a = new Thread(r);
+                a.start();
+                threads.add(a);
+                inici += cadaQuan;
+                end += cadaQuan;
+
             }
-            imatge.setImage(this.convolve(filter.getFilter(), imatge.getImage(), BORDES_0));
+            for (int i = 0; i < numProcessors; i++) {
+                threads.get(i).join();
+
+            }
+
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FilterController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return imatges;
     }
@@ -215,6 +255,10 @@ public class FilterController implements InternalIFilter {
 
     public float getLastValue() {
         return lastValue;
+    }
+
+    public ArrayList<Imatge> getImatges() {
+        return imatges;
     }
 
 }

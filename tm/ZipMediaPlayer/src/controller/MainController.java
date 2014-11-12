@@ -79,7 +79,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
                 }
             }
         };
-
+        
         executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(nextRunnable, 0, (long) ((1.0f / this.time) * 1000), TimeUnit.MILLISECONDS);
     }
