@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @author albert
  */
 public interface InternalIFilter {
-    public void negativeFilter(ArrayList<Imatge> imatges);
+    public ArrayList<Imatge> negativeFilter(ArrayList<Imatge> imatges);
     public ArrayList<Imatge> binaryFilter(ArrayList<Imatge> imatges, int threshold);
     public ArrayList<Imatge> changeHSB(ArrayList<Imatge> imatges, float hue, float saturation, float brightness);
     public ArrayList<Imatge> convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter);

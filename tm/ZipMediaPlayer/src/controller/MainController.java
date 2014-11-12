@@ -163,6 +163,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
     @Override
     public void removeFilter() {
         this.images = deepCopyArrayList(imagesCopia);
+        first();
     }
 
     @Override
@@ -185,7 +186,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void negativeFilter() {
-        this.filter.negativeFilter(images);
+        this.images = this.filter.negativeFilter(deepCopyArrayList(imagesCopia));
         first();
     }
 

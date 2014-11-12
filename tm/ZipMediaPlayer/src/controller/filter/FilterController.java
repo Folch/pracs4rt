@@ -41,7 +41,7 @@ public class FilterController implements InternalIFilter {
     }
 
     @Override
-    public void negativeFilter(ArrayList<Imatge> imatges) {
+    public ArrayList<Imatge> negativeFilter(ArrayList<Imatge> imatges) {
         for (Imatge imatge : imatges) {
             BufferedImage img = imatge.getImage();
             for (int i = 0; i < img.getWidth(); i++) {
@@ -57,6 +57,7 @@ public class FilterController implements InternalIFilter {
                 }
             }
         }
+        return imatges;
     }
 
     private void grayScale(BufferedImage img) {
