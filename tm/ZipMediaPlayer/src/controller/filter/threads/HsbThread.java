@@ -5,7 +5,6 @@
  */
 package controller.filter.threads;
 
-import controller.filter.FilterController;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
@@ -13,15 +12,11 @@ import java.awt.image.BufferedImage;
  *
  * @author albert
  */
-public class HsbThread implements Runnable {
+public class HsbThread extends FilterThread  implements Runnable {
 
-    private final FilterController filter;
-    private final int start, end;
 
-    public HsbThread(FilterController filter, int start, int end) {
-        this.filter = filter;
-        this.start = start;
-        this.end = end;
+    public HsbThread() {
+        super();
     }
 
     @Override

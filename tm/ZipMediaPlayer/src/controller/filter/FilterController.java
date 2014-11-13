@@ -7,18 +7,18 @@ package controller.filter;
 
 import controller.filter.threads.BinaryThread;
 import controller.filter.threads.ConvolveThread;
+import controller.filter.threads.FilterThread;
 import controller.filter.threads.HsbThread;
 import controller.filter.threads.NegativeThread;
 import model.FilterDim3;
 import model.Imatge;
 import java.awt.Color;
-import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
 import java.util.ArrayList;
 import model.config.Config;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import static java.util.Locale.filter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -35,9 +35,21 @@ public class FilterController implements InternalIFilter {
     private float lastHue;
     private float lastSaturation;
     private float lastValue;
-    private ExecutorService executorFilter;
-    private int numProcessors;
     private ArrayList<Imatge> imatges;
+    private final int NEGATIVE = 0;
+    private final int BINARY = 1;
+    private final int HSB = 2;
+    private final int CONVOLVE = 3;
+
+    /**
+     * Als bordes que surten de la imatge no s'els aplica el filtre
+     */
+    public static final int SENSE_BORDES = ConvolveOp.EDGE_NO_OP;
+    /**
+     * Els borders que es surten de la imatge s'avaluen com si tinguéssin valor
+     * 0
+     */
+    public static final int BORDES_0 = ConvolveOp.EDGE_ZERO_FILL;
 
     public FilterController() {
         this.threshold = Config.DEFAULT_THRESHOLD;
@@ -45,40 +57,13 @@ public class FilterController implements InternalIFilter {
         this.lastHue = Config.DEFAULT_HUE;
         this.lastSaturation = Config.DEFAULT_SATURATION;
         this.lastValue = Config.DEFAULT_VALUE;
-        this.numProcessors = Runtime.getRuntime().availableProcessors();
-        this.executorFilter = Executors.newFixedThreadPool(numProcessors);
-    }
-
-    public FilterDim3 getLastFilterApplied() {
-        return lastFilterApplied;
     }
 
     @Override
     public ArrayList<Imatge> negativeFilter(ArrayList<Imatge> imatges) {
-        try {
-            int cadaQuan = imatges.size() / numProcessors;
-            int inici = 0, end = cadaQuan;
-            this.imatges = imatges;
-
-            ArrayList<Thread> threads = new ArrayList<>();
-            for (int i = 0; i < numProcessors; i++) {
-                Runnable r = new NegativeThread(this, inici, end);
-                Thread a = new Thread(r);
-                a.start();
-                threads.add(a);
-                inici += cadaQuan;
-                end += cadaQuan;
-
-            }
-            for (int i = 0; i < numProcessors; i++) {
-                threads.get(i).join();
-
-            }
-
-        } catch (InterruptedException ex) {
-            Logger.getLogger(FilterController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return imatges;
+        
+        multithreadingFilter(imatges, NEGATIVE);
+        return this.imatges;
     }
 
     public void grayScale(BufferedImage img) {
@@ -105,30 +90,8 @@ public class FilterController implements InternalIFilter {
     @Override
     public ArrayList<Imatge> binaryFilter(ArrayList<Imatge> imatges, int threshold) {
         this.threshold = threshold;
-        try {
-            int cadaQuan = imatges.size() / numProcessors;
-            int inici = 0, end = cadaQuan;
-            this.imatges = imatges;
-
-            ArrayList<Thread> threads = new ArrayList<>();
-            for (int i = 0; i < numProcessors; i++) {
-                Runnable r = new BinaryThread(this, inici, end);
-                Thread a = new Thread(r);
-                a.start();
-                threads.add(a);
-                inici += cadaQuan;
-                end += cadaQuan;
-
-            }
-            for (int i = 0; i < numProcessors; i++) {
-                threads.get(i).join();
-
-            }
-
-        } catch (InterruptedException ex) {
-            Logger.getLogger(FilterController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return imatges;
+        multithreadingFilter(imatges, BINARY);
+        return this.imatges;
     }
 
     @Override
@@ -136,16 +99,38 @@ public class FilterController implements InternalIFilter {
         lastHue = hue;
         lastSaturation = saturation;
         lastValue = brightness;
-        
+        multithreadingFilter(imatges, HSB);
+        return this.imatges;
+    }
+
+    public void multithreadingFilter(ArrayList<Imatge> imatges, int filter) {
         try {
+            int numProcessors = Runtime.getRuntime().availableProcessors();
             int cadaQuan = imatges.size() / numProcessors;
             int inici = 0, end = cadaQuan;
             this.imatges = imatges;
 
+                    
             ArrayList<Thread> threads = new ArrayList<>();
             for (int i = 0; i < numProcessors; i++) {
-                Runnable r = new HsbThread(this, inici, end);
-                Thread a = new Thread(r);
+                FilterThread f = null;
+                switch(filter){
+                    case NEGATIVE:
+                        f = new NegativeThread();
+                        break;
+                    case BINARY:
+                        f = new BinaryThread();
+                        break;
+                    case HSB:
+                        f = new HsbThread();
+                        break;
+                    case CONVOLVE:
+                        f = new ConvolveThread();
+                        break;
+                }
+                
+                f.set(this, inici, end);
+                Thread a = new Thread((Runnable) f);
                 a.start();
                 threads.add(a);
                 inici += cadaQuan;
@@ -160,47 +145,16 @@ public class FilterController implements InternalIFilter {
         } catch (InterruptedException ex) {
             Logger.getLogger(FilterController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return imatges;
     }
 
     @Override
-    public ArrayList<Imatge> convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter
-    ) {
-        try {
-            this.lastFilterApplied = filter;
-            int cadaQuan = imatges.size() / numProcessors;
-            int inici = 0, end = cadaQuan;
-            this.imatges = imatges;
+    public ArrayList<Imatge> convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter) {
 
-            ArrayList<Thread> threads = new ArrayList<>();
-            for (int i = 0; i < numProcessors; i++) {
-                Runnable r = new ConvolveThread(this, inici, end);
-                Thread a = new Thread(r);
-                a.start();
-                threads.add(a);
-                inici += cadaQuan;
-                end += cadaQuan;
+        this.lastFilterApplied = filter;
+        multithreadingFilter(imatges, CONVOLVE);
+        return this.imatges;
 
-            }
-            for (int i = 0; i < numProcessors; i++) {
-                threads.get(i).join();
-
-            }
-
-        } catch (InterruptedException ex) {
-            Logger.getLogger(FilterController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return imatges;
     }
-    /**
-     * Als bordes que surten de la imatge no s'els aplica el filtre
-     */
-    public static final int SENSE_BORDES = ConvolveOp.EDGE_NO_OP;
-    /**
-     * Els borders que es surten de la imatge s'avaluen com si tinguéssin valor
-     * 0
-     */
-    public static final int BORDES_0 = ConvolveOp.EDGE_ZERO_FILL;
 
     public BufferedImage convolve(float filtre[][], BufferedImage imatge, int tratBordes) {
         BufferedImage res;
@@ -260,5 +214,10 @@ public class FilterController implements InternalIFilter {
     public ArrayList<Imatge> getImatges() {
         return imatges;
     }
+
+    public FilterDim3 getLastFilterApplied() {
+        return lastFilterApplied;
+    }
+
 
 }

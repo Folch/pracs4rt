@@ -5,7 +5,6 @@
  */
 package controller.filter.threads;
 
-import controller.filter.FilterController;
 import static controller.filter.FilterController.BORDES_0;
 import model.FilterDim3;
 
@@ -13,17 +12,11 @@ import model.FilterDim3;
  *
  * @author albert
  */
-public class ConvolveThread implements Runnable {
+public class ConvolveThread  extends FilterThread  implements Runnable {
 
-    private final FilterController filter;
-    private final int start, end;
-
-    public ConvolveThread(FilterController filter, int start, int end) {
-        this.filter = filter;
-        this.start = start;
-        this.end = end;
+    public ConvolveThread(){
+        super();
     }
-
     @Override
     public void run() {
         for (int i = start; i < end; i++) {
