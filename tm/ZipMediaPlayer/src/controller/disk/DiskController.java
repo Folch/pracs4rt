@@ -36,7 +36,6 @@ public class DiskController implements InternalIDisk {
             zFl = new ZipFile(file);
 
         } catch (IOException ex) {
-            Logger.getLogger(DiskController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return zFl;
 
@@ -54,7 +53,6 @@ public class DiskController implements InternalIDisk {
             image.setName(file.getName());
 
         } catch (IOException ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return image;
     }
@@ -124,27 +122,6 @@ public class DiskController implements InternalIDisk {
             file.delete();
 
         }
-
-        //mirar http://rauschig.org/jarchivelib/apidocs/
-        //File archive = new File("/home/thrau/archive.tar.gz");
-        //File destination = new File(path + "tar.gz");
-        //Archiver archiver = ArchiverFactory.createArchiver("tar", "gz");
-        //archiver.create(path + "tar.gz", destination, files);
-
-        /*try {
-         GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(path + ".gzip"));
-
-         for (Imatge imatge : imatges) {
-         byte[] imageBytes = ((DataBufferByte) imatge.getImage().getData().getDataBuffer()).getData();
-         int len = imageBytes.length;
-         out.write(imageBytes, 0, len);
-         }
-
-         out.finish();
-         out.close();
-         } catch (IOException ex) {
-         Logger.getLogger(DiskController.class.getName()).log(Level.SEVERE, null, ex);
-         }*/
     }
 
 }

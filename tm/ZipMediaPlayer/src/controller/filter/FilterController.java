@@ -87,7 +87,7 @@ public class FilterController implements InternalIFilter {
         try {
             int numProcessors = Runtime.getRuntime().availableProcessors();
             int step = imatges.size() / numProcessors;
-            int start = 0, end = step;
+            int start = 0, end = imatges.size() == 1? imatges.size():step;
             this.imatges = imatges;
 
                     
