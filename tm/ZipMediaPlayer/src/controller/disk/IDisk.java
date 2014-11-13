@@ -10,8 +10,8 @@ package controller.disk;
  * @author albert
  */
 public interface IDisk {
-    public void openZip (String path);
-    public void openImage (String path);
+    public boolean openZip (String path);
+    public boolean openImage (String path);
     public void saveImage(String path);
     public void saveZip (String path);
     public void saveGZip(String path);
