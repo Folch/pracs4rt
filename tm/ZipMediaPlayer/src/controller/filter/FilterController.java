@@ -89,10 +89,10 @@ public class FilterController implements InternalIFilter {
             int step = imatges.size() / numProcessors;
             int start = 0, end = imatges.size() == 1? imatges.size():step;
             this.imatges = imatges;
-
+            int iter = imatges.size() == 1? 1: numProcessors;
                     
             ArrayList<Thread> threads = new ArrayList<>();
-            for (int i = 0; i < numProcessors; i++) {
+            for (int i = 0; i < iter; i++) {
                 FilterThread f = null;
                 switch(filter){
                     case NEGATIVE:
@@ -116,7 +116,7 @@ public class FilterController implements InternalIFilter {
                 start += step;
                 end += step;
             }
-            for (int i = 0; i < numProcessors; i++) {
+            for (int i = 0; i < iter; i++) {
                 threads.get(i).join();
 
             }
