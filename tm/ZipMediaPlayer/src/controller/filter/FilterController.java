@@ -86,10 +86,10 @@ public class FilterController implements InternalIFilter {
     private void multithreadingFilter(ArrayList<Imatge> imatges, int filter) {
         try {
             int numProcessors = Runtime.getRuntime().availableProcessors();
-            int step = imatges.size() / numProcessors;
-            int start = 0, end = imatges.size() == 1? imatges.size():step;
+            int step = imatges.size() < numProcessors? 1:imatges.size() / numProcessors;
+            int start = 0, end = imatges.size() < numProcessors? 1:step;
             this.imatges = imatges;
-            int iter = imatges.size() == 1? 1: numProcessors;
+            int iter = imatges.size() < numProcessors? imatges.size(): numProcessors;
                     
             ArrayList<Thread> threads = new ArrayList<>();
             for (int i = 0; i < iter; i++) {
