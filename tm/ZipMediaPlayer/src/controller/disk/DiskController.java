@@ -59,13 +59,13 @@ public class DiskController implements InternalIDisk {
 
     @Override
     public void saveImage(String path, Imatge img) {
-        while (path.endsWith(".png")) {
+        while (path.endsWith(".jpg")) {
             path = path.substring(0, path.length() - 4);
         }
         try {
             BufferedImage bi = img.getImage();
-            File outputfile = new File(path + ".png");
-            ImageIO.write(bi, "png", outputfile);
+            File outputfile = new File(path + ".jpg");
+            ImageIO.write(bi, "jpg", outputfile);
 
         } catch (IOException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,9 +80,13 @@ public class DiskController implements InternalIDisk {
         try {
             ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(new File(path + ".zip"))));
             for (Imatge imatge : imatges) {
-                ZipEntry entry = new ZipEntry(imatge.getName());
+                String nom = imatge.getName();
+                while (nom.endsWith(".png")) {
+                    nom = nom.substring(0, nom.length() - 4);
+                }
+                ZipEntry entry = new ZipEntry(nom + ".jpg");
                 out.putNextEntry(entry);
-                ImageIO.write(imatge.getImage(), "png", out);
+                ImageIO.write(imatge.getImage(), "jpg", out);
             }
             out.flush();
             out.close();
