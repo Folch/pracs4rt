@@ -98,16 +98,17 @@ public class MainFrame extends javax.swing.JFrame {
         optionsmenu = new javax.swing.JMenuItem();
         fullscreenmenu = new javax.swing.JCheckBoxMenuItem();
         filterbar = new javax.swing.JMenu();
-        customfiltermenu = new javax.swing.JCheckBoxMenuItem();
-        hsbmenu = new javax.swing.JCheckBoxMenuItem();
-        negativemenu = new javax.swing.JCheckBoxMenuItem();
-        binarymenu = new javax.swing.JCheckBoxMenuItem();
+        customfiltermenu = new javax.swing.JMenuItem();
+        hsbmenu = new javax.swing.JMenuItem();
+        negativemenu = new javax.swing.JMenuItem();
+        binarymenu = new javax.swing.JMenuItem();
         separatonfiltermenu = new javax.swing.JPopupMenu.Separator();
-        originalmenu = new javax.swing.JCheckBoxMenuItem();
+        originalmenu = new javax.swing.JMenuItem();
         helpbar = new javax.swing.JMenu();
         aboutmenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ProPlayer");
         setMinimumSize(new java.awt.Dimension(512, 372));
 
         prevbtn.setForeground(new java.awt.Color(74, 62, 254));
@@ -341,7 +342,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_openimagemenuActionPerformed
 
     private void saveimagemenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveimagemenuActionPerformed
-        saver.saveImage(showSaveFileChooser());
+        String path = showSaveFileChooser();
+        if(path != null)
+            saver.saveImage(path);
     }//GEN-LAST:event_saveimagemenuActionPerformed
 
     private void playbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playbtnActionPerformed
@@ -386,32 +389,25 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_optionsmenuActionPerformed
 
     private void customfiltermenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customfiltermenuActionPerformed
-        changeFilterState(FilterState.CUSTOM);
         CustomFilterDialog dialog = new CustomFilterDialog(this, true, filter);
         dialog.setVisible(true);
     }//GEN-LAST:event_customfiltermenuActionPerformed
 
     private void hsbmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hsbmenuActionPerformed
-        changeFilterState(FilterState.HSB);
         HSBFilterDialog dialog = new HSBFilterDialog(this, true, filter);
         dialog.setVisible(true);
     }//GEN-LAST:event_hsbmenuActionPerformed
 
     private void negativemenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_negativemenuActionPerformed
-        if(!changeFilterState(FilterState.NEGATIVE))
-            return;
         filter.negativeFilter();
     }//GEN-LAST:event_negativemenuActionPerformed
 
     private void binarymenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_binarymenuActionPerformed
-        changeFilterState(FilterState.BINARY);
         BinaryFilterDialog dialog = new BinaryFilterDialog(this, true, filter);
         dialog.setVisible(true);
     }//GEN-LAST:event_binarymenuActionPerformed
 
     private void originalmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originalmenuActionPerformed
-        if(!changeFilterState(FilterState.ORIGINAL))
-            return;
         filter.removeFilter();
     }//GEN-LAST:event_originalmenuActionPerformed
 
@@ -440,40 +436,10 @@ public class MainFrame extends javax.swing.JFrame {
         player.first();
     }
 
-    private boolean changeFilterState(FilterState state) {
-        customfiltermenu.setState(false);
-        hsbmenu.setState(false);
-        negativemenu.setState(false);
-        binarymenu.setState(false);
-        originalmenu.setState(false);
-        switch (state) {
-            case CUSTOM:
-                customfiltermenu.setState(true);
-                break;
-            case HSB:
-                hsbmenu.setState(true);
-                break;
-            case NEGATIVE:
-                negativemenu.setState(true);
-                break;
-            case BINARY:
-                binarymenu.setState(true);
-                break;
-            case ORIGINAL:
-                originalmenu.setState(true);
-                break;
-        }
-        if(state == currentFilterState)
-            return false;
-        currentFilterState = state;
-        return true;
-    }
-    
     private void changeState(State state) {
         
         switch (state) {
             case OPEN_IMAGE:
-                changeFilterState(FilterState.ORIGINAL);
                 //menu item
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
@@ -484,11 +450,11 @@ public class MainFrame extends javax.swing.JFrame {
                 nextbtn.setEnabled(false);
                 playbtn.setEnabled(false);
                 //filter items
-                customfiltermenu.setEnabled(false);
-                hsbmenu.setEnabled(false);
-                negativemenu.setEnabled(false);
-                binarymenu.setEnabled(false);
-                originalmenu.setEnabled(false);
+                customfiltermenu.setEnabled(true);
+                hsbmenu.setEnabled(true);
+                negativemenu.setEnabled(true);
+                binarymenu.setEnabled(true);
+                originalmenu.setEnabled(true);
                 break;
             case OPEN_ZIP_PLAY:
                 //menu item
@@ -527,7 +493,6 @@ public class MainFrame extends javax.swing.JFrame {
                 originalmenu.setEnabled(true);
                 break;
             case EMPTY:
-                changeFilterState(FilterState.ORIGINAL);
                 //menu item
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
@@ -583,22 +548,22 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutmenu;
-    private javax.swing.JCheckBoxMenuItem binarymenu;
-    private javax.swing.JCheckBoxMenuItem customfiltermenu;
+    private javax.swing.JMenuItem binarymenu;
+    private javax.swing.JMenuItem customfiltermenu;
     private javax.swing.JMenuItem exitmenu;
     private javax.swing.JMenu filebar;
     private javax.swing.JMenu filterbar;
     private javax.swing.JCheckBoxMenuItem fullscreenmenu;
     private javax.swing.JMenu helpbar;
-    private javax.swing.JCheckBoxMenuItem hsbmenu;
+    private javax.swing.JMenuItem hsbmenu;
     private javax.swing.JPanel imagepanel;
     private javax.swing.JMenuBar menubar;
-    private javax.swing.JCheckBoxMenuItem negativemenu;
+    private javax.swing.JMenuItem negativemenu;
     private javax.swing.JButton nextbtn;
     private javax.swing.JMenuItem openimagemenu;
     private javax.swing.JMenuItem openzipmenu;
     private javax.swing.JMenuItem optionsmenu;
-    private javax.swing.JCheckBoxMenuItem originalmenu;
+    private javax.swing.JMenuItem originalmenu;
     private javax.swing.JButton playbtn;
     private javax.swing.JMenu playerbar;
     private javax.swing.JButton prevbtn;
