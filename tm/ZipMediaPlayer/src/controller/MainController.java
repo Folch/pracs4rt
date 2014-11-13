@@ -79,7 +79,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
                 }
             }
         };
-        
+
         executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(nextRunnable, 0, (long) ((1.0f / this.time) * 1000), TimeUnit.MILLISECONDS);
     }
@@ -95,17 +95,21 @@ public class MainController implements IPlayer, IFilter, IDisk {
             executor.shutdown();
         }
         this.zip = disk.openZip(path);
-        this.images = compressor.decompressZip(zip);
-        this.imagesCopia = deepCopyArrayList(images);
+        if (zip != null) {
+            this.images = compressor.decompressZip(zip);
+            this.imagesCopia = deepCopyArrayList(images);
+        }
     }
 
     @Override
     public void openImage(String path) {
         Imatge img = disk.openImage(path);
-        this.images.clear();
-        this.imagesCopia.clear();
-        this.images.add(img);
-        this.imagesCopia.add(img);
+        if (img != null) {
+            this.images.clear();
+            this.imagesCopia.clear();
+            this.images.add(img);
+            this.imagesCopia.add(img);
+        }
     }
 
     @Override
@@ -129,33 +133,39 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void first() {
-        index = 0;
-        if (listener != null) {
-            listener.onImage(images.get(index));
+        if (!images.isEmpty()) {
+            index = 0;
+            if (listener != null) {
+                listener.onImage(images.get(index));
+            }
         }
     }
 
     @Override
     public void next() {
-        index++;
-        if (index == images.size() || index < 0) {
-            index = 0;
-        }
+        if (!images.isEmpty()) {
+            index++;
+            if (index == images.size() || index < 0) {
+                index = 0;
+            }
 
-        if (listener != null) {
-            listener.onImage(images.get(index));
+            if (listener != null) {
+                listener.onImage(images.get(index));
+            }
         }
 
     }
 
     @Override
     public void previous() {
-        index--;
-        if (index == images.size() || index < 0) {
-            index = images.size() - 1;
-        }
-        if (listener != null) {
-            listener.onImage(images.get(index));
+        if (!images.isEmpty()) {
+            index--;
+            if (index == images.size() || index < 0) {
+                index = images.size() - 1;
+            }
+            if (listener != null) {
+                listener.onImage(images.get(index));
+            }
         }
 
     }
@@ -168,7 +178,6 @@ public class MainController implements IPlayer, IFilter, IDisk {
 
     @Override
     public void applyFilter(FilterDim3 filter) {
-
         this.images = this.filter.convolveImages(deepCopyArrayList(imagesCopia), filter);
         first();
     }
