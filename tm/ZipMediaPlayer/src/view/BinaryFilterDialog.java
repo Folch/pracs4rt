@@ -50,6 +50,7 @@ public class BinaryFilterDialog extends javax.swing.JDialog {
         applybtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Binary Filter");
 
         jLabel1.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
         jLabel1.setText("Binary threshold");

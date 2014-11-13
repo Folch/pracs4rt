@@ -116,16 +116,11 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="customfiltermenu">
               <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" preCode="&#xa;">
-                  <Connection code="&quot;Custom Filter&quot;" type="code"/>
-                </Property>
+                <Property name="text" type="java.lang.String" value="Custom Filter"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="customfiltermenuActionPerformed"/>
               </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JMenuItem()"/>
-              </AuxValues>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="hsbmenu">
               <Properties>
