@@ -14,8 +14,6 @@ import java.awt.image.BufferedImage;
  */
 public class NegativeThread extends FilterThread implements Runnable {
 
-   
-
     public NegativeThread() {
         super();
     }
