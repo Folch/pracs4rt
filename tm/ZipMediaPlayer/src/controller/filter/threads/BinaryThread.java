@@ -5,32 +5,25 @@
  */
 package controller.filter.threads;
 
-import controller.filter.FilterController;
-import static controller.filter.FilterController.BORDES_0;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import model.FilterDim3;
 
 /**
  *
  * @author albert
  */
-public class BinaryThread implements Runnable {
+public class BinaryThread extends FilterThread  implements Runnable {
 
-    private final FilterController filter;
-    private final int start, end;
 
-    public BinaryThread(FilterController filter, int start, int end) {
-        this.filter = filter;
-        this.start = start;
-        this.end = end;
+    public BinaryThread() {
+      super();
     }
 
     @Override
     public void run() {
         for (int k = start; k < end; k++) {
             BufferedImage img = this.filter.getImatges().get(k).getImage();
-            this.filter.grayScale(img);
+            super.grayScale(img);
             for (int i = 0; i < img.getWidth(); i++) {
                 for (int j = 0; j < img.getHeight(); j++) {
                     Color c = new Color(img.getRGB(i, j));

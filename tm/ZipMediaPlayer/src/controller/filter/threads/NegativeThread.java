@@ -5,25 +5,17 @@
  */
 package controller.filter.threads;
 
-import controller.filter.FilterController;
-import static controller.filter.FilterController.BORDES_0;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import model.FilterDim3;
 
 /**
  *
  * @author albert
  */
-public class NegativeThread implements Runnable {
+public class NegativeThread extends FilterThread implements Runnable {
 
-    private final FilterController filter;
-    private final int start, end;
-
-    public NegativeThread(FilterController filter, int start, int end) {
-        this.filter = filter;
-        this.start = start;
-        this.end = end;
+    public NegativeThread() {
+        super();
     }
 
     @Override
