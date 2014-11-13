@@ -23,7 +23,7 @@ public class BinaryThread extends FilterThread  implements Runnable {
     public void run() {
         for (int k = start; k < end; k++) {
             BufferedImage img = this.filter.getImatges().get(k).getImage();
-            this.filter.grayScale(img);
+            super.grayScale(img);
             for (int i = 0; i < img.getWidth(); i++) {
                 for (int j = 0; j < img.getHeight(); j++) {
                     Color c = new Color(img.getRGB(i, j));

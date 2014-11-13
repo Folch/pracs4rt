@@ -12,15 +12,9 @@ import controller.filter.threads.HsbThread;
 import controller.filter.threads.NegativeThread;
 import model.FilterDim3;
 import model.Imatge;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import model.config.Config;
 import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
-import static java.util.Locale.filter;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,31 +55,10 @@ public class FilterController implements InternalIFilter {
 
     @Override
     public ArrayList<Imatge> negativeFilter(ArrayList<Imatge> imatges) {
-        
         multithreadingFilter(imatges, NEGATIVE);
         return this.imatges;
     }
 
-    public void grayScale(BufferedImage img) {
-        for (int i = 0; i < img.getWidth(); i++) {
-            for (int j = 0; j < img.getHeight(); j++) {
-                Color c = new Color(img.getRGB(i, j));
-                int g, b, r;
-                r = c.getRed();
-                g = c.getGreen();
-                b = c.getBlue();
-                int mean = (int) (((float) r) + g + b) / 3;
-                r = mean;
-                g = mean;
-                b = mean;
-
-                int rgb = new Color(r, g, b).getRGB();
-                img.setRGB(i, j, rgb);
-            }
-
-        }
-
-    }
 
     @Override
     public ArrayList<Imatge> binaryFilter(ArrayList<Imatge> imatges, int threshold) {
@@ -102,12 +75,19 @@ public class FilterController implements InternalIFilter {
         multithreadingFilter(imatges, HSB);
         return this.imatges;
     }
+    
+    @Override
+    public ArrayList<Imatge> convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter) {
+        this.lastFilterApplied = filter;
+        multithreadingFilter(imatges, CONVOLVE);
+        return this.imatges;
+    }
 
-    public void multithreadingFilter(ArrayList<Imatge> imatges, int filter) {
+    private void multithreadingFilter(ArrayList<Imatge> imatges, int filter) {
         try {
             int numProcessors = Runtime.getRuntime().availableProcessors();
-            int cadaQuan = imatges.size() / numProcessors;
-            int inici = 0, end = cadaQuan;
+            int step = imatges.size() / numProcessors;
+            int start = 0, end = step;
             this.imatges = imatges;
 
                     
@@ -129,13 +109,12 @@ public class FilterController implements InternalIFilter {
                         break;
                 }
                 
-                f.set(this, inici, end);
+                f.set(this, start, end);
                 Thread a = new Thread((Runnable) f);
                 a.start();
                 threads.add(a);
-                inici += cadaQuan;
-                end += cadaQuan;
-
+                start += step;
+                end += step;
             }
             for (int i = 0; i < numProcessors; i++) {
                 threads.get(i).join();
@@ -146,55 +125,6 @@ public class FilterController implements InternalIFilter {
             Logger.getLogger(FilterController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    @Override
-    public ArrayList<Imatge> convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter) {
-
-        this.lastFilterApplied = filter;
-        multithreadingFilter(imatges, CONVOLVE);
-        return this.imatges;
-
-    }
-
-    public BufferedImage convolve(float filtre[][], BufferedImage imatge, int tratBordes) {
-        BufferedImage res;
-
-        if (imatge == null) {
-            throw new IllegalArgumentException("La imatge no pot ser nula");
-        }
-        if (filtre == null || filtre.length == 0) {
-            throw new IllegalArgumentException("S'ha de passar algun filtre vàlid");
-        }
-
-        if (tratBordes != SENSE_BORDES || tratBordes != BORDES_0) {
-            tratBordes = SENSE_BORDES;
-        }
-
-        int width = filtre.length;
-        int height = filtre[0].length;
-        int tam = width * height;
-        float filtroK[] = new float[tam];
-
-        //Creem el filtre
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                filtroK[i * width + j] = filtre[i][j];
-            }
-        }
-
-        //Creem l'operació de convolució
-        Kernel kernel = new Kernel(width, height, filtroK);
-        ConvolveOp cop = new ConvolveOp(kernel, tratBordes, null);
-
-        //Creem la imatge nova semblant a l'antiga
-        res = new BufferedImage(imatge.getWidth(), imatge.getHeight(), imatge.getType());
-
-        //Apliquem el filtre
-        cop.filter(imatge, res);
-
-        return res;
-    }
-
     public int getThreshold() {
         return this.threshold;
     }
@@ -218,6 +148,4 @@ public class FilterController implements InternalIFilter {
     public FilterDim3 getLastFilterApplied() {
         return lastFilterApplied;
     }
-
-
 }

@@ -12,8 +12,7 @@ import java.awt.image.BufferedImage;
  *
  * @author albert
  */
-public class HsbThread extends FilterThread  implements Runnable {
-
+public class HsbThread extends FilterThread implements Runnable {
 
     public HsbThread() {
         super();
