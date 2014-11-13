@@ -15,6 +15,7 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import model.config.FileType;
 
@@ -47,6 +48,10 @@ public class MainFrame extends javax.swing.JFrame {
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         
         //((VideoPanel)imagepanel).loading(true);
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+        this.setBounds( width/2-this.getWidth()/2, height/2-this.getHeight()/2, this.getWidth(), this.getHeight());
     }
 
     public String showFileChooser(FileType fileType) {
@@ -426,12 +431,22 @@ public class MainFrame extends javax.swing.JFrame {
         }
         
         if(fileType == FileType.IMAGE) {
-            saver.openImage(path);
-            changeState(State.OPEN_IMAGE);
+            if(saver.openImage(path))
+                changeState(State.OPEN_IMAGE);
+            else
+                JOptionPane.showMessageDialog(this,
+                "The next file "+path+" doesn't exist.",
+                "File Not Found",
+                JOptionPane.WARNING_MESSAGE);
 
         } else if(fileType == FileType.ZIP) {
-            saver.openZip(path);
-            changeState(State.OPEN_ZIP_PAUSE);
+            if(saver.openZip(path))
+                changeState(State.OPEN_ZIP_PAUSE);
+            else
+                JOptionPane.showMessageDialog(this,
+                "The next file "+path+" doesn't exist.",
+                "File Not Found",
+                JOptionPane.WARNING_MESSAGE);
         }   
         player.first();
     }
@@ -493,6 +508,7 @@ public class MainFrame extends javax.swing.JFrame {
                 originalmenu.setEnabled(true);
                 break;
             case EMPTY:
+                imagepanel.updateUI();
                 //menu item
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
