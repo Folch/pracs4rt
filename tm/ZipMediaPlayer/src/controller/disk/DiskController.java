@@ -99,7 +99,8 @@ public class DiskController implements InternalIDisk {
     @Override
     public void saveGZip(String path, ArrayList<File> files) {
         for (File file : files) {
-            String outFilename = file.getName() + ".gz";
+            String outFilename = file.getName()+ ".gz";
+             
             byte[] buffer = new byte[1024];
 
             try {
