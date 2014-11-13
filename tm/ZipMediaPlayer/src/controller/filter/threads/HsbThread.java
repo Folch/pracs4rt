@@ -35,7 +35,7 @@ public class HsbThread extends FilterThread  implements Runnable {
                     float[] hsb = Color.RGBtoHSB(r, g, b, null);
 
                     hu = hsb[0];
-                    if (this.filter.getLastHue() != 0) { //si algun dels 3 valors es -1, deixem el mateix valor
+                    if (this.filter.getLastHue() != 0) { //si algun dels 3 valors es 0, deixem el mateix valor
                         hu += this.filter.getLastHue();
                         hu = Math.min(hu, 1);
                     }
