@@ -90,7 +90,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
     }
 
     @Override
-    public void openZip(String path) {
+    public boolean openZip(String path) {
         if (executor != null) {
             executor.shutdown();
         }
@@ -98,18 +98,23 @@ public class MainController implements IPlayer, IFilter, IDisk {
         if (zip != null) {
             this.images = compressor.decompressZip(zip);
             this.imagesCopia = deepCopyArrayList(images);
+            return true;
         }
+        return false;
+        
     }
 
     @Override
-    public void openImage(String path) {
+    public boolean openImage(String path) {
         Imatge img = disk.openImage(path);
         if (img != null) {
             this.images.clear();
             this.imagesCopia.clear();
             this.images.add(img);
             this.imagesCopia.add(img);
+            return true;
         }
+        return false;
     }
 
     @Override
