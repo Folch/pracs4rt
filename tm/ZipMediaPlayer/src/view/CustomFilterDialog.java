@@ -106,6 +106,7 @@ public class CustomFilterDialog extends javax.swing.JDialog {
         applybtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Custom Filter");
 
         field1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 

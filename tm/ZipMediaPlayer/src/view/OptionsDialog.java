@@ -60,6 +60,7 @@ public class OptionsDialog extends javax.swing.JDialog {
         fpslabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Options");
         setResizable(false);
 
         frameratelabel.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
@@ -72,10 +73,10 @@ public class OptionsDialog extends javax.swing.JDialog {
             }
         });
         slider.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 sliderCaretPositionChanged(evt);
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
 
