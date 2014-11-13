@@ -38,7 +38,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
     private final DiskController disk;
     private final FilterController filter;
     private ZipFile zip;
-
+    
     public MainController(OnImageListener listener) {
         this.listener = listener;
         this.dir = Config.DEFAULT_DIRECTION;
