@@ -10,20 +10,21 @@ import static controller.filter.FilterController.SENSE_BORDES;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
+import java.util.concurrent.Callable;
 import model.FilterDim3;
 
 /**
  *
  * @author albert
  */
-public class ConvolveThread extends FilterThread implements Runnable {
+public class ConvolveThread extends FilterThread implements Callable {
 
     public ConvolveThread() {
         super();
     }
 
     @Override
-    public void run() {
+    public Object call() throws Exception {
         for (int i = start; i < end; i++) {
 
             if (this.filter.getLastFilterApplied() == FilterDim3.SOBEL_X || this.filter.getLastFilterApplied() == FilterDim3.SOBEL_Y || this.filter.getLastFilterApplied() == FilterDim3.HIGH_PASS || this.filter.getLastFilterApplied() == FilterDim3.LAPLACIAN) {
@@ -31,10 +32,10 @@ public class ConvolveThread extends FilterThread implements Runnable {
             }
             this.filter.getImatges().get(i).setImage(this.convolve(this.filter.getLastFilterApplied().getFilter(), this.filter.getImatges().get(i).getImage(), BORDES_0));
         }
-
+        return null;
     }
 
-    private BufferedImage convolve(float filtre[][], BufferedImage imatge, int tratBordes) {
+    private BufferedImage convolve(float filtre[][], BufferedImage imatge, int tratBordes)  {
         BufferedImage res;
 
         if (imatge == null) {
@@ -72,4 +73,5 @@ public class ConvolveThread extends FilterThread implements Runnable {
 
         return res;
     }
+
 }

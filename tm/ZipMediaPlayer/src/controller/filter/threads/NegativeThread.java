@@ -7,19 +7,20 @@ package controller.filter.threads;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.Callable;
 
 /**
  *
  * @author albert
  */
-public class NegativeThread extends FilterThread implements Runnable {
+public class NegativeThread extends FilterThread implements Callable {
 
     public NegativeThread() {
         super();
     }
 
     @Override
-    public void run() {
+    public Object call() throws Exception {
         for (int k = start; k < end; k++) {
             BufferedImage img = this.filter.getImatges().get(k).getImage();
             for (int i = 0; i < img.getWidth(); i++) {
@@ -35,6 +36,8 @@ public class NegativeThread extends FilterThread implements Runnable {
                 }
             }
         }
+        return null;
 
     }
+
 }
