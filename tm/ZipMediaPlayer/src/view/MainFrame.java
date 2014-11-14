@@ -1,10 +1,38 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+ * To change this li
+    @Override
+    public int getWidth(ImageObserver io) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getHeight(ImageObserver io) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ImageProducer getSource() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Graphics getGraphics() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object getProperty(String string, ImageObserver io) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+cense header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package view;
 
+import view.filter.HSBFilterDialog;
+import view.filter.CustomFilterDialog;
+import view.filter.BinaryFilterDialog;
 import controller.disk.IDisk;
 import controller.player.IPlayer;
 import controller.player.OnImageListener;
@@ -12,6 +40,7 @@ import controller.MainController;
 import controller.filter.IFilter;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -114,6 +143,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ProPlayer");
+        setIconImage(Toolkit.getDefaultToolkit().getImage("/view/resource/logo.png"));
         setMinimumSize(new java.awt.Dimension(512, 372));
 
         prevbtn.setForeground(new java.awt.Color(74, 62, 254));
@@ -288,6 +318,11 @@ public class MainFrame extends javax.swing.JFrame {
         helpbar.setText("Help");
 
         aboutmenu.setText("About");
+        aboutmenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutmenuActionPerformed(evt);
+            }
+        });
         helpbar.add(aboutmenu);
 
         menubar.add(helpbar);
@@ -415,6 +450,11 @@ public class MainFrame extends javax.swing.JFrame {
     private void originalmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_originalmenuActionPerformed
         filter.removeFilter();
     }//GEN-LAST:event_originalmenuActionPerformed
+
+    private void aboutmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutmenuActionPerformed
+        AboutDialog dialog = new AboutDialog(this, true);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_aboutmenuActionPerformed
 
     public void openFile(FileType fileType) {
         MainController controller;
