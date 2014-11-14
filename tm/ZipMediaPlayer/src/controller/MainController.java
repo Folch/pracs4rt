@@ -182,9 +182,11 @@ public class MainController implements IPlayer, IFilter, IDisk {
     }
 
     @Override
-    public void applyFilter(FilterDim3 filter) {
+    public boolean applyFilter(FilterDim3 filter) {
         this.images = this.filter.convolveImages(deepCopyArrayList(imagesCopia), filter);
         first();
+        
+        return true;
     }
 
     private ArrayList<Imatge> deepCopyArrayList(ArrayList<Imatge> original) {
