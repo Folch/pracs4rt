@@ -466,7 +466,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutmenuActionPerformed
 
     private void helpmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpmenuActionPerformed
-        // TODO add your handling code here:
+        HelpDialog dialog = new HelpDialog(this, true);
+        dialog.setVisible(true);
     }//GEN-LAST:event_helpmenuActionPerformed
 
     public void openFile(FileType fileType) {
@@ -508,7 +509,6 @@ public class MainFrame extends javax.swing.JFrame {
         
         switch (state) {
             case OPEN_IMAGE:
-                imagepanel.removeAll();
                 //menu item
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
@@ -562,7 +562,6 @@ public class MainFrame extends javax.swing.JFrame {
                 originalmenu.setEnabled(true);
                 break;
             case EMPTY:
-                
                 //menu item
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
@@ -580,8 +579,6 @@ public class MainFrame extends javax.swing.JFrame {
                 originalmenu.setEnabled(false);
                 break;
         }
-        //imagepanel.update(null);
-        //imagepanel.repaint();
     }
     
     /**

@@ -6,6 +6,7 @@
 package view;
 
 import controller.player.OnImageListener;
+import java.awt.BorderLayout;
 import model.Imatge;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,6 +15,8 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -23,13 +26,19 @@ import javax.swing.JPanel;
 public class VideoPanel extends JPanel implements OnImageListener{
     
     private BufferedImage currentImage;
-    private boolean isLoading;
+    //private boolean isLoading;
     
-    private Image image;
+    //private JLabel image;
     
     public VideoPanel() {
-        image = Toolkit.getDefaultToolkit().createImage("/view/resource/loading.gif");  
-        isLoading = false;
+        /*
+        image = new JLabel();
+        ImageIcon ii = new ImageIcon(this.getClass().getResource(
+                    "/view/resource/loading.gif"));
+        image.setIcon(ii);
+        
+        this.setLayout(new BorderLayout());
+        */
     }
     
     @Override
@@ -51,14 +60,18 @@ public class VideoPanel extends JPanel implements OnImageListener{
             at.scale(scaleX, scaleY);
             g.drawRenderedImage(currentImage, at);
         }
-        if(isLoading) {
-            grphcs.drawImage(image, 0, 0, this);  
-        } 
+                
     }
     
+    /*
     public void loading(boolean load) {
-        this.isLoading = load;
-    }
+        if(load) {
+            this.add(image, BorderLayout.CENTER);
+        } else{
+            this.remove(image);
+        }
+        //repaint();
+    }*/
     
     private double getScaleY(int panelHeight, int imageHeight) {
         double yScale = 1;
