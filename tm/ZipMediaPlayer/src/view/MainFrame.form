@@ -36,7 +36,7 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+S"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Save Image (png) ..."/>
+                <Property name="text" type="java.lang.String" value="Save Image (jpg) ..."/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>

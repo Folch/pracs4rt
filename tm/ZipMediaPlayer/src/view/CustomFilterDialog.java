@@ -6,6 +6,8 @@
 package view;
 
 import controller.filter.IFilter;
+import java.text.DecimalFormat;
+import javax.swing.JOptionPane;
 import model.FilterDim3;
 
 /**
@@ -57,29 +59,42 @@ public class CustomFilterDialog extends javax.swing.JDialog {
         field9.setEnabled(enabled);
     }
     
+    private String floatToString(float v) {
+        DecimalFormat df = new DecimalFormat("##0.00");
+        return df.format(v);
+    }
+    
     private void showFilter(FilterDim3 f) {
         this.currentFilter = f;
-        field1.setText((int)f.getFilter()[0][0]+"");
-        field2.setText((int)f.getFilter()[0][1]+"");
-        field3.setText((int)f.getFilter()[0][2]+"");
-        field4.setText((int)f.getFilter()[1][0]+"");
-        field5.setText((int)f.getFilter()[1][1]+"");
-        field6.setText((int)f.getFilter()[1][2]+"");
-        field7.setText((int)f.getFilter()[2][0]+"");
-        field8.setText((int)f.getFilter()[2][1]+"");
-        field9.setText((int)f.getFilter()[2][2]+"");
+        field1.setText(floatToString(f.getFilter()[0][0]));
+        field2.setText(floatToString(f.getFilter()[0][1]));
+        field3.setText(floatToString(f.getFilter()[0][2]));
+        field4.setText(floatToString(f.getFilter()[1][0]));
+        field5.setText(floatToString(f.getFilter()[1][1]));
+        field6.setText(floatToString(f.getFilter()[1][2]));
+        field7.setText(floatToString(f.getFilter()[2][0]));
+        field8.setText(floatToString(f.getFilter()[2][1]));
+        field9.setText(floatToString(f.getFilter()[2][2]));
     }
     
     private FilterDim3 getPanelFilter() {
-        return new FilterDim3(Integer.parseInt(field1.getText()), 
-                Integer.parseInt(field2.getText()), 
-                Integer.parseInt(field3.getText()), 
-                Integer.parseInt(field4.getText()), 
-                Integer.parseInt(field5.getText()), 
-                Integer.parseInt(field6.getText()), 
-                Integer.parseInt(field7.getText()), 
-                Integer.parseInt(field8.getText()), 
-                Integer.parseInt(field9.getText()));      
+        try{
+            return new FilterDim3(Float.parseFloat(field1.getText()), 
+                Float.parseFloat(field2.getText()), 
+                Float.parseFloat(field3.getText()), 
+                Float.parseFloat(field4.getText()), 
+                Float.parseFloat(field5.getText()), 
+                Float.parseFloat(field6.getText()), 
+                Float.parseFloat(field7.getText()), 
+                Float.parseFloat(field8.getText()), 
+                Float.parseFloat(field9.getText()));
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                "Enter a real number",
+                "Number format error",
+                JOptionPane.WARNING_MESSAGE);
+        }
+        return null;
     }
 
     /**
@@ -220,8 +235,7 @@ public class CustomFilterDialog extends javax.swing.JDialog {
         switch (item) {
             case "Average":
                 enablePanel(false);
-                this.currentFilter = FilterDim3.AVERAGE;
-                showValue("1/9");
+                showFilter(FilterDim3.AVERAGE);
                 break;
             case "Sobel X":
                 enablePanel(false);
@@ -257,7 +271,8 @@ public class CustomFilterDialog extends javax.swing.JDialog {
         FilterDim3 f = this.currentFilter;
         if(((String)filterbox.getSelectedItem()).equals("Custom"))
             f = getPanelFilter();
-        filter.applyFilter(f);
+        if(f!=null)
+            filter.applyFilter(f);
     }//GEN-LAST:event_applybtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

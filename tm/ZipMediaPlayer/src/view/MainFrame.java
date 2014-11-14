@@ -176,7 +176,7 @@ public class MainFrame extends javax.swing.JFrame {
         filebar.add(openimagemenu);
 
         saveimagemenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        saveimagemenu.setText("Save Image (png) ...");
+        saveimagemenu.setText("Save Image (jpg) ...");
         saveimagemenu.setEnabled(false);
         saveimagemenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -435,7 +435,7 @@ public class MainFrame extends javax.swing.JFrame {
                 changeState(State.OPEN_IMAGE);
             else
                 JOptionPane.showMessageDialog(this,
-                "The next file "+path+" doesn't exist.",
+                "The following file "+path+" doesn't exist.",
                 "File Not Found",
                 JOptionPane.WARNING_MESSAGE);
 
@@ -444,7 +444,7 @@ public class MainFrame extends javax.swing.JFrame {
                 changeState(State.OPEN_ZIP_PAUSE);
             else
                 JOptionPane.showMessageDialog(this,
-                "The next file "+path+" doesn't exist.",
+                "The following file "+path+" doesn't exist.",
                 "File Not Found",
                 JOptionPane.WARNING_MESSAGE);
         }   
