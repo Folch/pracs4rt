@@ -15,7 +15,7 @@ public interface IFilter {
     // TODO: define defaults values.
     
     
-    public void applyFilter(FilterDim3 filter);
+    public boolean applyFilter(FilterDim3 filter);
     public void negativeFilter();
     public void binaryFilter(int threshold);
     public void changeHSB(float hue, float saturation, float brightness);

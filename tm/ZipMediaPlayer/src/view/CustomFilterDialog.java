@@ -272,7 +272,12 @@ public class CustomFilterDialog extends javax.swing.JDialog {
         if(((String)filterbox.getSelectedItem()).equals("Custom"))
             f = getPanelFilter();
         if(f!=null)
-            filter.applyFilter(f);
+            if(!filter.applyFilter(f)) {
+                JOptionPane.showMessageDialog(this,
+                "An error occurred while applying filter",
+                "Filter Error",
+                JOptionPane.WARNING_MESSAGE);
+            }
     }//GEN-LAST:event_applybtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
