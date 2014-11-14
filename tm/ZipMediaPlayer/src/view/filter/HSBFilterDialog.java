@@ -32,15 +32,26 @@ public class HSBFilterDialog extends javax.swing.JDialog {
         float s = filter.getSaturation();
         float b = filter.getBrightness();
         
-        hueslider.setValue((int) (h*100));
-        saturationslider.setValue((int) (s*100));
-        brightnessslider.setValue((int) (b*100));
+        hueslider.setValue(valueToSlider(h));
+        saturationslider.setValue(valueToSlider(s));
+        brightnessslider.setValue(valueToSlider(b));
     }
     
     
     private String changeValue(float v) {
         DecimalFormat df = new DecimalFormat("0.00");
-        return df.format(v);
+        if(v >= 0)
+            return " "+df.format(v);
+        else
+            return df.format(v);
+    }
+    
+    private int valueToSlider(float v) {
+        return (int) (50 * v + 50);
+    }
+    
+    private float sliderToValue(int v) {
+        return (v/50.0f)-1;
     }
     
     /**
@@ -59,8 +70,8 @@ public class HSBFilterDialog extends javax.swing.JDialog {
         saturationslider = new javax.swing.JSlider();
         hueslider = new javax.swing.JSlider();
         brightnessslider = new javax.swing.JSlider();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        cancelbtn = new javax.swing.JButton();
+        applybtn = new javax.swing.JButton();
         lblhue = new javax.swing.JLabel();
         lblsaturation = new javax.swing.JLabel();
         lblbrightness = new javax.swing.JLabel();
@@ -78,46 +89,43 @@ public class HSBFilterDialog extends javax.swing.JDialog {
         jLabel3.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
         jLabel3.setText("Brightness");
 
-        saturationslider.setValue(0);
         saturationslider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 saturationsliderStateChanged(evt);
             }
         });
 
-        hueslider.setValue(0);
         hueslider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 huesliderStateChanged(evt);
             }
         });
 
-        brightnessslider.setValue(0);
         brightnessslider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 brightnesssliderStateChanged(evt);
             }
         });
 
-        jButton1.setText("Cancel");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        cancelbtn.setText("Cancel");
+        cancelbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                cancelbtnActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Apply");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        applybtn.setText("Apply");
+        applybtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                applybtnActionPerformed(evt);
             }
         });
 
-        lblhue.setText("0.00");
+        lblhue.setText(" 0.00");
 
-        lblsaturation.setText("0.00");
+        lblsaturation.setText(" 0.00");
 
-        lblbrightness.setText("0.00");
+        lblbrightness.setText(" 0.00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -143,9 +151,9 @@ public class HSBFilterDialog extends javax.swing.JDialog {
                             .addComponent(lblbrightness, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(applybtn, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cancelbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -168,8 +176,8 @@ public class HSBFilterDialog extends javax.swing.JDialog {
                     .addComponent(lblbrightness))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
+                    .addComponent(applybtn)
+                    .addComponent(cancelbtn))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -177,34 +185,34 @@ public class HSBFilterDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void huesliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_huesliderStateChanged
-        lblhue.setText(changeValue(hueslider.getValue()/100.0f));
+        lblhue.setText(changeValue(sliderToValue(hueslider.getValue())));
     }//GEN-LAST:event_huesliderStateChanged
 
     private void saturationsliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_saturationsliderStateChanged
-        lblsaturation.setText(changeValue(saturationslider.getValue()/100.0f));
+        lblsaturation.setText(changeValue(sliderToValue(saturationslider.getValue())));
     }//GEN-LAST:event_saturationsliderStateChanged
 
     private void brightnesssliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_brightnesssliderStateChanged
-        lblbrightness.setText(changeValue(brightnessslider.getValue()/100.0f));
+        lblbrightness.setText(changeValue(sliderToValue(brightnessslider.getValue())));
     }//GEN-LAST:event_brightnesssliderStateChanged
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        float h = hueslider.getValue() / 100.0f;
-        float s = saturationslider.getValue() / 100.0f;
-        float b = brightnessslider.getValue() / 100.0f;
+    private void applybtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applybtnActionPerformed
+        float h = sliderToValue(hueslider.getValue());
+        float s = sliderToValue(saturationslider.getValue());
+        float b = sliderToValue(brightnessslider.getValue());
         filter.changeHSB(h, s, b);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_applybtnActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void cancelbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelbtnActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_cancelbtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton applybtn;
     private javax.swing.JSlider brightnessslider;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton cancelbtn;
     private javax.swing.JSlider hueslider;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

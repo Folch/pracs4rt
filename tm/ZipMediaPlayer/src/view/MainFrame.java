@@ -139,6 +139,7 @@ public class MainFrame extends javax.swing.JFrame {
         separatonfiltermenu = new javax.swing.JPopupMenu.Separator();
         originalmenu = new javax.swing.JMenuItem();
         helpbar = new javax.swing.JMenu();
+        helpmenu = new javax.swing.JMenuItem();
         aboutmenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -317,6 +318,14 @@ public class MainFrame extends javax.swing.JFrame {
 
         helpbar.setText("Help");
 
+        helpmenu.setText("Help");
+        helpmenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpmenuActionPerformed(evt);
+            }
+        });
+        helpbar.add(helpmenu);
+
         aboutmenu.setText("About");
         aboutmenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -455,6 +464,10 @@ public class MainFrame extends javax.swing.JFrame {
         AboutDialog dialog = new AboutDialog(this, true);
         dialog.setVisible(true);
     }//GEN-LAST:event_aboutmenuActionPerformed
+
+    private void helpmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpmenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_helpmenuActionPerformed
 
     public void openFile(FileType fileType) {
         MainController controller;
@@ -611,6 +624,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu filterbar;
     private javax.swing.JCheckBoxMenuItem fullscreenmenu;
     private javax.swing.JMenu helpbar;
+    private javax.swing.JMenuItem helpmenu;
     private javax.swing.JMenuItem hsbmenu;
     private javax.swing.JPanel imagepanel;
     private javax.swing.JMenuBar menubar;
