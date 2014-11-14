@@ -508,6 +508,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         switch (state) {
             case OPEN_IMAGE:
+                imagepanel.removeAll();
                 //menu item
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
@@ -561,7 +562,7 @@ public class MainFrame extends javax.swing.JFrame {
                 originalmenu.setEnabled(true);
                 break;
             case EMPTY:
-                imagepanel.updateUI();
+                
                 //menu item
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
@@ -579,7 +580,8 @@ public class MainFrame extends javax.swing.JFrame {
                 originalmenu.setEnabled(false);
                 break;
         }
-        imagepanel.repaint();
+        //imagepanel.update(null);
+        //imagepanel.repaint();
     }
     
     /**
@@ -626,7 +628,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu helpbar;
     private javax.swing.JMenuItem helpmenu;
     private javax.swing.JMenuItem hsbmenu;
-    private javax.swing.JPanel imagepanel;
+    private VideoPanel imagepanel;
     private javax.swing.JMenuBar menubar;
     private javax.swing.JMenuItem negativemenu;
     private javax.swing.JButton nextbtn;

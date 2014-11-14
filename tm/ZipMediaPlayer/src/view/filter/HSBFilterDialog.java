@@ -37,7 +37,6 @@ public class HSBFilterDialog extends javax.swing.JDialog {
         brightnessslider.setValue(valueToSlider(b));
     }
     
-    
     private String changeValue(float v) {
         DecimalFormat df = new DecimalFormat("0.00");
         if(v >= 0)
