@@ -33,21 +33,22 @@ public class HsbThread extends FilterThread implements Callable {
                     g = c.getGreen();
                     b = c.getBlue();
                     float[] hsb = Color.RGBtoHSB(r, g, b, null);
+                    
 
                     hu = hsb[0];
                     if (this.filter.getLastHue() != 0) { //si algun dels 3 valors es 0, deixem el mateix valor
                         hu += this.filter.getLastHue();
-                        hu = Math.max(Math.min(hu, 1),-1);
+                        hu = Math.max(Math.min(hu, 1),0);
                     }
                     sa = hsb[1];
                     if (this.filter.getLastSaturation() != 0) {
                         sa += this.filter.getLastSaturation();
-                        sa = Math.max(Math.min(sa, 1),-1);
+                        sa = Math.max(Math.min(sa, 1),0);
                     }
                     br = hsb[2];
                     if (this.filter.getLastValue() != 0) {
                         br += this.filter.getLastValue();
-                        br = Math.max(Math.min(br, 1),-1);
+                        br = Math.max(Math.min(br, 1),0);
 
                     }
 
