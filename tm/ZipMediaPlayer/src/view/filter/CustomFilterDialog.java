@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package view.filter;
 
 import controller.filter.IFilter;
 import java.text.DecimalFormat;
@@ -122,6 +122,7 @@ public class CustomFilterDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Custom Filter");
+        setResizable(false);
 
         field1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 

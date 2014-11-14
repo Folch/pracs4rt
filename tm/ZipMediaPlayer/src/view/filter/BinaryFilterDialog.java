@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package view.filter;
 
 import controller.filter.IFilter;
 import controller.player.IPlayer;
@@ -51,6 +51,7 @@ public class BinaryFilterDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Binary Filter");
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
         jLabel1.setText("Binary threshold");
