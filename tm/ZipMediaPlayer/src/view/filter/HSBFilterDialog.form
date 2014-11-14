@@ -53,9 +53,9 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jButton2" min="-2" pref="74" max="-2" attributes="0"/>
+                      <Component id="applybtn" min="-2" pref="74" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" pref="75" max="-2" attributes="0"/>
+                      <Component id="cancelbtn" min="-2" pref="75" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -85,8 +85,8 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="applybtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cancelbtn" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -119,58 +119,49 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JSlider" name="saturationslider">
-      <Properties>
-        <Property name="value" type="int" value="0"/>
-      </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="saturationsliderStateChanged"/>
       </Events>
     </Component>
     <Component class="javax.swing.JSlider" name="hueslider">
-      <Properties>
-        <Property name="value" type="int" value="0"/>
-      </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="huesliderStateChanged"/>
       </Events>
     </Component>
     <Component class="javax.swing.JSlider" name="brightnessslider">
-      <Properties>
-        <Property name="value" type="int" value="0"/>
-      </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="brightnesssliderStateChanged"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="cancelbtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cancel"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelbtnActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="applybtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Apply"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="applybtnActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblhue">
       <Properties>
-        <Property name="text" type="java.lang.String" value="0.00"/>
+        <Property name="text" type="java.lang.String" value=" 0.00"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblsaturation">
       <Properties>
-        <Property name="text" type="java.lang.String" value="0.00"/>
+        <Property name="text" type="java.lang.String" value=" 0.00"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblbrightness">
       <Properties>
-        <Property name="text" type="java.lang.String" value="0.00"/>
+        <Property name="text" type="java.lang.String" value=" 0.00"/>
       </Properties>
     </Component>
   </SubComponents>
