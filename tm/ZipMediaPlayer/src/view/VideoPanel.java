@@ -34,6 +34,7 @@ public class VideoPanel extends JPanel implements OnImageListener{
     
     @Override
     public void paintComponent(Graphics grphcs) {
+        super.paintComponent(grphcs);
         
         if(currentImage != null) {
             Graphics2D g = (Graphics2D) grphcs;
