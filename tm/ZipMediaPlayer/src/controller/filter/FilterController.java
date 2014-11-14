@@ -15,8 +15,11 @@ import model.Imatge;
 import java.util.ArrayList;
 import model.config.Config;
 import java.awt.image.ConvolveOp;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  *
@@ -59,11 +62,11 @@ public class FilterController implements InternalIFilter {
         return this.imatges;
     }
 
-
     @Override
     public ArrayList<Imatge> binaryFilter(ArrayList<Imatge> imatges, int threshold) {
         this.threshold = threshold;
         multithreadingFilter(imatges, BINARY);
+
         return this.imatges;
     }
 
@@ -75,26 +78,28 @@ public class FilterController implements InternalIFilter {
         multithreadingFilter(imatges, HSB);
         return this.imatges;
     }
-    
+
     @Override
     public ArrayList<Imatge> convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter) {
         this.lastFilterApplied = filter;
-        multithreadingFilter(imatges, CONVOLVE);
-        return this.imatges;
+
+        return multithreadingFilter(imatges, CONVOLVE) ? this.imatges : null;
     }
 
-    private void multithreadingFilter(ArrayList<Imatge> imatges, int filter) {
+    private boolean multithreadingFilter(ArrayList<Imatge> imatges, int filter) {
         try {
             int numProcessors = Runtime.getRuntime().availableProcessors();
-            int step = imatges.size() < numProcessors? 1:imatges.size() / numProcessors;
-            int start = 0, end = imatges.size() < numProcessors? 1:step;
+            int step = imatges.size() < numProcessors ? 1 : imatges.size() / numProcessors;
+            int start = 0, end = imatges.size() < numProcessors ? 1 : step;
             this.imatges = imatges;
-            int iter = imatges.size() < numProcessors? imatges.size(): numProcessors;
-                    
-            ArrayList<Thread> threads = new ArrayList<>();
+            int iter = imatges.size() < numProcessors ? imatges.size() : numProcessors;
+
+            ArrayList<Future> submits = new ArrayList<>();
+
             for (int i = 0; i < iter; i++) {
+
                 FilterThread f = null;
-                switch(filter){
+                switch (filter) {
                     case NEGATIVE:
                         f = new NegativeThread();
                         break;
@@ -108,23 +113,26 @@ public class FilterController implements InternalIFilter {
                         f = new ConvolveThread();
                         break;
                 }
-                
                 f.set(this, start, end);
-                Thread a = new Thread((Runnable) f);
-                a.start();
-                threads.add(a);
+                Callable c =  (Callable) f;
+                ExecutorService executor = Executors.newFixedThreadPool(1);
+                Future b = executor.submit(c);
+                submits.add(b);
+
                 start += step;
                 end += step;
             }
             for (int i = 0; i < iter; i++) {
-                threads.get(i).join();
+                submits.get(i).get();
 
             }
 
-        } catch (InterruptedException ex) {
-            Logger.getLogger(FilterController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException | ExecutionException ex) {
+            return false;
         }
+        return true;
     }
+
     public int getThreshold() {
         return this.threshold;
     }

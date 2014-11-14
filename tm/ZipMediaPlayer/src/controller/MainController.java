@@ -38,7 +38,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
     private final DiskController disk;
     private final FilterController filter;
     private ZipFile zip;
-    
+
     public MainController(OnImageListener listener) {
         this.listener = listener;
         this.dir = Config.DEFAULT_DIRECTION;
@@ -101,7 +101,7 @@ public class MainController implements IPlayer, IFilter, IDisk {
             return true;
         }
         return false;
-        
+
     }
 
     @Override
@@ -182,11 +182,15 @@ public class MainController implements IPlayer, IFilter, IDisk {
     }
 
     @Override
-    public boolean applyFilter(FilterDim3 filter) {
-        this.images = this.filter.convolveImages(deepCopyArrayList(imagesCopia), filter);
-        first();
-        
-        return true;
+    public boolean applyFilter(FilterDim3 filter) {//true, tot be
+
+        ArrayList<Imatge> resultat = this.filter.convolveImages(deepCopyArrayList(imagesCopia), filter);
+        if (resultat != null) {
+            this.images = resultat;
+            first();
+        }
+        return resultat != null;
+
     }
 
     private ArrayList<Imatge> deepCopyArrayList(ArrayList<Imatge> original) {
