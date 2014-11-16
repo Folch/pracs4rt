@@ -291,7 +291,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="playbtnActionPerformed"/>
       </Events>
     </Component>
-    <Container class="VideoPanel" name="imagepanel">
+    <Container class="javax.swing.JPanel" name="imagepanel">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
