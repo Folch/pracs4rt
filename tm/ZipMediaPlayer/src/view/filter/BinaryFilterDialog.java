@@ -6,11 +6,10 @@
 package view.filter;
 
 import controller.filter.IFilter;
-import controller.player.IPlayer;
-import model.config.DirectionType;
 
 /**
- *
+ * Dialog to show binary filter.
+ * 
  * @author zenbook
  */
 public class BinaryFilterDialog extends javax.swing.JDialog {

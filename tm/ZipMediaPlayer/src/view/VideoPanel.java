@@ -6,40 +6,22 @@
 package view;
 
 import controller.player.OnImageListener;
-import java.awt.BorderLayout;
 import model.Imatge;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *
+ * This is the panel where it plays the videos and images.
+ * 
  * @author zenbook
  */
 public class VideoPanel extends JPanel implements OnImageListener{
     
     private BufferedImage currentImage;
-    //private boolean isLoading;
-    
-    //private JLabel image;
-    
-    public VideoPanel() {
-        /*
-        image = new JLabel();
-        ImageIcon ii = new ImageIcon(this.getClass().getResource(
-                    "/view/resource/loading.gif"));
-        image.setIcon(ii);
-        
-        this.setLayout(new BorderLayout());
-        */
-    }
     
     @Override
     public void paintComponent(Graphics grphcs) {
@@ -62,16 +44,6 @@ public class VideoPanel extends JPanel implements OnImageListener{
         }
                 
     }
-    
-    /*
-    public void loading(boolean load) {
-        if(load) {
-            this.add(image, BorderLayout.CENTER);
-        } else{
-            this.remove(image);
-        }
-        //repaint();
-    }*/
     
     private double getScaleY(int panelHeight, int imageHeight) {
         double yScale = 1;

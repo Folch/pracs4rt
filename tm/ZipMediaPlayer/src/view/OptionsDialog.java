@@ -9,7 +9,8 @@ import controller.player.IPlayer;
 import model.config.DirectionType;
 
 /**
- *
+ * Dialog to show options
+ * 
  * @author zenbook
  */
 public class OptionsDialog extends javax.swing.JDialog {
