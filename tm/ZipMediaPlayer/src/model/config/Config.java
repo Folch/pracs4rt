@@ -8,8 +8,8 @@ package model.config;
 import model.FilterDim3;
 
 /**
- *
- * @author albert
+ * Classe utilitzada per configurar els valors per defecte d'alguns atributs
+ * @author Albert Folch i Xavi Moreno
  */
 public class Config {
 

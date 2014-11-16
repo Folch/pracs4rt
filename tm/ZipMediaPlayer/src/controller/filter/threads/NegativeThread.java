@@ -10,15 +10,19 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.Callable;
 
 /**
- *
- * @author albert
+ * Classe que representa un thread que aplicarà un filtre negatiu
+ * @author Albert Folch i Xavi Moreno
  */
 public class NegativeThread extends FilterThread implements Callable {
 
     public NegativeThread() {
         super();
     }
-
+    /**
+     * Mètode que aplica el filtre negatiu a un subconjunt d'imatges
+     * @return
+     * @throws Exception 
+     */
     @Override
     public Object call() throws Exception {
         for (int k = start; k < end; k++) {

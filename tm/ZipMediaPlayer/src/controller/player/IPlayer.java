@@ -9,8 +9,8 @@ import model.config.DirectionType;
 
 
 /**
- *
- * @author albert
+ * Interficie que implementa el MainController per les opcions de reproducció
+ * @author Albert Folch
  */
 public interface IPlayer {
     public void first();

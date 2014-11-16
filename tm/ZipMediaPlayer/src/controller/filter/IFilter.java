@@ -8,12 +8,10 @@ package controller.filter;
 import model.FilterDim3;
 
 /**
- *
- * @author albert
+ * Interfície que implementa el MainController que serà utilitzada per la vista pel tema de filtres
+ * @author Albert Folch i Xavi Moreno
  */
 public interface IFilter {
-    // TODO: define defaults values.
-    
     
     public boolean applyFilter(FilterDim3 filter);
     public void negativeFilter();

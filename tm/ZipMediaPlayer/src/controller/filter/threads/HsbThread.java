@@ -14,11 +14,17 @@ import java.util.concurrent.Callable;
  * @author albert
  */
 public class HsbThread extends FilterThread implements Callable {
-
+    /**
+     * Constructor
+     */
     public HsbThread() {
         super();
     }
-
+    /**
+     * Mètode que fa canvia el HSB de manera sumativa a un subconjunt d'imatges.
+     * @return
+     * @throws Exception 
+     */
     @Override
     public Object call() throws Exception {
         float hu, sa, br;

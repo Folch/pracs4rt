@@ -11,12 +11,10 @@ import java.util.ArrayList;
 import java.util.zip.ZipFile;
 
 /**
- *
- * @author albert
+ * Interfície interna que implementa el CompressorController
+ * @author Albert Folch
  */
 public interface ICompressor {
-    //public ZipFile compressGZip( ArrayList<Imatge> images);
-    //public ZipFile compressZip( ArrayList<Imatge> images);
     public ArrayList<Imatge> decompressZip (ZipFile zip);
     public ArrayList<File> getFilesFromZip(String path,ZipFile zip);
 }

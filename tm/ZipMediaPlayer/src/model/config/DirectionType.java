@@ -6,8 +6,8 @@
 package model.config;
 
 /**
- *
- * @author zenbook
+ * Enum fet servir per reproduir, per saber el sentit de la reproducció
+ * @author Albert Folch i Xavi Moreno
  */
 public enum DirectionType {
     BACKWARD,

@@ -6,8 +6,8 @@
 package model;
 
 /**
- *
- * @author albert
+ * Classe que fa servir el patró Singleton per tenir el filtre que es vol aplicar: average, sobel_x, sobel_y, low_pass, high_pass, laplacian i identity
+ * @author Albert Folch i Xavi Moreno
  */
 public class FilterDim3 {
 

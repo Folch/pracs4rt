@@ -10,8 +10,8 @@ import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 
 /**
- *
- * @author albert
+ * Classe que emmagatzema un BufferedImage i el seu nom
+ * @author Albert Folch i Xavi Moreno
  */
 public class Imatge implements Cloneable{
     private String name;
@@ -36,13 +36,21 @@ public class Imatge implements Cloneable{
     public void setImage(BufferedImage image) {
         this.image = image;
     }
+    /**
+     * Mètode que retorna un clon del buffered image que conté aquesta imatge
+     * @return 
+     */
     public BufferedImage deepCopy() {
         ColorModel cm = image.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
         WritableRaster raster = image.copyData(null);
         return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
-
+    /**
+     * Mètode de sobreescritura del clone
+     * @return
+     * @throws CloneNotSupportedException 
+     */
     @Override
     protected BufferedImage clone() throws CloneNotSupportedException {
         super.clone();

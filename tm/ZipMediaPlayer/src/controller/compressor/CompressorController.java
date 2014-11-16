@@ -21,11 +21,15 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 
 /**
- *
- * @author albert
+ * Classe controladora de totes les accions relacionades amb la compressió
+ * @author Albert Folch i Xavi Moreno
  */
 public class CompressorController implements ICompressor {
-
+    /**
+     * Mètode que segons un ZipFile el descomprimeix i et retorna un ArrayList de Imatge
+     * @param zFl
+     * @return 
+     */
     @Override
     public ArrayList<Imatge> decompressZip(ZipFile zFl) {
         ArrayList<Imatge> images = new ArrayList<>();
@@ -51,8 +55,7 @@ public class CompressorController implements ICompressor {
     }
 
     /**
-     * Aquest mètode fa: - Descomprimir Zip - Guardar imatges com a files (cal?)
-     * - Guardar referencies files
+     * Aquest mètode fa: Descomprimir Zip,Guardar imatges com a files a disc i retorna l'arraylist de files corresponent a les imatges
      *
      * @param path
      * @param zipFile

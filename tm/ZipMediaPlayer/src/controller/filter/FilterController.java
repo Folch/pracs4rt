@@ -22,8 +22,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- *
- * @author albert
+ * Classe controladora dels filtrs principal que implementa el InternalFilter
+ * @author Albert Folch i Xavi Moreno
  */
 public class FilterController implements InternalIFilter {
 
@@ -47,7 +47,9 @@ public class FilterController implements InternalIFilter {
      * 0
      */
     public static final int BORDES_0 = ConvolveOp.EDGE_ZERO_FILL;
-
+    /**
+     * Constructor
+     */
     public FilterController() {
         this.threshold = Config.DEFAULT_THRESHOLD;
         this.lastFilterApplied = Config.DEFAULT_FILTER;
@@ -55,21 +57,36 @@ public class FilterController implements InternalIFilter {
         this.lastSaturation = Config.DEFAULT_SATURATION;
         this.lastValue = Config.DEFAULT_VALUE;
     }
-
+    /**
+     * Mètode que aplica el filtre negatiu amb multithread
+     * @param imatges
+     * @return 
+     */
     @Override
     public ArrayList<Imatge> negativeFilter(ArrayList<Imatge> imatges) {
         multithreadingFilter(imatges, NEGATIVE);
         return this.imatges;
     }
-
+    /**
+     * Mètode que aplica el filtre binari amb multithread
+     * @param imatges
+     * @param threshold
+     * @return 
+     */
     @Override
     public ArrayList<Imatge> binaryFilter(ArrayList<Imatge> imatges, int threshold) {
         this.threshold = threshold;
         multithreadingFilter(imatges, BINARY);
-
         return this.imatges;
     }
-
+    /**
+     * Mètode que canvia el HSB de les imatges, si no es vol canviar s'ha de passar 0 ja que serà additiu.
+     * @param imatges
+     * @param hue
+     * @param saturation
+     * @param brightness
+     * @return 
+     */
     @Override
     public ArrayList<Imatge> changeHSB(ArrayList<Imatge> imatges, float hue, float saturation, float brightness) {
         lastHue = hue;
@@ -78,14 +95,23 @@ public class FilterController implements InternalIFilter {
         multithreadingFilter(imatges, HSB);
         return this.imatges;
     }
-
+    /**
+     * Mètode que convoluciona les imatges segons el filtre passat per paràmetre. Retorna null si el filtre no s'ha pogut aplicar
+     * @param imatges
+     * @param filter
+     * @return 
+     */
     @Override
     public ArrayList<Imatge> convolveImages(ArrayList<Imatge> imatges, FilterDim3 filter) {
         this.lastFilterApplied = filter;
-
         return multithreadingFilter(imatges, CONVOLVE) ? this.imatges : null;
     }
-
+    /**
+     * Mètode privat que crea els threads (tants threads com threads tinguin les cpus), els executa cadascun per un conjunt d'imatges i espera a que acabin. Retorna true si ha anat tot bé.
+     * @param imatges
+     * @param filter
+     * @return 
+     */
     private boolean multithreadingFilter(ArrayList<Imatge> imatges, int filter) {
         try {
             int numProcessors = Runtime.getRuntime().availableProcessors();
@@ -132,27 +158,45 @@ public class FilterController implements InternalIFilter {
         }
         return true;
     }
-
+    /**
+     * Getter que retorna l'últim threshold utilitzat
+     * @return 
+     */
     public int getThreshold() {
         return this.threshold;
     }
-
+    /**
+     * Getter que retorna l'últim hue utilitzat
+     * @return 
+     */
     public float getLastHue() {
         return lastHue;
     }
-
+    /**
+     * Getter que retorna l'últim saturation utilitzat
+     * @return 
+     */
     public float getLastSaturation() {
         return lastSaturation;
     }
-
+    /**
+     * Getter que retorna l'últim brightness/value utilitzat
+     * @return 
+     */
     public float getLastValue() {
         return lastValue;
     }
-
+    /**
+     * Getter que retorna les imatges
+     * @return 
+     */
     public ArrayList<Imatge> getImatges() {
         return imatges;
     }
-
+    /**
+     * Getter que retorna l'últim filtre utilitzat
+     * @return 
+     */
     public FilterDim3 getLastFilterApplied() {
         return lastFilterApplied;
     }
