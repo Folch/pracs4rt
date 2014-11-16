@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.zip.ZipFile;
 
 /**
- *
- * @author albert
+ * Interfície que implementa el DiskController per accions relacionades amb obrir i guardar imatges/zip
+ * @author Albert Folch i Xavi Moreno
  */
 public interface InternalIDisk {
     public ZipFile openZip (String path);

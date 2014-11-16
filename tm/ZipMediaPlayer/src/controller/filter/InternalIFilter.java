@@ -10,8 +10,8 @@ import model.Imatge;
 import java.util.ArrayList;
 
 /**
- *
- * @author albert
+ * Interfície que implementa el FilterController per implementar el funcionament dels filtres
+ * @author Albert Folch
  */
 public interface InternalIFilter {
     public ArrayList<Imatge> negativeFilter(ArrayList<Imatge> imatges);

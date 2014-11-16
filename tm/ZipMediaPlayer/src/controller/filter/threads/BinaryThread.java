@@ -10,15 +10,19 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.Callable;
 
 /**
- *
- * @author albert
+ * Classe thread que aplicarà el filtre binari
+ * @author Albert Folch i Xavi Moreno
  */
 public class BinaryThread extends FilterThread implements Callable {
 
     public BinaryThread() {
         super();
     }
-
+    /**
+     * Mètode que aplica el filtre binari a un subconjunt d'imatges
+     * @return
+     * @throws Exception 
+     */
     @Override
     public Object call() throws Exception {
         for (int k = start; k < end; k++) {

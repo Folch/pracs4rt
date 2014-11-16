@@ -8,8 +8,8 @@ package controller.player;
 import model.Imatge;
 
 /**
- *
- * @author albert
+ * Interfície que implementa la vista per mostrar una imatge i crida el MainController per passar-li-ho
+ * @author Albert Folch i Xavi Moreno
  */
 public interface OnImageListener {
     

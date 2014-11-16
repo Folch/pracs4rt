@@ -23,11 +23,15 @@ import java.util.zip.ZipOutputStream;
 import javax.imageio.ImageIO;
 
 /**
- *
- * @author albert
+ * Classe controladora de les funcions a disc
+ * @author Albert Folch i Xavi Moreno
  */
 public class DiskController implements InternalIDisk {
-
+    /**
+     * Mètode que obre un zip d'un path i retorna un ZipFile
+     * @param path
+     * @return 
+     */
     @Override
     public ZipFile openZip(String path) {
         ZipFile zFl = null;
@@ -40,7 +44,11 @@ public class DiskController implements InternalIDisk {
         return zFl;
 
     }
-
+    /**
+     * Mètode que obre una imatge d'un path i retorna un Imatge
+     * @param path
+     * @return 
+     */
     @Override
     public Imatge openImage(String path) {
         File file = new File(path);
@@ -56,7 +64,11 @@ public class DiskController implements InternalIDisk {
         }
         return image;
     }
-
+    /**
+     * Mètode que guarda una imatge en jpg en un path concret
+     * @param path
+     * @param img 
+     */
     @Override
     public void saveImage(String path, Imatge img) {
         while (path.endsWith(".jpg")) {
@@ -71,7 +83,11 @@ public class DiskController implements InternalIDisk {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    /**
+     * Mètode que guarda un conjunt d'imatges en un zip en un path concret
+     * @param path
+     * @param imatges 
+     */
     @Override
     public void saveZip(String path, ArrayList<Imatge> imatges) {
         while (path.endsWith(".zip")) {
@@ -95,7 +111,11 @@ public class DiskController implements InternalIDisk {
         }
 
     }
-
+    /**
+     * Mètode que guarda un gzip per cada imatge que primer s'haurà guardat com a file
+     * @param path
+     * @param files 
+     */
     @Override
     public void saveGZip(String path, ArrayList<File> files) {
         for (File file : files) {

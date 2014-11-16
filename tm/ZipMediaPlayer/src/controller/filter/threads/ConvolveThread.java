@@ -14,15 +14,19 @@ import java.util.concurrent.Callable;
 import model.FilterDim3;
 
 /**
- *
- * @author albert
+ * Classe que representa el thread que convolucionarà un subconjunt d'imatges
+ * @author Albert Folch i Xavi Moreno
  */
 public class ConvolveThread extends FilterThread implements Callable {
 
     public ConvolveThread() {
         super();
     }
-
+    /**
+     * Mètode que aplica la convolució a un subconjunt d'imatges. Si el filtre que es vol aplicar es Sobel_X, Sobel_Y, High_pass o laplacian s'aplicarà una conversió a escala de grisos
+     * @return
+     * @throws Exception 
+     */
     @Override
     public Object call() throws Exception {
         for (int i = start; i < end; i++) {
@@ -34,8 +38,14 @@ public class ConvolveThread extends FilterThread implements Callable {
         }
         return null;
     }
-
-    private BufferedImage convolve(float filtre[][], BufferedImage imatge, int tratBordes)  {
+    /**
+     * Mètode de convolució d'una imatge bufferedImage segons el filtre 2d filtre[][]. El paràmetre bordes configura el seu tractament en la convolució.
+     * @param filtre
+     * @param imatge
+     * @param bordes
+     * @return 
+     */
+    private BufferedImage convolve(float filtre[][], BufferedImage imatge, int bordes)  {
         BufferedImage res;
 
         if (imatge == null) {
@@ -45,8 +55,8 @@ public class ConvolveThread extends FilterThread implements Callable {
             throw new IllegalArgumentException("S'ha de passar algun filtre vàlid");
         }
 
-        if (tratBordes != SENSE_BORDES || tratBordes != BORDES_0) {
-            tratBordes = SENSE_BORDES;
+        if (bordes != SENSE_BORDES || bordes != BORDES_0) {
+            bordes = SENSE_BORDES;
         }
 
         int width = filtre.length;
@@ -63,7 +73,7 @@ public class ConvolveThread extends FilterThread implements Callable {
 
         //Creem l'operació de convolució
         Kernel kernel = new Kernel(width, height, filtroK);
-        ConvolveOp cop = new ConvolveOp(kernel, tratBordes, null);
+        ConvolveOp cop = new ConvolveOp(kernel, bordes, null);
 
         //Creem la imatge nova semblant a l'antiga
         res = new BufferedImage(imatge.getWidth(), imatge.getHeight(), imatge.getType());

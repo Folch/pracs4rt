@@ -6,9 +6,10 @@
 package model.config;
 
 /**
- *
- * @author zenbook
+ * Enum fet servir per obrir fitxers, etc. Per decidir accions sobre imatges o zips.
+ * @author Albert Folch i Xavi Moreno
  */
+
 public enum FileType {
         IMAGE,
         ZIP

@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipFile;
 
 /**
- *
+ * Classe controladora principal del video, fa de clase comunicadora entre la vista i els altres controladors
  * @author albert
  */
 public class MainController implements IPlayer, IFilter, IDisk {
@@ -38,7 +38,10 @@ public class MainController implements IPlayer, IFilter, IDisk {
     private final DiskController disk;
     private final FilterController filter;
     private ZipFile zip;
-
+    /**
+     * Constructor
+     * @param listener 
+     */
     public MainController(OnImageListener listener) {
         this.listener = listener;
         this.dir = Config.DEFAULT_DIRECTION;
@@ -49,7 +52,10 @@ public class MainController implements IPlayer, IFilter, IDisk {
         this.images = new ArrayList<>();
         this.imagesCopia = new ArrayList<>();
     }
-
+    /**
+     * Mètode que serveix per configurar el frame rate.
+     * @param time 
+     */
     @Override
     public void setFrameRate(int time) {
         this.time = time;
@@ -59,14 +65,18 @@ public class MainController implements IPlayer, IFilter, IDisk {
             play();
         }
     }
-
+    /**
+     * Mètode que para el thread d'execució del video
+     */
     @Override
     public void pause() {
         if (executor != null) {
             executor.shutdown();
         }
     }
-
+    /**
+     * Mètode que executa el thread de reproducció del video cada 1/fps
+     */
     @Override
     public void play() {
         Runnable nextRunnable = new Runnable() {
@@ -83,12 +93,19 @@ public class MainController implements IPlayer, IFilter, IDisk {
         executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(nextRunnable, 0, (long) ((1.0f / this.time) * 1000), TimeUnit.MILLISECONDS);
     }
-
+    /**
+     * Mètode que configura la direcció de la reproducció
+     * @param type 
+     */
     @Override
     public void setDirection(DirectionType type) {
         this.dir = type;
     }
-
+    /**
+     * Mètode que pausa la reproducció del video, crida als mètodes necessaris per descomprimir i retorna si s'ha pogut obrir el zip i aconseguir les imatges correctament.
+     * @param path
+     * @return 
+     */
     @Override
     public boolean openZip(String path) {
         if (executor != null) {
@@ -103,7 +120,11 @@ public class MainController implements IPlayer, IFilter, IDisk {
         return false;
 
     }
-
+    /**
+     * Mètode crida als mètodes necessaris per obrir la imatge i retorna si s'ha pogut aconseguir la imatge correctament.
+     * @param path
+     * @return 
+     */
     @Override
     public boolean openImage(String path) {
         Imatge img = disk.openImage(path);
@@ -116,17 +137,26 @@ public class MainController implements IPlayer, IFilter, IDisk {
         }
         return false;
     }
-
+    /**
+     * Mètode que crida guarda una imatge en el path passat per paràmetre.
+     * @param path 
+     */
     @Override
     public void saveImage(String path) {
         disk.saveImage(path, this.images.get(0));
     }
-
+    /**
+     * Mètode que guarda el conjunt d'imatges en un zip en el path passat per paràmetre
+     * @param path 
+     */
     @Override
     public void saveZip(String path) {
         disk.saveZip(path, images);
     }
-
+    /**
+     * Mètode que guarda 1 gzip per cada imatge en el path que es passa per paràmetre
+     * @param path 
+     */
     @Override
     public void saveGZip(String path) {
         if (zip != null) {
@@ -135,7 +165,9 @@ public class MainController implements IPlayer, IFilter, IDisk {
         }
 
     }
-
+    /**
+     * Mètode que mostra la primera imatge que hi ha carregada
+     */
     @Override
     public void first() {
         if (!images.isEmpty()) {
@@ -145,7 +177,9 @@ public class MainController implements IPlayer, IFilter, IDisk {
             }
         }
     }
-
+    /**
+     * Mètode que mostra la següent imatge
+     */
     @Override
     public void next() {
         if (!images.isEmpty()) {
@@ -160,7 +194,9 @@ public class MainController implements IPlayer, IFilter, IDisk {
         }
 
     }
-
+    /**
+     * Mètode que mostra l'anterior imatge respecte l'actual
+     */
     @Override
     public void previous() {
         if (!images.isEmpty()) {
@@ -174,15 +210,21 @@ public class MainController implements IPlayer, IFilter, IDisk {
         }
 
     }
-
+    /**
+     * Mètode que restaura les imatges originals i mostra la primera
+     */
     @Override
     public void removeFilter() {
         this.images = deepCopyArrayList(imagesCopia);
         first();
     }
-
+    /**
+     * Mètode que aplica un filtre a totes les imatges, retorna true si ha anat bé.
+     * @param filter
+     * @return 
+     */
     @Override
-    public boolean applyFilter(FilterDim3 filter) {//true, tot be
+    public boolean applyFilter(FilterDim3 filter) {
 
         ArrayList<Imatge> resultat = this.filter.convolveImages(deepCopyArrayList(imagesCopia), filter);
         if (resultat != null) {
@@ -192,7 +234,11 @@ public class MainController implements IPlayer, IFilter, IDisk {
         return resultat != null;
 
     }
-
+    /**
+     * Mètode que fa una copia de les imatges per a poder-les restaurar més tard
+     * @param original
+     * @return 
+     */
     private ArrayList<Imatge> deepCopyArrayList(ArrayList<Imatge> original) {
         ArrayList<Imatge> copia = new ArrayList<>(original.size());
         for (Imatge img : original) {
@@ -203,13 +249,18 @@ public class MainController implements IPlayer, IFilter, IDisk {
         }
         return copia;
     }
-
+    /**
+     * Mètode que aplica el filtre negatiu
+     */
     @Override
     public void negativeFilter() {
         this.images = this.filter.negativeFilter(deepCopyArrayList(imagesCopia));
         first();
     }
-
+    /**
+     * Mètode que aplica el filtre binari segons un threshold
+     * @param threshold 
+     */
     @Override
     public void binaryFilter(int threshold) {
         this.images = this.filter.binaryFilter(deepCopyArrayList(imagesCopia), threshold);
@@ -229,17 +280,26 @@ public class MainController implements IPlayer, IFilter, IDisk {
         this.images = this.filter.changeHSB(deepCopyArrayList(imagesCopia), hue, saturation, brightness);
         first();
     }
-
+    /**
+     * Mètode que retorna l'últim threshold aplicat
+     * @return 
+     */
     @Override
     public int getThreshold() {
         return this.filter.getThreshold();
     }
-
+    /**
+     * Mètode que retorna l'últim filtre aplicat
+     * @return 
+     */
     @Override
     public FilterDim3 getFilterDim3() {
         return this.filter.getLastFilterApplied();
     }
-
+    /**
+     * Mètode que retorna si s'està reproduint el video o no (false)
+     * @return 
+     */
     @Override
     public boolean isPlaying() {
         if (executor != null) {
@@ -247,27 +307,42 @@ public class MainController implements IPlayer, IFilter, IDisk {
         }
         return false;
     }
-
+    /**
+     * Mètode que retorna el frame rate que està aplicat
+     * @return 
+     */
     @Override
     public int getFrameRate() {
         return this.time;
     }
-
+    /**
+     * Mètode que retorna la direcció amb la qual s'està reproduint
+     * @return 
+     */
     @Override
     public DirectionType getDirection() {
         return this.dir;
     }
-
+    /**
+     * Mètode que retorna l'últim hue aplicat
+     * @return 
+     */
     @Override
     public float getHue() {
         return this.filter.getLastHue();
     }
-
+    /**
+     * Mètode que l'última saturation que s'ha aplicat
+     * @return 
+     */
     @Override
     public float getSaturation() {
         return this.filter.getLastSaturation();
     }
-
+    /**
+     * Mètode que retorna l'última brightness que s'ha aplicat
+     * @return 
+     */
     @Override
     public float getBrightness() {
         return this.filter.getLastValue();

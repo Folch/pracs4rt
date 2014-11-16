@@ -10,26 +10,36 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 /**
- *
- * @author albert
+ * Classe pare de tots els threads que apliquen filtres
+ * @author Albert Folch i Xavi Moreno
  */
 public class FilterThread {
 
     protected FilterController filter;
     protected int start, end;
-
+    /**
+     * Constructor
+     */
     public FilterThread() {
         this.filter = null;
         this.start = -1;
         this.end = -1;
     }
-
+    /**
+     * Aquest setter configura el subconjunt de les imatges de FilterController que un thread concret aplicarà un filtre segons el inici i end
+     * @param aThis
+     * @param inici
+     * @param end 
+     */
     public void set(FilterController aThis, int inici, int end) {
         this.filter = aThis;
         this.start = inici;
         this.end = end;
     }
-
+    /**
+     * Mètode que converteix una imatge en escala de grisos
+     * @param img 
+     */
     protected void grayScale(BufferedImage img) {
         for (int i = 0; i < img.getWidth(); i++) {
             for (int j = 0; j < img.getHeight(); j++) {

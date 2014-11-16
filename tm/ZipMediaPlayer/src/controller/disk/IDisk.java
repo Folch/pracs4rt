@@ -6,8 +6,8 @@
 package controller.disk;
 
 /**
- *
- * @author albert
+ * Interfície que implementa el MainController i que farà servir com a crides la vista
+ * @author Albert Folch
  */
 public interface IDisk {
     public boolean openZip (String path);
