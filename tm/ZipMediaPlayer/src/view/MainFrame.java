@@ -1,33 +1,3 @@
-/*
- * To change this li
-    @Override
-    public int getWidth(ImageObserver io) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getHeight(ImageObserver io) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ImageProducer getSource() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Graphics getGraphics() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object getProperty(String string, ImageObserver io) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-cense header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import view.filter.HSBFilterDialog;
@@ -49,7 +19,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import model.config.FileType;
 
 /**
- *
+ * This is the main JFrame that shows the player where it plays the videos or images.
+ * 
  * @author zenbook
  */
 public class MainFrame extends javax.swing.JFrame {
@@ -83,6 +54,12 @@ public class MainFrame extends javax.swing.JFrame {
         this.setBounds( width/2-this.getWidth()/2, height/2-this.getHeight()/2, this.getWidth(), this.getHeight());
     }
 
+    /**
+     * This method shows a windows where you can choose the file
+     * @param fileType
+     * @return 
+     */
+    
     public String showFileChooser(FileType fileType) {
         fc.setDialogTitle("Open");
         if (fileType == FileType.ZIP) {
@@ -98,6 +75,12 @@ public class MainFrame extends javax.swing.JFrame {
             return null;
         }
     }
+    
+    /**
+     * Shows the file chooser to save a file.
+     * 
+     * @return 
+     */
     
     public String showSaveFileChooser() {
         fc.setDialogTitle("Save");   
@@ -470,6 +453,12 @@ public class MainFrame extends javax.swing.JFrame {
         dialog.setVisible(true);
     }//GEN-LAST:event_helpmenuActionPerformed
 
+    /**
+     * This method instatiates a MainController to load a video or image.
+     * 
+     * @param fileType 
+     */
+    
     public void openFile(FileType fileType) {
         MainController controller;
         if (player == null || saver == null) {

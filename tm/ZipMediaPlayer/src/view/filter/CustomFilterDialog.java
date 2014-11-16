@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view.filter;
 
 import controller.filter.IFilter;
@@ -11,7 +6,8 @@ import javax.swing.JOptionPane;
 import model.FilterDim3;
 
 /**
- *
+ * Dialog to show custom filter.
+ * 
  * @author zenbook
  */
 public class CustomFilterDialog extends javax.swing.JDialog {

@@ -8,7 +8,8 @@ package view;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Dialog to show about.
+ * 
  * @author zenbook
  */
 public class AboutDialog extends javax.swing.JDialog {

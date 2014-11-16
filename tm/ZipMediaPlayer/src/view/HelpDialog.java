@@ -6,7 +6,8 @@
 package view;
 
 /**
- *
+ * Dialog to show the help
+ * 
  * @author zenbook
  */
 public class HelpDialog extends javax.swing.JDialog {
@@ -53,15 +54,15 @@ public class HelpDialog extends javax.swing.JDialog {
         jLabel9.setFont(new java.awt.Font("Cantarell", 3, 18)); // NOI18N
         jLabel9.setText("Things you should know");
 
-        jLabel1.setText("Save set of images in jpeg format");
+        jLabel1.setText("Saves set of images in jpeg format");
 
-        jLabel2.setText("Save set of images individually in directory");
+        jLabel2.setText("Saves set of images individually in directory");
 
-        jLabel3.setText("Apply filter 3x3 on the video");
+        jLabel3.setText("Applies filter 3x3 on the video");
 
         jLabel4.setText("The filters are applied to the original video");
 
-        jLabel5.setText("Change the hue, saturation and brightness of the image");
+        jLabel5.setText("Changes the hue, saturation and brightness of the image");
 
         jLabel6.setText("Returns to the original image");
 
@@ -98,13 +99,15 @@ public class HelpDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel13)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel6))
-                            .addComponent(jLabel9)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -121,14 +124,12 @@ public class HelpDialog extends javax.swing.JDialog {
                                 .addComponent(jLabel11)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel3))
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel5)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 45, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -136,9 +137,9 @@ public class HelpDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel7))
@@ -162,7 +163,7 @@ public class HelpDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
