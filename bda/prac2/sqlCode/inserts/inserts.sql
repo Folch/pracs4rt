@@ -1,0 +1,1 @@
+\i inserts/data.sql

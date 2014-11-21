@@ -72,7 +72,17 @@ CREATE TABLE Producte (
 	CONSTRAINT clau_principal_producte PRIMARY KEY(id_producte)
 );
 
+CREATE TABLE Data (
+	id_any text,
+	desc_any text,
+	id_mes text,
+	desc_mes text,
+	id_dia text,
+	desc_dia text,
 
+	CONSTRAINT clau_principal_data PRIMARY KEY(id_dia)
+
+);
 
 CREATE TABLE Fets (
 	num_productes int,
@@ -83,7 +93,7 @@ CREATE TABLE Fets (
 	id_campanya int,
 	id_producte int,
 	id_subfamilia int,
-	--id_data int,
+	id_data text,
 	id_marca int,
 	id_color int,
 	id_talla int,
@@ -98,8 +108,8 @@ CREATE TABLE Fets (
 	CONSTRAINT clau_foranea_fets_marca FOREIGN KEY (id_marca) REFERENCES marca(id_marca),
 	CONSTRAINT clau_foranea_fets_color FOREIGN KEY (id_color) REFERENCES color(id_color),
 	CONSTRAINT clau_foranea_fets_talla FOREIGN KEY (id_talla) REFERENCES talla(id_talla),
-	CONSTRAINT clau_foranea_fets_pagament FOREIGN KEY (id_pagament) REFERENCES pagament(id_pagament)
---	CONSTRAINT clau_foranea_fets_data FOREIGN KEY (id_data) REFERENCES data(id_data)
+	CONSTRAINT clau_foranea_fets_pagament FOREIGN KEY (id_pagament) REFERENCES pagament(id_pagament),
+	CONSTRAINT clau_foranea_fets_data FOREIGN KEY (id_data) REFERENCES data(id_dia)
 
 );
 
