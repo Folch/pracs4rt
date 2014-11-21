@@ -1,9 +1,11 @@
-INSERT INTO Data (id_any,id_mes,id_dia) 
-VALUES(
+INSERT INTO Data 
 	SELECT
-		extract(year FROM datum) AS Year,
-		extract(month FROM datum) AS Month,
-		extract(day FROM datum) AS Day
+		cast(extract(year FROM datum)as text) AS Year,
+		null AS desc_any,
+		(cast(extract(month FROM datum)as text) ||'-'|| cast(extract(year FROM datum)as text)) AS Month,
+		null AS desc_mes,
+		(cast(extract(day FROM datum)as text) ||'-'||cast(extract(month FROM datum) as text)|| '-' || cast(extract(year FROM datum) as text)) AS Day,
+		null AS desc_dia
 	
 	FROM (
 		-- There are 3 leap years in this range, so calculate 365 * 10 + 3 records
@@ -12,4 +14,4 @@ VALUES(
 		GROUP BY sequence.day
 	     ) DQ
 	ORDER BY 1
-);
+
