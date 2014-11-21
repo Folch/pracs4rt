@@ -1,4 +1,4 @@
-import utils
+from utils import utils
 import math
 
 def compress(data,Mdes, Ment):

@@ -29,15 +29,41 @@ def check_initial_conditions(data, Mdes, Ment):
         return -1
     return 0
 
-
-def read(path):
-    with open(path, mode='rb') as file: # b is important -> binary
+def readCompress(path):
+    with open(path, mode='rb') as file:
         fileContent = file.read()
         b = bitarray()
-        b.fromstring(fileContent)
+        b.frombytes(fileContent)
+
+        padd = int(b[:8].tobytes())
+        b = b[8:]
+        for i in xrange(padd):
+            b.pop()
+
+        file.close()
         return b.to01()
     return None
 
+def writeCompress(file,path):
+    b = bitarray(file)
+    padd = bitarray()
+    padd.fromstring(str(b.fill()))
+    b = padd + b
+    f = open(path, 'w+')
+    f.write(b.tobytes())
+    f.close()
+
+def read(path):
+    with open(path, mode='rb') as file:
+        fileContent = file.read()
+        b = bitarray()
+        b.frombytes(fileContent)
+        file.close()
+        return b.to01()
+    return None
 
 def write(file,path):
-    return ""
+    b = bitarray(file)
+    f = open(path, 'w+')
+    f.write(b.tobytes())
+    f.close()

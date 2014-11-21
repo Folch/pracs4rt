@@ -1,15 +1,15 @@
 import time
 import sys
 
-import compress
-import decompress
-import utils
+from utils import utils
+from decompress import decompress
+from compress import compress
 
 
 
 if __name__ == "__main__":
-    Mdes = 8
-    Ment = 4
+    Mdes = 4096
+    Ment = 64
 
     if(len(sys.argv) == 3):
         file = utils.read(sys.argv[1])
@@ -21,10 +21,10 @@ if __name__ == "__main__":
         output = compress.compress(file,Mdes,Ment)
         print "Temps compressio:",time.time()-t1
         print "Compressio: ",len(output)
-        utils.write(output, sys.argv[2])
+        utils.writeCompress(output, sys.argv[2])
 
     elif(len(sys.argv) == 2):
-        file = utils.read(sys.argv[1])
+        file = utils.readCompress(sys.argv[1])
         t1 = time.time()
         decompressed = decompress.decompress(file,Mdes,Ment)
         print "Temps descompressio:",time.time()-t1
@@ -32,7 +32,5 @@ if __name__ == "__main__":
         utils.write(decompressed, sys.argv[1]+".txt")
 
     else:
-        print "Hint: \n\t* compress: python lz77.py /my/path/myfile.txt /my/path/namecompressfile"
-        print "\t* decompress: python lz77.py /my/path/namecompressfile"
-
-    print utils.read("hola.txt")
+        print "Hint: \n\t* compress: python lz77.py my/path/myfile.txt /my/path/namecompressfile"
+        print "\t* decompress: python lz77.py my/path/namecompressfile"
