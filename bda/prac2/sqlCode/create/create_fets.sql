@@ -109,7 +109,8 @@ CREATE TABLE Fets (
 	CONSTRAINT clau_foranea_fets_color FOREIGN KEY (id_color) REFERENCES color(id_color),
 	CONSTRAINT clau_foranea_fets_talla FOREIGN KEY (id_talla) REFERENCES talla(id_talla),
 	CONSTRAINT clau_foranea_fets_pagament FOREIGN KEY (id_pagament) REFERENCES pagament(id_pagament),
-	CONSTRAINT clau_foranea_fets_data FOREIGN KEY (id_data) REFERENCES data(id_dia)
+	CONSTRAINT clau_foranea_fets_data FOREIGN KEY (id_data) REFERENCES data(id_dia),
+	CONSTRAINT clau_principal_fets PRIMARY KEY(id_usuari,id_botiga,id_campanya,id_producte,id_subfamilia,id_data,id_marca,id_color,id_talla,id_pagament)
 
 );
 
