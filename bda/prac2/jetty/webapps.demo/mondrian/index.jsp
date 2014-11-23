@@ -23,6 +23,8 @@ analyze very large datasets stored in SQL databases without writing SQL.">
 <p>Mondrian examples:</p>
 <ul>
 <li><a href="testpage.jsp?query=primera">La primera consulta</a></li>
+<li><a href="testpage.jsp?query=segona">La segona consulta</a></li>
+<li><a href="testpage.jsp?query=tercera">La data consulta</a></li>
 <li><a href="testpage.jsp?query=mondrian">JPivot pivot table</a></li>
 <li><a href="testpage.jsp?query=xmla">JPivot pivot table by XMLA</a></li>
 <li><a href="testpage.jsp?query=fourhier">JPivot with 4 hierarchies</a></li>

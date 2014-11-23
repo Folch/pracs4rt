@@ -1,16 +1,30 @@
 <Schema name="mondrianS">
   <Cube name="cub" visible="true" cache="true" enabled="true">
-    <Table name="fets" schema="public" alias="">
+    <Table name="fets" schema="public">
     </Table>
-    <Dimension type="StandardDimension" visible="true" foreignKey="id_marca" highCardinality="false" name="marca">
-      <Hierarchy name="hierarchy" visible="true" hasAll="true">
-        <Table name="fets" alias="">
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_marca" highCardinality="false" name="Marca">
+      <Hierarchy name="JerarquiaMarca" visible="true" hasAll="true" allMemberName="All Marca" primaryKey="id_marca" defaultMember="All Marca">
+        <Table name="marca" schema="public">
         </Table>
-        <Level name="marca" visible="true" table="fets" column="id_marca" uniqueMembers="false">
+        <Level name="Nom Marca" visible="true" column="desc_marca" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
-    <Measure name="num_productes" column="num_productes" aggregator="distinct-count" visible="true">
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_data" name="Data">
+      <Hierarchy name="JerarquiaData" visible="true" hasAll="true" allMemberName="All data" primaryKey="id_dia" defaultMember="All data">
+        <Table name="data" schema="public" alias="">
+        </Table>
+        <Level name="Mes" visible="true" column="id_mes" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Any" visible="true" column="id_any" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Dia" visible="true" column="id_dia" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Measure name="Import" column="num_import" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Productes" column="num_productes" datatype="Integer" aggregator="sum" visible="true">
     </Measure>
   </Cube>
 </Schema>
