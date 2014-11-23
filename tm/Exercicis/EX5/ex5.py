@@ -3,12 +3,12 @@ import numpy as np
 # -*- coding: utf-8 -*-
 def rice(n,m):
     sign = "1" if n >= 0 else "0"
-    q = int(n/m)
+    q = int(abs(n)/m)
     qBits = ""
-    for i in range(abs(q)):
+    for i in range(q):
         qBits += "1"
     qBits += "0"
-    r = n%m
+    r = abs(n)%m
     mBits = int(math.log(m,2))
     binaryR = '{0:0'+str(mBits)+'b}'
     rBits = binaryR.format(int(r))
@@ -21,11 +21,11 @@ def saving(vmin,vmax,m = 32):
     minim = vmax+1
     maxim = vmin-1
     estalviMaxim = 0
-    for i in range(vmin,vmax):
+    for i in xrange(vmin,vmax):
         if i == 0: continue
         bitsN = int(math.log(abs(i),2))+1
         bitsR = len(rice(i,m))
-        #print bitsN,bitsR
+        #print "valor a codificat:",i,", ",bitsN," bits en codificacio binaria natural",bitsR,"bits en codificacio Rice"
         if  bitsN > bitsR:
             minim = min(i,minim)
             maxim = max(i,maxim)
@@ -43,7 +43,6 @@ def show(estalvi,minim,maxim):
 
 def a():
     print "a)",
-    num = 1023
     suma = 0
     for n in range(-1023,1024):
         if n == 0: continue
@@ -93,11 +92,9 @@ def e():
             break
     show(estalvi,minim,maxim)
 
-'''
+
 a()
 b()
-'''
 c()
-
 d()
 e()
