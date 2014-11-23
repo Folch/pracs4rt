@@ -89,6 +89,7 @@ CREATE TABLE Fets (
 	num_import real,
 	
 	id_usuari int,
+	id_edat int,
 	id_botiga int,
 	id_campanya int,
 	id_producte int,
@@ -112,6 +113,7 @@ CREATE TABLE Fets (
 	CONSTRAINT clau_foranea_fets_talla FOREIGN KEY (id_talla) REFERENCES talla(id_talla),
 	CONSTRAINT clau_foranea_fets_pagament FOREIGN KEY (id_pagament) REFERENCES pagament(id_pagament),
 	CONSTRAINT clau_foranea_fets_data FOREIGN KEY (id_data) REFERENCES data(id_dia),
+	CONSTRAINT clau_foranea_fets_edat FOREIGN KEY (id_edat) REFERENCES edat(id_edat),
 	CONSTRAINT clau_principal_fets PRIMARY KEY(id_usuari,id_botiga,id_campanya,id_producte,id_subfamilia,id_data,id_marca,id_color,id_talla,id_pagament)
 
 );
