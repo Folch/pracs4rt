@@ -94,10 +94,12 @@ CREATE TABLE Fets (
 	id_producte int,
 	id_subfamilia int,
 	id_data text,
+
 	id_marca int,
 	id_color int,
 	id_talla int,
 	id_pagament int,
+
 
 	
 	CONSTRAINT clau_foranea_fets_usuari FOREIGN KEY (id_usuari) REFERENCES usuari(id_usuari),
