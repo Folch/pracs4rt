@@ -1,2 +1,16 @@
-<Schema name="New Schema1">
+<Schema name="mondrianS">
+  <Cube name="cub" visible="true" cache="true" enabled="true">
+    <Table name="fets" schema="public" alias="">
+    </Table>
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_marca" highCardinality="false" name="marca">
+      <Hierarchy name="hierarchy" visible="true" hasAll="true">
+        <Table name="fets" alias="">
+        </Table>
+        <Level name="marca" visible="true" table="fets" column="id_marca" uniqueMembers="false">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Measure name="num_productes" column="num_productes" aggregator="distinct-count" visible="true">
+    </Measure>
+  </Cube>
 </Schema>
