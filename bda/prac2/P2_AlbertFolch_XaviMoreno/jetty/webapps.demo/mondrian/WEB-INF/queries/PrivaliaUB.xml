@@ -1,0 +1,110 @@
+<Schema name="mondrianS">
+  <Cube name="cub" visible="true" cache="true" enabled="true">
+    <Table name="fets" schema="public">
+    </Table>
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_marca" highCardinality="false" name="Marca">
+      <Hierarchy name="JerarquiaMarca" visible="true" hasAll="true" allMemberName="All Marca" primaryKey="id_marca" defaultMember="All Marca">
+        <Table name="marca" schema="public">
+        </Table>
+        <Level name="Marca" visible="true" column="id_marca" nameColumn="desc_marca" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_data" highCardinality="false" name="Data">
+      <Hierarchy name="JerarquiaData" visible="true" hasAll="true" allMemberName="All data" primaryKey="id_dia" defaultMember="All data">
+        <Table name="data" schema="public">
+        </Table>
+        <Level name="Any" visible="true" column="id_any" nameColumn="desc_any" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Mes" visible="true" column="id_mes" nameColumn="desc_mes" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Dia" visible="true" column="id_dia" nameColumn="desc_dia" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_pagament" highCardinality="false" name="Pagament">
+      <Hierarchy name="JerarquiaPagament" visible="true" hasAll="true" allMemberName="All pagament" primaryKey="id_pagament" defaultMember="All pagament">
+        <Table name="pagament" schema="public">
+        </Table>
+        <Level name="Pagament" visible="true" column="id_pagament" nameColumn="desc_pagament" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_edat" highCardinality="false" name="Edat">
+      <Hierarchy name="JerarquiaEdat" visible="true" hasAll="true" allMemberName="All edat" primaryKey="id_edat" defaultMember="All edat">
+        <Table name="edat" schema="public">
+        </Table>
+        <Level name="Edat" visible="true" column="id_edat" nameColumn="desc_edat" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_usuari" highCardinality="false" name="Usuari">
+      <Hierarchy name="JerarquiaUsuari" visible="true" hasAll="true" allMemberName="All usuari" primaryKey="id_usuari" defaultMember="All usuari">
+        <Table name="usuari" schema="public">
+        </Table>
+        <Level name="Usuari" visible="true" column="id_usuari" nameColumn="desc_usuari" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+          <Property name="Sexe" column="id_sexe" type="Integer">
+          </Property>
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_subfamilia" highCardinality="false" name="Familia">
+      <Hierarchy name="JerarquiaFamilia" visible="true" hasAll="true" allMemberName="All familia" primaryKey="id_subfamilia" defaultMember="All familia">
+        <Table name="familia" schema="public">
+        </Table>
+        <Level name="Subfamilia" visible="true" column="id_subfamilia" nameColumn="desc_subfamilia" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Familia" visible="true" column="id_familia" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_botiga" highCardinality="false" name="Botiga">
+      <Hierarchy name="JerarquiaBotiga" visible="true" hasAll="true" allMemberName="All botiga" primaryKey="id_botiga" defaultMember="All botiga">
+        <Table name="botiga" schema="public">
+        </Table>
+        <Level name="Vegueria" visible="true" column="id_vegueria" nameColumn="desc_vegueria" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Municipi" visible="true" column="id_municipi" nameColumn="desc_municipi" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="BotigaId" visible="true" column="id_botiga" nameColumn="desc_botiga" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_talla" highCardinality="false" name="Talla">
+      <Hierarchy name="JerarquiaTalla" visible="true" hasAll="true" allMemberName="All talla" primaryKey="id_talla" defaultMember="All talla">
+        <Table name="talla" schema="public">
+        </Table>
+        <Level name="Talla" visible="true" column="id_talla" nameColumn="desc_talla" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_color" highCardinality="false" name="Color">
+      <Hierarchy name="JerarquiaColor" visible="true" hasAll="true" allMemberName="All color" primaryKey="id_color" defaultMember="All color">
+        <Table name="color" schema="public">
+        </Table>
+        <Level name="Color" visible="true" column="id_color" nameColumn="desc_color" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_producte" highCardinality="false" name="Producte">
+      <Hierarchy name="JerarquiaProducte" visible="true" hasAll="true" allMemberName="All producte" primaryKey="id_producte" defaultMember="All producte">
+        <Table name="producte" schema="public">
+        </Table>
+        <Level name="Producte" visible="true" column="id_producte" nameColumn="desc_producte" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_campanya" highCardinality="false" name="Campanya">
+      <Hierarchy name="JerarquiaCampanya" visible="true" hasAll="true" allMemberName="All campanya" primaryKey="id_campanya" defaultMember="All campanya">
+        <Table name="campanya" schema="public">
+        </Table>
+        <Level name="Campanya" visible="true" column="id_campanya" nameColumn="desc_campanya" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Measure name="Import" column="num_import" datatype="Numeric" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Productes" column="num_productes" datatype="Integer" aggregator="sum" visible="true">
+    </Measure>
+  </Cube>
+</Schema>
