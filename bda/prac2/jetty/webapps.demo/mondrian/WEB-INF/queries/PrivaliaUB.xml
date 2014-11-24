@@ -6,7 +6,7 @@
       <Hierarchy name="JerarquiaMarca" visible="true" hasAll="true" allMemberName="All Marca" primaryKey="id_marca" defaultMember="All Marca">
         <Table name="marca" schema="public">
         </Table>
-        <Level name="Nom Marca" visible="true" column="id_marca" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        <Level name="Marca" visible="true" column="id_marca" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
@@ -38,9 +38,9 @@
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="id_usuari" name="Usuari">
-      <Hierarchy name="JerarquiaUsuari" visible="true" hasAll="true" allMemberName="All usuaris" primaryKey="id_usuari" defaultMember="All usuaris">
-        <Table name="usuari" schema="public" alias="">
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_usuari" highCardinality="false" name="Usuari">
+      <Hierarchy name="JerarquiaUsuari" visible="true" hasAll="true" allMemberName="All usuari" primaryKey="id_usuari" defaultMember="All usuari">
+        <Table name="usuari" schema="public">
         </Table>
         <Level name="Usuari" visible="true" column="id_usuari" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
         </Level>
@@ -48,8 +48,8 @@
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="id_subfamilia" name="Familia">
-      <Hierarchy name="JerarquiaFamilia" visible="true" hasAll="true" allMemberName="All families" primaryKey="id_subfamilia" defaultMember="All families">
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_subfamilia" highCardinality="false" name="Familia">
+      <Hierarchy name="JerarquiaFamilia" visible="true" hasAll="true" allMemberName="All familia" primaryKey="id_subfamilia" defaultMember="All familia">
         <Table name="familia" schema="public">
         </Table>
         <Level name="Subfamilia" visible="true" column="id_subfamilia" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
@@ -58,11 +58,11 @@
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="id_botiga" name="Botiga">
-      <Hierarchy name="JerarquiaBotiga" visible="true" hasAll="true" allMemberName="All botigues" primaryKey="id_botiga" defaultMember="All botigues">
-        <Table name="botiga" schema="public" alias="">
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_botiga" highCardinality="false" name="Botiga">
+      <Hierarchy name="JerarquiaBotiga" visible="true" hasAll="true" allMemberName="All botiga" primaryKey="id_botiga" defaultMember="All botiga">
+        <Table name="botiga" schema="public">
         </Table>
-        <Level name="Botiga" visible="true" column="id_botiga" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        <Level name="BotigaId" visible="true" column="id_botiga" nameColumn="desc_botiga" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
         </Level>
         <Level name="Municipi" visible="true" column="id_municipi" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
         </Level>
@@ -70,33 +70,33 @@
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="id_talla" name="Talla">
-      <Hierarchy name="JerarquiaTalla" visible="true" hasAll="true" allMemberName="All talles" primaryKey="id_talla" defaultMember="All talles">
-        <Table name="talla" schema="public" alias="">
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_talla" highCardinality="false" name="Talla">
+      <Hierarchy name="JerarquiaTalla" visible="true" hasAll="true" allMemberName="All talla" primaryKey="id_talla" defaultMember="All talla">
+        <Table name="talla" schema="public">
         </Table>
         <Level name="Talla" visible="true" column="id_talla" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="id_color" name="Color">
-      <Hierarchy name="JerarquiaColor" visible="true" hasAll="true" allMemberName="All colors" primaryKey="id_color" defaultMember="All colors">
-        <Table name="color" schema="public" alias="">
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_color" highCardinality="false" name="Color">
+      <Hierarchy name="JerarquiaColor" visible="true" hasAll="true" allMemberName="All color" primaryKey="id_color" defaultMember="All color">
+        <Table name="color" schema="public">
         </Table>
         <Level name="Color" visible="true" column="id_color" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="id_producte" name="Producte">
-      <Hierarchy name="JerarquiaProducte" visible="true" hasAll="true" allMemberName="All productes" primaryKey="id_producte" defaultMember="All productes">
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_producte" highCardinality="false" name="Producte">
+      <Hierarchy name="JerarquiaProducte" visible="true" hasAll="true" allMemberName="All producte" primaryKey="id_producte" defaultMember="All producte">
         <Table name="producte" schema="public">
         </Table>
         <Level name="Producte" visible="true" column="id_producte" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="id_campanya" name="Campanya">
-      <Hierarchy name="JerarquiaCampanya" visible="true" hasAll="true" allMemberName="All campanyes" primaryKey="id_campanya" defaultMember="All campanyes">
-        <Table name="campanya" schema="public" alias="">
+    <Dimension type="StandardDimension" visible="true" foreignKey="id_campanya" highCardinality="false" name="Campanya">
+      <Hierarchy name="JerarquiaCampanya" visible="true" hasAll="true" allMemberName="All campanya" primaryKey="id_campanya" defaultMember="All campanya">
+        <Table name="campanya" schema="public">
         </Table>
         <Level name="Campanya" visible="true" column="id_campanya" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
         </Level>

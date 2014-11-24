@@ -11,7 +11,7 @@
 	jdbcPassword="654321"
 	connectionPooling="false">
 
-select {[Productes]} on columns,
+select {[Import],[Productes]} on columns,
  {[Marca].[All Marca]} on rows
  from cub
 

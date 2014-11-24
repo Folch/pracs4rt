@@ -11,8 +11,8 @@
 	jdbcPassword="654321"
 	connectionPooling="false">
 
-select {[Import]} on columns,
- {[Marca].[All Marca]} on rows
+select {[Import],[Productes]} on columns,
+ {[Data].[All data]} on rows
  from cub
 
 </jp:mondrianQuery>

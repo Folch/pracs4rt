@@ -12,8 +12,9 @@
 	connectionPooling="false">
 
 select {[Import],[Productes]} on columns,
- {[Pagament].[All pagament]} on rows
+ [Talla].[All talla] on rows
  from cub
+
 
 </jp:mondrianQuery>
 
