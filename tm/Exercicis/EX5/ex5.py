@@ -21,9 +21,9 @@ def saving(vmin,vmax,m = 32):
     minim = vmax+1
     maxim = vmin-1
     estalviMaxim = 0
+    bitsN = int(math.log(abs(vmax-1),2))+1
     for i in xrange(vmin,vmax):
         if i == 0: continue
-        bitsN = int(math.log(abs(i),2))+1
         bitsR = len(rice(i,m))
         #print "valor a codificat:",i,", ",bitsN," bits en codificacio binaria natural",bitsR,"bits en codificacio Rice"
         if  bitsN > bitsR:
@@ -43,11 +43,7 @@ def show(estalvi,minim,maxim):
 
 def a():
     print "a)",
-    suma = 0
-    for n in range(-1023,1024):
-        if n == 0: continue
-        suma += int(math.log(abs(n),2))+1# el 1 es el bit de signe
-    print suma,"bits"
+    print int(math.log(abs(1023),2))+1,"bits"
 
 def b():
     print "b)"
@@ -60,7 +56,7 @@ def c():
     print "c)",
     vmin = -1023
     vmax = 1023
-    estalvi,minim,maxim = saving(vmin,vmax,32)
+    estalvi,minim,maxim = saving(vmin,vmax+1,32)
     show(estalvi,minim,maxim)
 
 def d():
@@ -69,14 +65,16 @@ def d():
     est = 0
     mmax = 0
     trobat = False
-    for m in np.arange(1,vmax+1,1):
-        estalvi,minim,maxim = saving(-255,256,m)
-
-        if (estalvi >= est and est > 0):
-            est = estalvi
-            mmax = m
-            print "M = ",mmax,  "Estalvi maxim =",est
-            trobat = True
+    #for m in np.arange(1,vmax+1,0.1):
+    m=256
+    estalvi,minim,maxim = saving(-1023,1023+1,m)
+    print minim
+    print maxim
+    if (estalvi >= est and est > 0):
+        est = estalvi
+        mmax = m
+        print "M = ",mmax,  "Estalvi maxim =",est
+        trobat = True
     if(not trobat):
         print "La codificacio en binari natural requereix menys bits en tot el rang"
 
@@ -94,7 +92,7 @@ def e():
 
 
 a()
-b()
+#b()
 c()
 d()
 e()
