@@ -52,9 +52,9 @@
       <Hierarchy name="JerarquiaFamilia" visible="true" hasAll="true" allMemberName="All familia" primaryKey="id_subfamilia" defaultMember="All familia">
         <Table name="familia" schema="public">
         </Table>
-        <Level name="Subfamilia" visible="true" column="id_subfamilia" nameColumn="desc_subfamilia" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        <Level name="Familia" visible="true" column="id_familia" nameColumn="desc_familia" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="Familia" visible="true" column="id_familia" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        <Level name="Subfamilia" visible="true" column="id_subfamilia" nameColumn="desc_subfamilia" type="Integer" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>

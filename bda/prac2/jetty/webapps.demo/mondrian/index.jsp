@@ -20,7 +20,7 @@ analyze very large datasets stored in SQL databases without writing SQL.">
 <link rel="stylesheet" href="stylesheet.css" type="text/css" />
 </head>
 <body>
-<p>Mondrian examples:</p>
+<p>Queries al Cub OLAP</p>
 <ul>
 <li><a href="testpage.jsp?query=primera">Import i productes per marca</a></li>
 <li><a href="testpage.jsp?query=segona">Import i productes per data</a></li>
@@ -35,27 +35,9 @@ analyze very large datasets stored in SQL databases without writing SQL.">
 <li><a href="testpage.jsp?query=onzena">Import i productes per campanya</a></li>
 <li><a href="testpage.jsp?query=dotzena">Import i productes per botiga data  3-2000</a></li>
 
-<li><a href="testpage.jsp?query=query1">Vull saber el import dels productes comprats en el mes marc de 1999 que siguin de color blau i talla L</a></li>
+<li><a href="testpage.jsp?query=query1">Vull saber el import dels productes comprats en el mes abril de 2000 que siguin de color groc i talla L</a></li>
 <li><a href="testpage.jsp?query=query2">Vull saber la marca que s'ha venut mes en la campanya 2</a></li>
 <li><a href="testpage.jsp?query=query3">Vull saber l'import de la gent que ha comprat talla XS i te 39 anys</a></li>
-
-<li><a href="testpage.jsp?query=mondrian">JPivot pivot table</a></li>
-<li><a href="testpage.jsp?query=xmla">JPivot pivot table by XMLA</a></li>
-<li><a href="testpage.jsp?query=fourhier">JPivot with 4 hierarchies</a></li>
-<li><a href="testpage.jsp?query=testrole">JPivot with role 'California Manager' set</a></li>
-<li><a href="testpage.jsp?query=arrows">JPivot with arrows</a></li>
-<li><a href="testpage.jsp?query=colors">JPivot with colors</a></li>
-<li><a href="taglib.jsp">Various queries formatted using the Mondrian tag-library</a></li>
-<li><a href="adhoc.jsp">Basic interface for ad hoc queries</a></li>
-<li><a href="xmlaTest.jsp">XML for Analysis tester</a></li>
-</ul>
-
-<p>Other links:</p>
-<ul>
-<li><a href="http://mondrian.pentaho.com">Mondrian home page</a></li>
-<li><a href="http://sourceforge.net/projects/mondrian">Mondrian project page</a></li>
-<li><a href="http://jpivot.sourceforge.net/">JPivot home page</a></li>
-<li><a href="http://sourceforge.net/projects/jpivot">JPivot project page</a></li>
 </ul>
 
 </body>

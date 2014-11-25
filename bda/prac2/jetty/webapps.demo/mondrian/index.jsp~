@@ -35,9 +35,9 @@ analyze very large datasets stored in SQL databases without writing SQL.">
 <li><a href="testpage.jsp?query=onzena">Import i productes per campanya</a></li>
 <li><a href="testpage.jsp?query=dotzena">Import i productes per botiga data  3-2000</a></li>
 
-<li><a href="testpage.jsp?query=query1">Vull saber el import dels productes comprats en el mes març de 1999 que siguin de color blau i talla L</a></li>
-<li><a href="testpage.jsp?query=query2">Vull saber la marca que s'ha venut més en la campanya 2</a></li>
-<li><a href="testpage.jsp?query=query3">Vull saber l'import de la gent que ha comprat talla XS i té 39 anys</a></li>
+<li><a href="testpage.jsp?query=query1">Vull saber el import dels productes comprats en el mes marc de 1999 que siguin de color blau i talla L</a></li>
+<li><a href="testpage.jsp?query=query2">Vull saber la marca que s'ha venut mes en la campanya 2</a></li>
+<li><a href="testpage.jsp?query=query3">Vull saber l'import de la gent que ha comprat talla XS i te 39 anys</a></li>
 
 <li><a href="testpage.jsp?query=mondrian">JPivot pivot table</a></li>
 <li><a href="testpage.jsp?query=xmla">JPivot pivot table by XMLA</a></li>
