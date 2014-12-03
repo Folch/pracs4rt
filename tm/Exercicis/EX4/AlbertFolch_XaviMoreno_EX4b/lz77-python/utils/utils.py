@@ -1,8 +1,6 @@
 import math
 from random import *
 from bitarray import bitarray
-from skimage import data
-import numpy as np
 
 
 
@@ -45,20 +43,6 @@ def readCompress(path):
         file.close()
         return b.to01()
     return None
-
-def readbmp(path):
-    RGB= np.array(data.imread(path))
-    img_R = RGB[:,:,0]
-    img_R = np.reshape(img_R, img_R.shape[0] * img_R.shape[1])
-    img_G = RGB[:,:,1]
-    img_G = np.reshape(img_G, img_G.shape[0] * img_G.shape[1])
-    img_B = RGB[:,:,2]
-    img_B = np.reshape(img_B, img_B.shape[0] * img_B.shape[1])
-    img = np.concatenate((img_R,img_G,img_B))
-    img = str(bytearray(img))
-    b = bitarray()
-    b.frombytes(img)
-    return b.to01()
 
 def writeCompress(file,path):
     b = bitarray(file)

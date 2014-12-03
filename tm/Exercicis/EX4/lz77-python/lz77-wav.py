@@ -8,9 +8,11 @@ from compress import compress
 
 
 if __name__ == "__main__":
-    Mdes = 4096
+    Mdes = 32768
     Ment = 64
 
+    print "Mdes:",Mdes
+    print "Ment:",Ment
     if(len(sys.argv) == 3):
         file = utils.read(sys.argv[1])
         if(file == None):
@@ -19,8 +21,9 @@ if __name__ == "__main__":
         print "Longitud de l'entrada a comprimir:",len(file)
         t1 = time.time()
         output = compress.compress(file,Mdes,Ment)
-        print "Temps compressio:",time.time()-t1
-        print "Compressio: ",len(output)
+	t1 = time.time()-t1
+        print "Temps compressio:", t1
+        print "Compressio: %f : 1" % (float(len(file))/len(output))
         utils.writeCompress(output, sys.argv[2])
 
     elif(len(sys.argv) == 2):
@@ -29,8 +32,8 @@ if __name__ == "__main__":
         decompressed = decompress.decompress(file,Mdes,Ment)
         print "Temps descompressio:",time.time()-t1
         print "Descompressio: ",len(decompressed)
-        utils.write(decompressed, sys.argv[1]+".txt")
+        utils.write(decompressed, sys.argv[1]+".wav")
 
     else:
-        print "Hint: \n\t* compress: python lz77.py my/path/myfile.txt /my/path/namecompressfile"
-        print "\t* decompress: python lz77.py my/path/namecompressfile"
+        print "Hint: \n\t* compress: python lz77-wav.py my/path/myfile.txt /my/path/namecompressfile"
+        print "\t* decompress: python lz77-wav.py my/path/namecompressfile"
