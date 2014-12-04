@@ -8,8 +8,8 @@ from compress import compress
 
 
 if __name__ == "__main__":
-    Mdes = 4096
-    Ment = 64
+    Mdes = 2048
+    Ment = 128
 
     print "Mdes:", Mdes
     print "Ment:", Ment
