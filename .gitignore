@@ -29,3 +29,5 @@ nbproject/*
 *.swp
 *.DS_Store
 *.lock
+
+.ipynb_checkpoints/*
