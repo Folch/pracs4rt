@@ -1,0 +1,60 @@
+vocabulario:
+	+ p_origen: nube de puntos de la imagen fuente
+	+ p_destino: nube de puntos de la imagen destino correspondiente con p_origen.
+
+funciones morphing:
+	+ getPoints
+		+ entrada:
+			* imagen origen
+			* imagen destino
+		+ salida:
+			* p_origen
+			* p_destino
+
+	+ interpolation
+		+ entrada:
+			* p_origen
+			* p_destino
+			* # frames
+		+ salida:
+			* lista de frames
+				* cada frame tiene una lista de puntos del tamaño p_origen y p_destino
+
+	+ rasterization
+		+ entrada:
+			* punto origen
+			* punto destino
+		+ salida:
+			* linea que va de punto origen a destino.
+	
+	+ warp
+		+ entrada:
+			* imagen
+			* p_puntos_imagen
+			* p_puntos_destino
+		+salida:
+			* imagen warpeada
+
+	+ crossdissolve
+		+ entrada:
+			* img1
+			* img2
+			* t - entre 0 y 1
+		+ salida:
+			* (1-t) * img1 + t * img2
+
+Algoritmo:
+	numframes = 30
+	p1,p2 = getpoints(img1,img2)
+	frames = interpolation(p1,p2, numframes)
+	dt = 1/numframes
+	t = 0
+	for f in frames:
+		tmp1 = warp(img1,p1,f)
+		tmp2 = warp(img2,p2,f)
+		frame = crossdissolve(tmp1, tmp2, t)		
+		imsave(frame, "frame"+t)
+		t+=dt
+
+
+		
