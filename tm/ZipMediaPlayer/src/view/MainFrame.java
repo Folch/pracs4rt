@@ -7,6 +7,7 @@ import controller.disk.IDisk;
 import controller.player.IPlayer;
 import controller.player.OnImageListener;
 import controller.MainController;
+import controller.compressor.IFXParameters;
 import controller.filter.IFilter;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -31,6 +32,7 @@ public class MainFrame extends javax.swing.JFrame {
     private IDisk saver;
     private IPlayer player;
     private IFilter filter;
+    private IFXParameters fxparameters;
     
     private FilterState currentFilterState;
     
@@ -112,6 +114,7 @@ public class MainFrame extends javax.swing.JFrame {
         savegzipmenu = new javax.swing.JMenuItem();
         openfx = new javax.swing.JMenuItem();
         savefx = new javax.swing.JMenuItem();
+        fxoptions = new javax.swing.JMenuItem();
         exitmenu = new javax.swing.JMenuItem();
         playerbar = new javax.swing.JMenu();
         optionsmenu = new javax.swing.JMenuItem();
@@ -236,6 +239,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         filebar.add(savefx);
+
+        fxoptions.setText("FX Options");
+        fxoptions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fxoptionsActionPerformed(evt);
+            }
+        });
+        filebar.add(fxoptions);
 
         exitmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         exitmenu.setText("Exit");
@@ -479,6 +490,11 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_savefxActionPerformed
 
+    private void fxoptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fxoptionsActionPerformed
+        FXOptionsDialog dialog = new FXOptionsDialog(this, true, fxparameters);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_fxoptionsActionPerformed
+
     /**
      * This method instatiates a MainController to load a video or image.
      * 
@@ -492,6 +508,7 @@ public class MainFrame extends javax.swing.JFrame {
             player = controller;
             saver = controller;
             filter = controller;
+            fxparameters = controller;
         }
 
         String path = showFileChooser(fileType);
@@ -637,6 +654,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu filebar;
     private javax.swing.JMenu filterbar;
     private javax.swing.JCheckBoxMenuItem fullscreenmenu;
+    private javax.swing.JMenuItem fxoptions;
     private javax.swing.JMenu helpbar;
     private javax.swing.JMenuItem helpmenu;
     private javax.swing.JMenuItem hsbmenu;
