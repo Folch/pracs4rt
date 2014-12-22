@@ -7,6 +7,8 @@ package controller;
 
 import controller.player.OnImageListener;
 import controller.compressor.CompressorController;
+import controller.compressor.FXContent;
+import controller.compressor.IFXParameters;
 import controller.player.IPlayer;
 import controller.filter.FilterController;
 import controller.filter.IFilter;
@@ -27,7 +29,7 @@ import java.util.zip.ZipFile;
  * Classe controladora principal del video, fa de clase comunicadora entre la vista i els altres controladors
  * @author albert
  */
-public class MainController implements IPlayer, IFilter, IDisk {
+public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
 
     private ArrayList<Imatge> images, imagesCopia;
     private ScheduledExecutorService executor;
@@ -346,5 +348,61 @@ public class MainController implements IPlayer, IFilter, IDisk {
     @Override
     public float getBrightness() {
         return this.filter.getLastValue();
+    }
+    
+    @Override
+    public void saveFX(String path) {
+        compressor.compressFX(deepCopyArrayList(imagesCopia), getGoP(), getSizeTesela(), getPC(), getFQ());
+    }
+
+    @Override
+    public boolean openFX(String path) {
+        
+        FXContent fx = FXContent.open(path);
+        if(fx == null)
+            return false;
+        images = compressor.decompressFX(fx);
+        imagesCopia = deepCopyArrayList(images);
+        return true;
+    }
+
+    @Override
+    public void setGoP(int GoP) {
+        this.compressor.setGoP(GoP);
+    }
+
+    @Override
+    public int getGoP() {
+        return this.compressor.getGoP();
+    }
+
+    @Override
+    public void setSizeTesela(int size_t) {
+        this.compressor.setSize_t(size_t);
+    }
+
+    @Override
+    public int getSizeTesela() {
+        return this.compressor.getSize_t();
+    }
+
+    @Override
+    public void setPC(int pc) {
+        this.compressor.setPc(pc);
+    }
+
+    @Override
+    public int getPC() {
+        return this.compressor.getPc();
+    }
+
+    @Override
+    public void setFQ(int fq) {
+        this.compressor.setFq(fq);
+    }
+
+    @Override
+    public int getFQ() {
+        return this.compressor.getFq();
     }
 }

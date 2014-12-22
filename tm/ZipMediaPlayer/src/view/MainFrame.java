@@ -110,6 +110,8 @@ public class MainFrame extends javax.swing.JFrame {
         saveimagemenu = new javax.swing.JMenuItem();
         savezipmenu = new javax.swing.JMenuItem();
         savegzipmenu = new javax.swing.JMenuItem();
+        openfx = new javax.swing.JMenuItem();
+        savefx = new javax.swing.JMenuItem();
         exitmenu = new javax.swing.JMenuItem();
         playerbar = new javax.swing.JMenu();
         optionsmenu = new javax.swing.JMenuItem();
@@ -218,6 +220,22 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         filebar.add(savegzipmenu);
+
+        openfx.setText("Open FX ...");
+        openfx.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openfxActionPerformed(evt);
+            }
+        });
+        filebar.add(openfx);
+
+        savefx.setText("Save FX ...");
+        savefx.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                savefxActionPerformed(evt);
+            }
+        });
+        filebar.add(savefx);
 
         exitmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         exitmenu.setText("Exit");
@@ -453,6 +471,14 @@ public class MainFrame extends javax.swing.JFrame {
         dialog.setVisible(true);
     }//GEN-LAST:event_helpmenuActionPerformed
 
+    private void openfxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openfxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_openfxActionPerformed
+
+    private void savefxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savefxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_savefxActionPerformed
+
     /**
      * This method instatiates a MainController to load a video or image.
      * 
@@ -614,10 +640,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu helpbar;
     private javax.swing.JMenuItem helpmenu;
     private javax.swing.JMenuItem hsbmenu;
-    private VideoPanel imagepanel;
+    private javax.swing.JPanel imagepanel;
     private javax.swing.JMenuBar menubar;
     private javax.swing.JMenuItem negativemenu;
     private javax.swing.JButton nextbtn;
+    private javax.swing.JMenuItem openfx;
     private javax.swing.JMenuItem openimagemenu;
     private javax.swing.JMenuItem openzipmenu;
     private javax.swing.JMenuItem optionsmenu;
@@ -625,6 +652,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton playbtn;
     private javax.swing.JMenu playerbar;
     private javax.swing.JButton prevbtn;
+    private javax.swing.JMenuItem savefx;
     private javax.swing.JMenuItem savegzipmenu;
     private javax.swing.JMenuItem saveimagemenu;
     private javax.swing.JMenuItem savezipmenu;

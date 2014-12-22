@@ -46,6 +46,7 @@ public class Imatge implements Cloneable{
         WritableRaster raster = image.copyData(null);
         return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
+    
     /**
      * Mètode de sobreescritura del clone
      * @return
@@ -55,6 +56,16 @@ public class Imatge implements Cloneable{
     protected BufferedImage clone() throws CloneNotSupportedException {
         super.clone();
         return deepCopy();
+    }
+    
+    public Integer[] getPosTesela(int t, int size_t) {
+        
+        return null;
+    }
+    
+    public int getNumTeseles(int size_t) {
+        
+        return 0;
     }
     
     

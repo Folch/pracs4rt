@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -25,6 +26,13 @@ import javax.imageio.stream.ImageInputStream;
  * @author Albert Folch i Xavi Moreno
  */
 public class CompressorController implements ICompressor {
+    
+    
+    private int GoP;
+    private int size_t;
+    private int pc;
+    private int fq;
+    
     /**
      * Mètode que segons un ZipFile el descomprimeix i et retorna un ArrayList de Imatge
      * @param zFl
@@ -87,5 +95,84 @@ public class CompressorController implements ICompressor {
         }
         return files;
     }
+
+    @Override
+    public FXContent compressFX(ArrayList<Imatge> imatges, int GoP, int size_t, int pc, int fq) {
+        
+        int refs = imatges.size() / GoP;
+        Imatge ref = imatges.get(0);
+        
+        FXFile fxf = new FXFile(GoP, size_t); 
+        
+        for (int i = 1; i < imatges.size(); i++) {
+            Imatge img = imatges.get(i);
+            fxf.frames.add(new HashMap<Integer, Integer[]>());
+            if(i%refs == 0) {
+                ref = img; 
+                continue;
+            }
+            for (int j = 0; j < img.getNumTeseles(size_t); j++) {
+                Integer[] pos = searchTesela(ref, img, j, size_t, fq);
+                deleteTesela(img, pos, size_t);
+                fxf.frames.get(i).put(j, pos);
+            }
+        }
+        
+        FXContent content = new FXContent(imatges, fxf);
+        
+        return content;
+    }
+
+    @Override
+    public ArrayList<Imatge> decompressFX(FXContent content) {
+        
+        
+        return null;
+    }
+    
+    private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int fq) {
+        
+        
+        return null;
+    }
+    
+    private void deleteTesela(Imatge img, Integer[] pos, int size_t) {
+        
+    }
+
+    public int getGoP() {
+        return GoP;
+    }
+
+    public void setGoP(int GoP) {
+        this.GoP = GoP;
+    }
+
+    public int getSize_t() {
+        return size_t;
+    }
+
+    public void setSize_t(int size_t) {
+        this.size_t = size_t;
+    }
+
+    public int getPc() {
+        return pc;
+    }
+
+    public void setPc(int pc) {
+        this.pc = pc;
+    }
+
+    public int getFq() {
+        return fq;
+    }
+
+    public void setFq(int fq) {
+        this.fq = fq;
+    }
+    
+    
+   
 
 }

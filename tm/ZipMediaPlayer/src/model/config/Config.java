@@ -20,4 +20,9 @@ public class Config {
     public static float DEFAULT_HUE = 0;
     public static float DEFAULT_VALUE = 0;
     public static float DEFAULT_SATURATION = 0;
+    
+    public static int DEFAULT_GOP = 4;
+    public static int DEFAULT_SIZE_TESELA = 8;
+    public static int DEFAULT_PC = 10;
+    public static int DEFAULT_FQ = 45;
 }
