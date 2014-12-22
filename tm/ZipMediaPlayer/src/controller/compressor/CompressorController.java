@@ -20,23 +20,27 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
 /**
  * Classe controladora de totes les accions relacionades amb la compressió
+ *
  * @author Albert Folch i Xavi Moreno
  */
 public class CompressorController implements ICompressor {
-    
-    
+
     private int GoP;
     private int size_t;
     private int pc;
     private int fq;
-    
+
     /**
-     * Mètode que segons un ZipFile el descomprimeix i et retorna un ArrayList de Imatge
+     * Mètode que segons un ZipFile el descomprimeix i et retorna un ArrayList
+     * de Imatge
+     *
      * @param zFl
-     * @return 
+     * @return
      */
     @Override
     public ArrayList<Imatge> decompressZip(ZipFile zFl) {
@@ -63,7 +67,8 @@ public class CompressorController implements ICompressor {
     }
 
     /**
-     * Aquest mètode fa: Descomprimir Zip,Guardar imatges com a files a disc i retorna l'arraylist de files corresponent a les imatges
+     * Aquest mètode fa: Descomprimir Zip,Guardar imatges com a files a disc i
+     * retorna l'arraylist de files corresponent a les imatges
      *
      * @param path
      * @param zipFile
@@ -85,10 +90,10 @@ public class CompressorController implements ICompressor {
                 ImageInputStream iis = ImageIO.createImageInputStream(is);
                 BufferedImage bufImg = ImageIO.read(iis);
                 image.setImage(bufImg);
-                outputfile = new File((image.getName().substring(0, image.getName().length() - 4))+".jpg");
+                outputfile = new File((image.getName().substring(0, image.getName().length() - 4)) + ".jpg");
                 ImageIO.write(image.getImage(), "jpg", outputfile);
                 files.add(outputfile);
-                
+
             } catch (IOException ex) {
                 Logger.getLogger(CompressorController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -98,46 +103,59 @@ public class CompressorController implements ICompressor {
 
     @Override
     public FXContent compressFX(ArrayList<Imatge> imatges, int GoP, int size_t, int pc, int fq) {
-        
+
         int refs = imatges.size() / GoP;
         Imatge ref = imatges.get(0);
-        
-        FXFile fxf = new FXFile(GoP, size_t); 
-        
+
+        FXFile fxf = new FXFile(GoP, size_t);
+
         for (int i = 1; i < imatges.size(); i++) {
             Imatge img = imatges.get(i);
             fxf.frames.add(new HashMap<Integer, Integer[]>());
-            if(i%refs == 0) {
-                ref = img; 
+            if (i % refs == 0) {
+                ref = img;
                 continue;
             }
             for (int j = 0; j < img.getNumTeseles(size_t); j++) {
-                Integer[] pos = searchTesela(ref, img, j, size_t, fq);
+                Integer[] pos = searchTesela(ref, img, j, size_t,pc, fq);
                 deleteTesela(img, pos, size_t);
                 fxf.frames.get(i).put(j, pos);
             }
         }
-        
+
         FXContent content = new FXContent(imatges, fxf);
-        
+
         return content;
     }
 
     @Override
     public ArrayList<Imatge> decompressFX(FXContent content) {
-        
-        
+
         return null;
     }
-    
-    private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int fq) {
+
+    private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t,int pc, int fq) {
+        int width = src.getImage().getWidth();
+        int height = src.getImage().getHeight();
         
-        
+        for (int i = 0; i < src.getNumTeseles(size_t); i++) {
+            Integer[] pos = src.getPosTesela(i, size_t);//pos[0]=x,columnes   pos[1]=y,files
+            BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
+            int initColumna = pos[0]-pc < 0? 0:pos[0]-pc;
+            int initFila = pos[1]-pc < 0? 0:pos[1]-pc;
+            int fiColumna = pos[0]+pc >= width? width-1:pos[0]+pc;
+            int fiFila = pos[1]+pc >= height? height-1:pos[1]+pc;
+            
+            
+            
+
+        }
+
         return null;
     }
-    
+
     private void deleteTesela(Imatge img, Integer[] pos, int size_t) {
-        
+
     }
 
     public int getGoP() {
@@ -171,8 +189,5 @@ public class CompressorController implements ICompressor {
     public void setFq(int fq) {
         this.fq = fq;
     }
-    
-    
-   
 
 }
