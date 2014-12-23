@@ -20,4 +20,21 @@ public interface InternalIDisk {
     public void saveImage(String path, Imatge img);
     public void saveZip (String path, ArrayList<Imatge> imatges);
     public void saveGZip(String path, ArrayList<File> files);
+    
+    /**
+     * Save content inside GZip file.
+     * 
+     * @param path
+     * @param content 
+     */
+    public void saveGZip(String path, String content);
+    
+    /**
+     * Open GZip and returns its content.
+     * If the file doesn't exist, this method will return null.
+     * 
+     * @param path
+     * @return 
+     */
+    public String openGZip(String path);
 }

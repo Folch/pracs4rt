@@ -149,4 +149,15 @@ public class DiskController implements InternalIDisk {
         }
     }
 
+    @Override
+    public void saveGZip(String path, String content) {
+        
+    }
+
+    @Override
+    public String openGZip(String path) {
+        
+        return null;
+    }
+
 }

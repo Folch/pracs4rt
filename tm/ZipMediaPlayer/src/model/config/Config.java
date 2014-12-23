@@ -14,15 +14,15 @@ import model.FilterDim3;
 public class Config {
 
     public static final DirectionType DEFAULT_DIRECTION = DirectionType.FORWARD;
-    public static int DEFAULT_FRAME_RATE = 60;
-    public static int DEFAULT_THRESHOLD = 128;
-    public static FilterDim3 DEFAULT_FILTER = FilterDim3.IDENTITY;
-    public static float DEFAULT_HUE = 0;
-    public static float DEFAULT_VALUE = 0;
-    public static float DEFAULT_SATURATION = 0;
+    public static final int DEFAULT_FRAME_RATE = 60;
+    public static final int DEFAULT_THRESHOLD = 128;
+    public static final FilterDim3 DEFAULT_FILTER = FilterDim3.IDENTITY;
+    public static final float DEFAULT_HUE = 0;
+    public static final float DEFAULT_VALUE = 0;
+    public static final float DEFAULT_SATURATION = 0;
     
-    public static int DEFAULT_GOP = 4;
-    public static int DEFAULT_SIZE_TESELA = 8;
-    public static int DEFAULT_PC = 10;
-    public static int DEFAULT_FQ = 45;
+    public static final int DEFAULT_GOP = 4;
+    public static final int DEFAULT_SIZE_TESELA = 8;
+    public static final int DEFAULT_PC = 10;
+    public static final int DEFAULT_FQ = 45;
 }

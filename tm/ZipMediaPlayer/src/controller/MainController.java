@@ -358,8 +358,7 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
 
     @Override
     public boolean openFX(String path) {
-        
-        FXContent fx = FXContent.open(path);
+        FXContent fx = FXContent.open(path , disk, compressor);
         if(fx == null)
             return false;
         images = compressor.decompressFX(fx);
