@@ -5,6 +5,7 @@
  */
 package controller.compressor;
 
+import controller.disk.DiskController;
 import java.util.ArrayList;
 import model.Imatge;
 
@@ -21,8 +22,9 @@ public class FXContent {
         this.fx = fx;
     }
 
-    public static void save(String path, FXContent fx) {
-        
+    public void save(String path, DiskController disk) {
+        disk.saveZip(path+"/images.zip", imatges);
+        fx.save(path, disk);
     }
     
     public static FXContent open(String path) {

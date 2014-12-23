@@ -37,6 +37,7 @@ public class MainFrame extends javax.swing.JFrame {
     private FilterState currentFilterState;
     
     private JFileChooser fc;
+    private JFileChooser fc_folder;
 
     /**
      * Creates new form MainFrame
@@ -45,15 +46,32 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         changeState(State.EMPTY);
         currentFilterState = FilterState.ORIGINAL;
+        
         fc = new JFileChooser();
         fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        
+        fc_folder = new JFileChooser(); 
+        fc_folder.setCurrentDirectory(new java.io.File("."));
+        fc_folder.setDialogTitle("Choose folder");
+        fc_folder.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fc_folder.setAcceptAllFileFilterUsed(false);
         
         //((VideoPanel)imagepanel).loading(true);
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
         int height = gd.getDisplayMode().getHeight();
         this.setBounds( width/2-this.getWidth()/2, height/2-this.getHeight()/2, this.getWidth(), this.getHeight());
+        
+        
+        MainController controller;
+        if (player == null || saver == null || filter == null || fxparameters == null) {
+            controller = new MainController((OnImageListener)imagepanel);
+            player = controller;
+            saver = controller;
+            filter = controller;
+            fxparameters = controller;
+        }
     }
 
     /**
@@ -88,6 +106,13 @@ public class MainFrame extends javax.swing.JFrame {
         fc.setDialogTitle("Save");   
         if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             return fc.getSelectedFile().getAbsolutePath();
+        }
+        return null;
+    }
+    
+    public String selectFolderChooser(){ 
+        if (fc_folder.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
+            return fc_folder.getSelectedFile().getAbsolutePath();
         }
         return null;
     }
@@ -483,11 +508,18 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_helpmenuActionPerformed
 
     private void openfxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openfxActionPerformed
-        // TODO add your handling code here:
+        String path = selectFolderChooser();
+        if(!saver.openFX(path)) {
+            JOptionPane.showMessageDialog(this,
+                "Files not found",
+                "File Error",
+                JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_openfxActionPerformed
 
     private void savefxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savefxActionPerformed
-        // TODO add your handling code here:
+        String path = selectFolderChooser();
+        saver.saveFX(path);
     }//GEN-LAST:event_savefxActionPerformed
 
     private void fxoptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fxoptionsActionPerformed
@@ -502,14 +534,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     
     public void openFile(FileType fileType) {
-        MainController controller;
-        if (player == null || saver == null) {
-            controller = new MainController((OnImageListener)imagepanel);
-            player = controller;
-            saver = controller;
-            filter = controller;
-            fxparameters = controller;
-        }
+        
 
         String path = showFileChooser(fileType);
         if (path == null) {

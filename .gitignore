@@ -30,4 +30,7 @@ nbproject/*
 *.DS_Store
 *.lock
 
+tm/ZipMediaPlayer/build/*
+tm/ZipMediaPlayer/nbproject/*
+
 .ipynb_checkpoints/*

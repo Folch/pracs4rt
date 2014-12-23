@@ -5,6 +5,7 @@
  */
 package controller.compressor;
 
+import controller.disk.DiskController;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,5 +22,9 @@ public class FXFile {
         this.GoP = GoP;
         this.size_t = size_t;
         frames = new ArrayList<>();
+    }
+
+    public void save(String path, DiskController disk) {
+        
     }
 }

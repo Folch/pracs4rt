@@ -352,7 +352,8 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
     
     @Override
     public void saveFX(String path) {
-        compressor.compressFX(deepCopyArrayList(imagesCopia), getGoP(), getSizeTesela(), getPC(), getFQ());
+        FXContent content = compressor.compressFX(deepCopyArrayList(imagesCopia), getGoP(), getSizeTesela(), getPC(), getFQ());
+        content.save(path, disk);
     }
 
     @Override

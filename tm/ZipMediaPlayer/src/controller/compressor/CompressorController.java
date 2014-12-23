@@ -20,8 +20,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
+import model.config.Config;
 
 /**
  * Classe controladora de totes les accions relacionades amb la compressió
@@ -35,6 +34,13 @@ public class CompressorController implements ICompressor {
     private int pc;
     private int fq;
 
+    public CompressorController() {
+        this.GoP = Config.DEFAULT_GOP;
+        this.size_t = Config.DEFAULT_SIZE_TESELA;
+        this.pc = Config.DEFAULT_PC;
+        this.fq = Config.DEFAULT_FQ;
+    }
+    
     /**
      * Mètode que segons un ZipFile el descomprimeix i et retorna un ArrayList
      * de Imatge
