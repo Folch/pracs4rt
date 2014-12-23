@@ -7,6 +7,7 @@ package controller.compressor;
 
 import controller.MainController;
 import controller.filter.threads.ConvolveThread;
+import controller.statistics.Statistics;
 import model.Imatge;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -145,7 +146,7 @@ public class CompressorController implements ICompressor {
     private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int pc, int fq) {
         int width = src.getImage().getWidth();
         int height = src.getImage().getHeight();
-
+        Integer[] posD = new Integer[2];
         for (int i = 0; i < src.getNumTeseles(size_t); i++) {
             Integer[] pos = src.getPosTesela(i, size_t);//pos[0]=x,columnes   pos[1]=y,files
             BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
@@ -153,35 +154,36 @@ public class CompressorController implements ICompressor {
             int initFila = pos[1] - pc < 0 ? 0 : pos[1] - pc;
             int fiColumna = pos[0] + pc >= width ? width - 1 : pos[0] + pc;
             int fiFila = pos[1] + pc >= height ? height - 1 : pos[1] + pc;
+            boolean trobat = false;
+            for (int fila = initFila; fila < fiFila && !trobat; fila++) {//cerca cicular!!
+                for (int col = initColumna; col < fiColumna && !trobat; col++) {
+                    if (fila + size_t > fiFila || col + size_t > fiColumna) {
+                        break;
+                    } else {
+                        BufferedImage desti = dest.getImage().getSubimage(col, fila, size_t, size_t);
+                        double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
+                        if (diff < pc) {
+                            posD[0] = col;
+                            posD[1] = fila;
+                            trobat = true;
+                        }
+
+                    }
+
+                }
+
+            }
 
         }
-
-        return null;
+        return posD;
     }
 
     //el valor que es posa en el moment d'eliminar es la mitja de TOTA la imatge
     private void deleteTesela(Imatge imatge, Integer[] pos, int size_t) {
         BufferedImage img = imatge.getImage();
-        float meanR = 0;
-        float meanG = 0;
-        float meanB = 0;
-        int w =  img.getWidth();
-        int h = img.getHeight();
-        int wh = w*h;
-        for (int i = 0; i < w; i++) {
-                for (int j = 0; j < h; j++) {
-                    Color c = new Color(img.getRGB(i, j));
-                    meanR += c.getRed();
-                    meanG += c.getGreen();
-                    meanB += c.getBlue();
-                    
-                }
-        }
-        meanR /= wh;
-        meanG /= wh;
-        meanB /= wh;
-
-        Color colorMig =  new Color(meanR, meanG, meanB);
+        Statistics s = new Statistics(img);
+        float mean = s.getMean();
+        Color colorMig = new Color(mean, mean, mean);
 
         for (int i = pos[0]; i < pos[0] + size_t; i++) {
             for (int j = pos[1]; j < pos[1] + size_t; j++) {
