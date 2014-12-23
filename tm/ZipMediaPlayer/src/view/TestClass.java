@@ -5,6 +5,8 @@
  */
 package view;
 
+import com.sun.org.glassfish.external.statistics.Statistic;
+import controller.statistics.Statistics;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
@@ -23,9 +25,15 @@ public class TestClass {
     public static void main(String[] args) {
         BufferedImage i = openImage("/home/zenbook/github/pracs4rt/pimproject/girl.jpg");
         grayScale(i);
-        BufferedImage j = i.getSubimage(17, 40, 40, 40);
+        BufferedImage j = i.getSubimage(17, 40, 50, 40);
         grayScale(j);
         
+        BufferedImage k = i.getSubimage(90, 28, 50, 40);
+        grayScale(k);
+        
+        System.out.println(normalizedCrossCorrelation(j, k));
+        System.out.println(normalizedCrossCorrelation(j, j));
+        System.out.println(normalizedCrossCorrelation(k, k));
        
         
 
@@ -33,6 +41,7 @@ public class TestClass {
         frame.getContentPane().setLayout(new FlowLayout());
         frame.getContentPane().add(new JLabel(new ImageIcon(i)));
         frame.getContentPane().add(new JLabel(new ImageIcon(j)));
+        frame.getContentPane().add(new JLabel(new ImageIcon(k)));
         
         frame.pack();
         frame.setVisible(true);
@@ -44,27 +53,29 @@ public class TestClass {
         }*/
     }
     
-    /*public static Mat bufferedImageToMat(BufferedImage img){
-        byte[] pixels = ((DataBufferByte) img.getRaster().getDataBuffer()).getData();
-        Mat m = new Mat();
-        m.put(0, 0, pixels);
-        return m;
-    }*/
-    
-    /*public static BufferedImage MatToBufferedImage(Mat m) {
-        MatOfByte mob = new MatOfByte();
-        Highgui.imencode(".jpg", m ,mob); 
-        //convert the "matrix of bytes" into a byte array
-         byte[] byteArray = mob.toArray();
-         BufferedImage bufImage = null;
-         try {
-                InputStream in = new ByteArrayInputStream(byteArray);
-                bufImage = ImageIO.read(in);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-         return bufImage;
-    }*/
+    public static double normalizedCrossCorrelation(BufferedImage img1, BufferedImage img2) {
+        assert img1.getWidth() == img2.getWidth();
+        assert img1.getHeight() == img2.getHeight();
+        
+        double out = 0;
+        int size = img1.getWidth()*img1.getHeight();
+
+        double mean12;
+        Statistics s1;
+        Statistics s2;
+        
+        s1 = new Statistics(img1);
+        s2 = new Statistics(img2);
+        
+        mean12 = s1.getMean() * s2.getMean();
+        for (int i = 0; i < size; i++) {
+            out += s1.data[i]*s2.data[i] - mean12;
+        }
+        
+        out /= (size*s1.getStdDev() * s2.getStdDev());
+        
+        return out;
+    }
     
     public static BufferedImage openImage(String path) {
         File file = new File(path);
