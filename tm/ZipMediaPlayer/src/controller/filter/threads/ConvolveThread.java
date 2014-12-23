@@ -7,7 +7,6 @@ package controller.filter.threads;
 
 import static controller.filter.FilterController.BORDES_0;
 import static controller.filter.FilterController.SENSE_BORDES;
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
@@ -46,7 +45,7 @@ public class ConvolveThread extends FilterThread implements Callable {
      * @param bordes
      * @return 
      */
-    public BufferedImage convolve(float filtre[][], BufferedImage imatge, int bordes)  {
+    private BufferedImage convolve(float filtre[][], BufferedImage imatge, int bordes)  {
         BufferedImage res;
 
         if (imatge == null) {
@@ -83,59 +82,6 @@ public class ConvolveThread extends FilterThread implements Callable {
         cop.filter(imatge, res);
 
         return res;
-    }
-    public Color getMean(BufferedImage imatge)  {
-        BufferedImage res;
-        int bordes = BORDES_0;
-        float[][] filtre = FilterDim3.AVERAGE.getFilter();
-        if (imatge == null) {
-            throw new IllegalArgumentException("La imatge no pot ser nula");
-        }
-        
-
-
-        int width = filtre.length;
-        int height = filtre[0].length;
-        int tam = width * height;
-        float filtroK[] = new float[tam];
-
-        //Creem el filtre
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                filtroK[i * width + j] = filtre[i][j];
-            }
-        }
-
-        //Creem l'operació de convolució
-        Kernel kernel = new Kernel(width, height, filtroK);
-        ConvolveOp cop = new ConvolveOp(kernel, bordes, null);
-
-        //Creem la imatge nova semblant a l'antiga
-        res = new BufferedImage(imatge.getWidth(), imatge.getHeight(), imatge.getType());
-
-        //Apliquem el filtre
-        cop.filter(imatge, res);
-
-        float meanR = 0;
-        float meanG = 0;
-        float meanB = 0;
-        int w =  imatge.getWidth();
-        int h = imatge.getHeight();
-        int wh = w*h;
-        for (int i = 0; i < w; i++) {
-                for (int j = 0; j < h; j++) {
-                    Color c = new Color(imatge.getRGB(i, j));
-                    meanR += c.getRed();
-                    meanG += c.getGreen();
-                    meanB += c.getBlue();
-                    
-                }
-        }
-        meanR /= wh;
-        meanG /= wh;
-        meanB /= wh;
-
-        return new Color(meanR, meanG, meanB);
     }
 
 }

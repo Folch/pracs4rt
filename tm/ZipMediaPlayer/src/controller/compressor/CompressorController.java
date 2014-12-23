@@ -160,13 +160,32 @@ public class CompressorController implements ICompressor {
     }
 
     //el valor que es posa en el moment d'eliminar es la mitja de TOTA la imatge
-    private void deleteTesela(Imatge img, Integer[] pos, int size_t) {
-        
-        Color colorMig = new ConvolveThread().getMean(img.getImage());
+    private void deleteTesela(Imatge imatge, Integer[] pos, int size_t) {
+        BufferedImage img = imatge.getImage();
+        float meanR = 0;
+        float meanG = 0;
+        float meanB = 0;
+        int w =  img.getWidth();
+        int h = img.getHeight();
+        int wh = w*h;
+        for (int i = 0; i < w; i++) {
+                for (int j = 0; j < h; j++) {
+                    Color c = new Color(img.getRGB(i, j));
+                    meanR += c.getRed();
+                    meanG += c.getGreen();
+                    meanB += c.getBlue();
+                    
+                }
+        }
+        meanR /= wh;
+        meanG /= wh;
+        meanB /= wh;
+
+        Color colorMig =  new Color(meanR, meanG, meanB);
 
         for (int i = pos[0]; i < pos[0] + size_t; i++) {
             for (int j = pos[1]; j < pos[1] + size_t; j++) {
-                img.getImage().setRGB(i, j, colorMig.getRGB());
+                img.setRGB(i, j, colorMig.getRGB());
             }
 
         }
