@@ -6,6 +6,7 @@
 package controller.compressor;
 
 import controller.MainController;
+import controller.filter.threads.ConvolveThread;
 import model.Imatge;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -21,6 +22,7 @@ import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import model.config.Config;
+import java.awt.Color;
 
 /**
  * Classe controladora de totes les accions relacionades amb la compressió
@@ -40,7 +42,7 @@ public class CompressorController implements ICompressor {
         this.pc = Config.DEFAULT_PC;
         this.fq = Config.DEFAULT_FQ;
     }
-    
+
     /**
      * Mètode que segons un ZipFile el descomprimeix i et retorna un ArrayList
      * de Imatge
@@ -123,7 +125,7 @@ public class CompressorController implements ICompressor {
                 continue;
             }
             for (int j = 0; j < img.getNumTeseles(size_t); j++) {
-                Integer[] pos = searchTesela(ref, img, j, size_t,pc, fq);
+                Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
                 deleteTesela(img, pos, size_t);
                 fxf.frames.get(i).put(j, pos);
             }
@@ -140,28 +142,53 @@ public class CompressorController implements ICompressor {
         return null;
     }
 
-    private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t,int pc, int fq) {
+    private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int pc, int fq) {
         int width = src.getImage().getWidth();
         int height = src.getImage().getHeight();
-        
+
         for (int i = 0; i < src.getNumTeseles(size_t); i++) {
             Integer[] pos = src.getPosTesela(i, size_t);//pos[0]=x,columnes   pos[1]=y,files
             BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
-            int initColumna = pos[0]-pc < 0? 0:pos[0]-pc;
-            int initFila = pos[1]-pc < 0? 0:pos[1]-pc;
-            int fiColumna = pos[0]+pc >= width? width-1:pos[0]+pc;
-            int fiFila = pos[1]+pc >= height? height-1:pos[1]+pc;
-            
-            
-            
+            int initColumna = pos[0] - pc < 0 ? 0 : pos[0] - pc;
+            int initFila = pos[1] - pc < 0 ? 0 : pos[1] - pc;
+            int fiColumna = pos[0] + pc >= width ? width - 1 : pos[0] + pc;
+            int fiFila = pos[1] + pc >= height ? height - 1 : pos[1] + pc;
 
         }
 
         return null;
     }
 
-    private void deleteTesela(Imatge img, Integer[] pos, int size_t) {
+    //el valor que es posa en el moment d'eliminar es la mitja de TOTA la imatge
+    private void deleteTesela(Imatge imatge, Integer[] pos, int size_t) {
+        BufferedImage img = imatge.getImage();
+        float meanR = 0;
+        float meanG = 0;
+        float meanB = 0;
+        int w =  img.getWidth();
+        int h = img.getHeight();
+        int wh = w*h;
+        for (int i = 0; i < w; i++) {
+                for (int j = 0; j < h; j++) {
+                    Color c = new Color(img.getRGB(i, j));
+                    meanR += c.getRed();
+                    meanG += c.getGreen();
+                    meanB += c.getBlue();
+                    
+                }
+        }
+        meanR /= wh;
+        meanG /= wh;
+        meanB /= wh;
 
+        Color colorMig =  new Color(meanR, meanG, meanB);
+
+        for (int i = pos[0]; i < pos[0] + size_t; i++) {
+            for (int j = pos[1]; j < pos[1] + size_t; j++) {
+                img.setRGB(i, j, colorMig.getRGB());
+            }
+
+        }
     }
 
     public int getGoP() {

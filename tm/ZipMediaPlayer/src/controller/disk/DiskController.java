@@ -13,9 +13,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -24,13 +27,16 @@ import javax.imageio.ImageIO;
 
 /**
  * Classe controladora de les funcions a disc
+ *
  * @author Albert Folch i Xavi Moreno
  */
 public class DiskController implements InternalIDisk {
+
     /**
      * Mètode que obre un zip d'un path i retorna un ZipFile
+     *
      * @param path
-     * @return 
+     * @return
      */
     @Override
     public ZipFile openZip(String path) {
@@ -44,10 +50,12 @@ public class DiskController implements InternalIDisk {
         return zFl;
 
     }
+
     /**
      * Mètode que obre una imatge d'un path i retorna un Imatge
+     *
      * @param path
-     * @return 
+     * @return
      */
     @Override
     public Imatge openImage(String path) {
@@ -64,10 +72,12 @@ public class DiskController implements InternalIDisk {
         }
         return image;
     }
+
     /**
      * Mètode que guarda una imatge en jpg en un path concret
+     *
      * @param path
-     * @param img 
+     * @param img
      */
     @Override
     public void saveImage(String path, Imatge img) {
@@ -83,10 +93,12 @@ public class DiskController implements InternalIDisk {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     /**
      * Mètode que guarda un conjunt d'imatges en un zip en un path concret
+     *
      * @param path
-     * @param imatges 
+     * @param imatges
      */
     @Override
     public void saveZip(String path, ArrayList<Imatge> imatges) {
@@ -111,16 +123,19 @@ public class DiskController implements InternalIDisk {
         }
 
     }
+
     /**
-     * Mètode que guarda un gzip per cada imatge que primer s'haurà guardat com a file
+     * Mètode que guarda un gzip per cada imatge que primer s'haurà guardat com
+     * a file
+     *
      * @param path
-     * @param files 
+     * @param files
      */
     @Override
     public void saveGZip(String path, ArrayList<File> files) {
         for (File file : files) {
-            String outFilename = file.getName()+ ".gz";
-             
+            String outFilename = file.getName() + ".gz";
+
             byte[] buffer = new byte[1024];
 
             try {
@@ -151,13 +166,38 @@ public class DiskController implements InternalIDisk {
 
     @Override
     public void saveGZip(String path, String content) {
-        
+
+        try {
+            FileOutputStream output = new FileOutputStream(path);
+            Writer writer = new OutputStreamWriter(new GZIPOutputStream(output), "UTF-8");
+            writer.write(content);
+            writer.close();
+            output.close();
+        } catch (IOException ex) {
+            Logger.getLogger(DiskController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public String openGZip(String path) {
-        
-        return null;
+        String out = "";
+        try {
+            GZIPInputStream in = new GZIPInputStream(new FileInputStream(path));
+            
+            byte[] buf = new byte[1024];
+            int len;
+            
+            while ((len = in.read(buf)) > 0) {
+                for (int i = 0; i < len; i++) {
+                    out+=(char)buf[i];
+                }
+            }
+            in.close();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(DiskController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return out;
     }
 
 }
