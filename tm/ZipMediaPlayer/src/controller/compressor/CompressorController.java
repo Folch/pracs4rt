@@ -142,34 +142,82 @@ public class CompressorController implements ICompressor {
 
         return null;
     }
+    /*
+     private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int pc, float fq) {
+     int width = src.getImage().getWidth();
+     int height = src.getImage().getHeight();
+     Integer[] posD = new Integer[2];
+     for (int i = 0; i < src.getNumTeseles(size_t); i++) {
+     Integer[] pos = src.getPosTesela(i, size_t);//pos[0]=x,columnes   pos[1]=y,files
+     BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
+     int initColumna = pos[0] - pc < 0 ? 0 : pos[0] - pc;
+     int initFila = pos[1] - pc < 0 ? 0 : pos[1] - pc;
+     int fiColumna = pos[0] + pc >= width ? width - 1 : pos[0] + pc;
+     int fiFila = pos[1] + pc >= height ? height - 1 : pos[1] + pc;
+     boolean trobat = false;
+     for (int fila = initFila; fila < fiFila && !trobat; fila++) {//cerca cicular!!
+     for (int col = initColumna; col < fiColumna && !trobat; col++) {
+     if (fila + size_t > fiFila || col + size_t > fiColumna) {
+     break;
+     } else {
+     BufferedImage desti = dest.getImage().getSubimage(col, fila, size_t, size_t);
+     double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
+     if (diff < pc) {
+     posD[0] = col;
+     posD[1] = fila;
+     trobat = true;
+     }
+
+     }
+
+     }
+
+     }
+
+     }
+     return posD;
+     }*/
 
     private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int pc, float fq) {
         int width = src.getImage().getWidth();
         int height = src.getImage().getHeight();
         Integer[] posD = new Integer[2];
-        for (int i = 0; i < src.getNumTeseles(size_t); i++) {
-            Integer[] pos = src.getPosTesela(i, size_t);//pos[0]=x,columnes   pos[1]=y,files
-            BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
-            int initColumna = pos[0] - pc < 0 ? 0 : pos[0] - pc;
-            int initFila = pos[1] - pc < 0 ? 0 : pos[1] - pc;
-            int fiColumna = pos[0] + pc >= width ? width - 1 : pos[0] + pc;
-            int fiFila = pos[1] + pc >= height ? height - 1 : pos[1] + pc;
+        for (int k = 0; k < src.getNumTeseles(size_t); k++) {
             boolean trobat = false;
-            for (int fila = initFila; fila < fiFila && !trobat; fila++) {//cerca cicular!!
-                for (int col = initColumna; col < fiColumna && !trobat; col++) {
-                    if (fila + size_t > fiFila || col + size_t > fiColumna) {
-                        break;
-                    } else {
-                        BufferedImage desti = dest.getImage().getSubimage(col, fila, size_t, size_t);
-                        double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
-                        if (diff < pc) {
-                            posD[0] = col;
-                            posD[1] = fila;
-                            trobat = true;
+            Integer[] pos = src.getPosTesela(k, size_t);//pos[0]=x,columnes   pos[1]=y,files
+            BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
+
+            for (int l = 0; l < pc && !trobat; l++) {
+                for (int fila = pos[1] - l; fila <= pos[1] + l - 2 && !trobat; fila++) {
+                    if (fila >= 0 && fila < height - size_t) {
+
+                        for (int col = pos[0] - l; col <= pos[0] + l - 2 && !trobat;) {
+                            if (col >= 0 && col < width - size_t) {
+                                BufferedImage desti = dest.getImage().getSubimage(col, fila, size_t, size_t);
+                                double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
+                                if (diff < pc) {
+                                    posD[0] = pos[0];
+                                    posD[1] = pos[1];
+                                    trobat = true;
+                                } else {
+                                    if (fila == pos[1] - l || fila == pos[1] + l - 2) {
+                                        col++;
+                                    } else {
+                                        col = pos[0] + l - 2;
+                                    }
+                                }
+                            } else if (col < 0) {
+                                col = 0;
+                            } else {
+                                break;
+                            }
+
                         }
-
+                    } else if (fila < 0) {
+                        fila = 0;
+                    } else {
+                        break;
                     }
-
                 }
 
             }
