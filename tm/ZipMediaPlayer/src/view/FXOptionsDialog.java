@@ -1,11 +1,8 @@
 package view;
 
 import controller.compressor.IFXParameters;
-import view.filter.*;
-import controller.filter.IFilter;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
-import model.FilterDim3;
 
 /**
  * Dialog to show custom filter.
@@ -15,8 +12,6 @@ import model.FilterDim3;
 public class FXOptionsDialog extends javax.swing.JDialog {
 
     private IFXParameters parameters;
-    
-    private FilterDim3 currentFilter;
     
     /**
      * Creates new form OptionsDialog
@@ -32,7 +27,12 @@ public class FXOptionsDialog extends javax.swing.JDialog {
         tf1.setText(parameters.getGoP()+"");
         tf2.setText(parameters.getSizeTesela()+"");
         tf3.setText(parameters.getPC()+"");
-        tf4.setText(parameters.getFQ()+"");
+        tf4.setText(floatToString(parameters.getFQ()));
+    }
+    
+    private String floatToString(float v) {
+        DecimalFormat df = new DecimalFormat("##0.00");
+        return df.format(v);
     }
     
     /**
@@ -103,12 +103,12 @@ public class FXOptionsDialog extends javax.swing.JDialog {
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                        .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tf1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tf4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(tf1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                            .addComponent(tf2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(tf3)
+                            .addComponent(tf4, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -149,14 +149,22 @@ public class FXOptionsDialog extends javax.swing.JDialog {
             parameters.setGoP(Integer.parseInt(tf1.getText()));
             parameters.setSizeTesela(Integer.parseInt(tf2.getText()));
             parameters.setPC(Integer.parseInt(tf3.getText()));
-            parameters.setFQ(Integer.parseInt(tf4.getText()));
-            this.dispose();
         } catch(NumberFormatException ex) {
             JOptionPane.showMessageDialog(this,
                 "Enter a natural number",
                 "Number format error",
                 JOptionPane.WARNING_MESSAGE);
         }
+        try {
+            parameters.setFQ(Float.parseFloat(tf4.getText()));
+            this.dispose();
+        } catch(NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                "Enter a real number",
+                "Number format error",
+                JOptionPane.WARNING_MESSAGE);
+        }
+        
     }//GEN-LAST:event_applybtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

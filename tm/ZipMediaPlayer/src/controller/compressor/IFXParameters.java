@@ -19,6 +19,6 @@ public interface IFXParameters {
     public void setPC(int pc);
     public int getPC();
     
-    public void setFQ(int fq);
-    public int getFQ();
+    public void setFQ(float fq);
+    public float getFQ();
 }

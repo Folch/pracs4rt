@@ -24,5 +24,5 @@ public class Config {
     public static final int DEFAULT_GOP = 4;
     public static final int DEFAULT_SIZE_TESELA = 8;
     public static final int DEFAULT_PC = 10;
-    public static final int DEFAULT_FQ = 45;
+    public static final float DEFAULT_FQ = 0.2f;
 }

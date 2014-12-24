@@ -397,12 +397,12 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
     }
 
     @Override
-    public void setFQ(int fq) {
+    public void setFQ(float fq) {
         this.compressor.setFq(fq);
     }
 
     @Override
-    public int getFQ() {
+    public float getFQ() {
         return this.compressor.getFq();
     }
 }

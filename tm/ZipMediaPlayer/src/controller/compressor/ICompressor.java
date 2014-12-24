@@ -28,7 +28,7 @@ public interface ICompressor {
      * @param fq Factor de qualitat
      * @return 
      */
-    public FXContent compressFX(ArrayList<Imatge> imatges, int GoP, int size_t, int pc, int fq);
+    public FXContent compressFX(ArrayList<Imatge> imatges, int GoP, int size_t, int pc, float fq);
     
     /**
      * Retorna les imatges descomprimides

@@ -50,17 +50,18 @@ public class Statistics {
     public double getStdDev() {
         return Math.sqrt(getVariance());
     }
+    
     public static double normalizedCrossCorrelation(BufferedImage img1, BufferedImage img2) {
         assert img1.getWidth() == img2.getWidth();
         assert img1.getHeight() == img2.getHeight();
         
         double out = 0;
-        int size = img1.getWidth()*img1.getHeight();
-
         double mean12;
+        int size;
         Statistics s1;
         Statistics s2;
         
+        size = img1.getWidth()*img1.getHeight();
         s1 = new Statistics(img1);
         s2 = new Statistics(img2);
         

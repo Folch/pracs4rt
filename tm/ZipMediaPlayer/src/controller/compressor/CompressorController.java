@@ -35,7 +35,7 @@ public class CompressorController implements ICompressor {
     private int GoP;
     private int size_t;
     private int pc;
-    private int fq;
+    private float fq;
 
     public CompressorController() {
         this.GoP = Config.DEFAULT_GOP;
@@ -111,7 +111,7 @@ public class CompressorController implements ICompressor {
     }
 
     @Override
-    public FXContent compressFX(ArrayList<Imatge> imatges, int GoP, int size_t, int pc, int fq) {
+    public FXContent compressFX(ArrayList<Imatge> imatges, int GoP, int size_t, int pc, float fq) {
 
         int refs = imatges.size() / GoP;
         Imatge ref = imatges.get(0);
@@ -143,7 +143,7 @@ public class CompressorController implements ICompressor {
         return null;
     }
 
-    private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int pc, int fq) {
+    private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int pc, float fq) {
         int width = src.getImage().getWidth();
         int height = src.getImage().getHeight();
         Integer[] posD = new Integer[2];
@@ -217,11 +217,11 @@ public class CompressorController implements ICompressor {
         this.pc = pc;
     }
 
-    public int getFq() {
+    public float getFq() {
         return fq;
     }
 
-    public void setFq(int fq) {
+    public void setFq(float fq) {
         this.fq = fq;
     }
 
