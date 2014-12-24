@@ -182,44 +182,41 @@ public class CompressorController implements ICompressor {
         int width = src.getImage().getWidth();
         int height = src.getImage().getHeight();
         Integer[] posD = new Integer[2];
-        for (int k = 0; k < src.getNumTeseles(size_t); k++) {
-            boolean trobat = false;
-            Integer[] pos = src.getPosTesela(k, size_t);//pos[0]=x,columnes   pos[1]=y,files
-            BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
+        boolean trobat = false;
+        Integer[] pos = src.getPosTesela(tesela, size_t);//pos[0]=x,columnes   pos[1]=y,files
+        BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
 
-            for (int l = 0; l < pc && !trobat; l++) {
-                for (int fila = pos[1] - l; fila <= pos[1] + l - 2 && !trobat; fila++) {
-                    if (fila >= 0 && fila < height - size_t) {
+        for (int l = 0; l < pc && !trobat; l++) {
+            for (int fila = pos[1] - l; fila <= pos[1] + l - 2 && !trobat; fila++) {
+                if (fila >= 0 && fila < height - size_t) {
 
-                        for (int col = pos[0] - l; col <= pos[0] + l - 2 && !trobat;) {
-                            if (col >= 0 && col < width - size_t) {
-                                BufferedImage desti = dest.getImage().getSubimage(col, fila, size_t, size_t);
-                                double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
-                                if (diff < pc) {
-                                    posD[0] = pos[0];
-                                    posD[1] = pos[1];
-                                    trobat = true;
-                                } else {
-                                    if (fila == pos[1] - l || fila == pos[1] + l - 2) {
-                                        col++;
-                                    } else {
-                                        col = pos[0] + l - 2;
-                                    }
-                                }
-                            } else if (col < 0) {
-                                col = 0;
+                    for (int col = pos[0] - l; col <= pos[0] + l - 2 && !trobat;) {
+                        if (col >= 0 && col < width - size_t) {
+                            BufferedImage desti = dest.getImage().getSubimage(col, fila, size_t, size_t);
+                            double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
+                            if (diff < fq) {
+                                posD[0] = pos[0];
+                                posD[1] = pos[1];
+                                trobat = true;
                             } else {
-                                break;
+                                if (fila == pos[1] - l || fila == pos[1] + l - 2) {
+                                    col++;
+                                } else {
+                                    col = pos[0] + l - 2;
+                                }
                             }
-
+                        } else if (col < 0) {
+                            col = 0;
+                        } else {
+                            break;
                         }
-                    } else if (fila < 0) {
-                        fila = 0;
-                    } else {
-                        break;
-                    }
-                }
 
+                    }
+                } else if (fila < 0) {
+                    fila = 0;
+                } else {
+                    break;
+                }
             }
 
         }
