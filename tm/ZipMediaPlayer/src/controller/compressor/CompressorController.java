@@ -127,16 +127,19 @@ public class CompressorController implements ICompressor {
                 continue;
             }
             HashMap hm = fxf.frames.get(i - 1);
+            int suma = 0;//borrar
             for (int j = 0; j < img.getNumTeseles(size_t); j++) {
-                System.out.println("Tesela "+j);
+                //System.out.println("Tesela "+j);
                 Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
                 if (pos != null) {
-                    System.out.println("elimina la tesela " + j + " imatge " + i);
+                    suma ++;
+                    System.out.println("elimina la tesela " + j + " imatge " + img.getName());
                     deleteTesela(img, pos, size_t);
                     hm.put(j, pos);
                 }
 
             }
+            System.out.println("No eliminades = "+(img.getNumTeseles(size_t)-suma));//borrar
         }
 
         return new FXContent(imatges, fxf);
@@ -188,12 +191,17 @@ public class CompressorController implements ICompressor {
         BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
 
         for (int l = 0; l < pc; l++) {
-            int lastRow = pos[1] + l /*- size_t*/;
-            int lastColumn = pos[0] + l /*- size_t*/;
-            for (int fila = pos[1] - l; fila <= lastRow; fila++) {
+            int lastRow = pos[1] + l + size_t;
+            int lastColumn = pos[0] + l + size_t;
+            /*
+            System.out.println("Inici "+(pos[1]-l)+"  "+(pos[0]-l));
+            System.out.println("Fi "+lastRow+"  "+lastColumn);
+                    */
+            for (int fila = pos[1] - l; fila < lastRow; fila++) {
                 if (fila >= 0 && fila < height - size_t) {
 
-                    for (int col = pos[0] - l; col <= lastColumn;) {
+                    for (int col = pos[0] - l; col < lastColumn;) {
+                        //System.out.println("fila = "+fila+" columna = "+col);
                         if (col >= 0 && col < width - size_t) {
                             BufferedImage desti = dest.getImage().getSubimage(col, fila, size_t, size_t);
                             double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
