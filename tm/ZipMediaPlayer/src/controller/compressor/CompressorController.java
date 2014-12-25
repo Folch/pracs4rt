@@ -116,6 +116,8 @@ public class CompressorController implements ICompressor {
 
         int refs = imatges.size() / GoP;
         Imatge ref = imatges.get(0);
+        Collections.sort(imatges);
+        
 
         FXFile fxf = new FXFile(GoP, size_t);
         fxf.frames.add(new HashMap<Integer, Integer[]>());
@@ -138,7 +140,7 @@ public class CompressorController implements ICompressor {
 
             }
         }
-        Collections.sort(imatges);
+        
         return new FXContent(imatges, fxf);
     }
 
