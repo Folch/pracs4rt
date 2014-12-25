@@ -14,7 +14,7 @@ import java.awt.image.WritableRaster;
  *
  * @author Albert Folch i Xavi Moreno
  */
-public class Imatge implements Cloneable {
+public class Imatge implements Cloneable,Comparable<Imatge> {
 
     private String name;
     private BufferedImage image;
@@ -92,6 +92,11 @@ public class Imatge implements Cloneable {
     public int getNumTeseles(int size_t) {
 
         return (this.image.getHeight() * this.image.getWidth()) / (size_t * size_t);
+    }
+
+    @Override
+    public int compareTo(Imatge o) {
+         return this.getName().compareTo(o.getName());
     }
 
 }

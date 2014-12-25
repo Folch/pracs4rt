@@ -24,6 +24,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import model.config.Config;
 import java.awt.Color;
+import java.util.Collections;
 
 /**
  * Classe controladora de totes les accions relacionades amb la compressió
@@ -127,21 +128,17 @@ public class CompressorController implements ICompressor {
                 continue;
             }
             HashMap hm = fxf.frames.get(i);
-            //int suma = 0;//borrar
             for (int j = 0; j < img.getNumTeseles(size_t); j++) {
-                //System.out.println("Tesela "+j);
                 Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
                 if (pos != null) {
-                    //suma ++;
                     //System.out.println("elimina la tesela " + j + " imatge " + img.getName());
                     deleteTesela(img, pos, size_t);
                     hm.put(j, pos);
                 }
 
             }
-            //System.out.println("No eliminades = "+(img.getNumTeseles(size_t)-suma));//borrar
         }
-
+        Collections.sort(imatges);
         return new FXContent(imatges, fxf);
     }
 
