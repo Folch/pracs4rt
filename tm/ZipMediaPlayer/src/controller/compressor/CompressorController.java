@@ -204,7 +204,7 @@ public class CompressorController implements ICompressor {
                                 if (fila == pos[1] - l || fila == pos[1] + l - size_t) {
                                     col++;
                                 } else {
-                                    col = pos[0] + l - 2;
+                                    col = pos[0] + l - size_t;
                                 }
                             }
                         } else if (col < 0) {
