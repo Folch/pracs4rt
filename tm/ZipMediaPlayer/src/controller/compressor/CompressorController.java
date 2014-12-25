@@ -121,21 +121,23 @@ public class CompressorController implements ICompressor {
         for (int i = 1; i < imatges.size(); i++) {
             Imatge img = imatges.get(i);
             fxf.frames.add(new HashMap<Integer, Integer[]>());
-            //System.out.println("Imatge " + i);
+            System.out.println("Imatge " + i);
             if (i % refs == 0) {
                 ref = img;
                 continue;
             }
-            HashMap hm = fxf.frames.get(i-1);
+            HashMap hm = fxf.frames.get(i - 1);
             for (int j = 0; j < img.getNumTeseles(size_t); j++) {
+                System.out.println("Tesela "+j);
                 Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
                 if (pos != null) {
+                    System.out.println("elimina la tesela " + j + " imatge " + i);
                     deleteTesela(img, pos, size_t);
                     hm.put(j, pos);
                 }
+
             }
         }
-
 
         return new FXContent(imatges, fxf);
     }
@@ -186,12 +188,12 @@ public class CompressorController implements ICompressor {
         BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
 
         for (int l = 0; l < pc; l++) {
-            
-            
-            for (int fila = pos[1] - l; fila <= pos[1] + l -size_t; fila++) {
+            int lastRow = pos[1] + l /*- size_t*/;
+            int lastColumn = pos[0] + l /*- size_t*/;
+            for (int fila = pos[1] - l; fila <= lastRow; fila++) {
                 if (fila >= 0 && fila < height - size_t) {
 
-                    for (int col = pos[0] - l; col <= pos[0] + l - size_t;) {
+                    for (int col = pos[0] - l; col <= lastColumn;) {
                         if (col >= 0 && col < width - size_t) {
                             BufferedImage desti = dest.getImage().getSubimage(col, fila, size_t, size_t);
                             double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
@@ -201,10 +203,10 @@ public class CompressorController implements ICompressor {
                                 posD[1] = pos[1];
                                 return posD;
                             } else {
-                                if (fila == pos[1] - l || fila == pos[1] + l - size_t) {
+                                if (fila == pos[1] - l || fila == lastRow) {
                                     col++;
                                 } else {
-                                    col = pos[0] + l - size_t;
+                                    col = lastColumn;
                                 }
                             }
                         } else if (col < 0) {
@@ -229,7 +231,7 @@ public class CompressorController implements ICompressor {
     private void deleteTesela(Imatge imatge, Integer[] pos, int size_t) {
         BufferedImage img = imatge.getImage();
         Statistics s = new Statistics(img);
-        int mean = (int)s.getMean();
+        int mean = (int) s.getMean();
         Color colorMig = new Color(mean, mean, mean);
 
         for (int i = pos[0]; i < pos[0] + size_t; i++) {
