@@ -570,6 +570,7 @@ public class MainFrame extends javax.swing.JFrame {
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
                 saveimagemenu.setEnabled(true);
+                savefx.setEnabled(false);
                 //player items
                 optionsmenu.setEnabled(false);
                 prevbtn.setEnabled(false);
@@ -587,6 +588,7 @@ public class MainFrame extends javax.swing.JFrame {
                 savezipmenu.setEnabled(true);
                 savegzipmenu.setEnabled(true);
                 saveimagemenu.setEnabled(false);
+                savefx.setEnabled(true);
                 //player items
                 optionsmenu.setEnabled(true);
                 prevbtn.setEnabled(false);
@@ -605,6 +607,7 @@ public class MainFrame extends javax.swing.JFrame {
                 savezipmenu.setEnabled(true);
                 savegzipmenu.setEnabled(true);
                 saveimagemenu.setEnabled(false);
+                savefx.setEnabled(true);
                 //player items
                 optionsmenu.setEnabled(true);
                 prevbtn.setEnabled(true);
@@ -623,6 +626,7 @@ public class MainFrame extends javax.swing.JFrame {
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
                 saveimagemenu.setEnabled(false);
+                savefx.setEnabled(false);
                 //player items
                 optionsmenu.setEnabled(false);
                 prevbtn.setEnabled(false);
