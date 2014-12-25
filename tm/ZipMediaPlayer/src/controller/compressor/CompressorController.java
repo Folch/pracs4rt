@@ -121,25 +121,25 @@ public class CompressorController implements ICompressor {
         for (int i = 1; i < imatges.size(); i++) {
             Imatge img = imatges.get(i);
             fxf.frames.add(new HashMap<Integer, Integer[]>());
-            System.out.println("Imatge " + i);
+            //System.out.println("Imatge " + i);
             if (i % refs == 0) {
                 ref = img;
                 continue;
             }
             HashMap hm = fxf.frames.get(i - 1);
-            int suma = 0;//borrar
+            //int suma = 0;//borrar
             for (int j = 0; j < img.getNumTeseles(size_t); j++) {
                 //System.out.println("Tesela "+j);
                 Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
                 if (pos != null) {
-                    suma ++;
-                    System.out.println("elimina la tesela " + j + " imatge " + img.getName());
+                    //suma ++;
+                    //System.out.println("elimina la tesela " + j + " imatge " + img.getName());
                     deleteTesela(img, pos, size_t);
                     hm.put(j, pos);
                 }
 
             }
-            System.out.println("No eliminades = "+(img.getNumTeseles(size_t)-suma));//borrar
+            //System.out.println("No eliminades = "+(img.getNumTeseles(size_t)-suma));//borrar
         }
 
         return new FXContent(imatges, fxf);
