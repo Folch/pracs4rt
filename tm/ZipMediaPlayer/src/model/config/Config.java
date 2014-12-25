@@ -21,8 +21,8 @@ public class Config {
     public static final float DEFAULT_VALUE = 0;
     public static final float DEFAULT_SATURATION = 0;
     
-    public static final int DEFAULT_GOP = 4;
-    public static final int DEFAULT_SIZE_TESELA = 8;
-    public static final int DEFAULT_PC = 10;
-    public static final float DEFAULT_FQ = 0.2f;
+    public static final int DEFAULT_GOP = 10;
+    public static final int DEFAULT_SIZE_TESELA = 20;
+    public static final int DEFAULT_PC = 3;
+    public static final float DEFAULT_FQ = 0.1f;
 }

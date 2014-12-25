@@ -121,14 +121,19 @@ public class CompressorController implements ICompressor {
         for (int i = 1; i < imatges.size(); i++) {
             Imatge img = imatges.get(i);
             fxf.frames.add(new HashMap<Integer, Integer[]>());
+            System.out.println("Imatge " + i);
             if (i % refs == 0) {
                 ref = img;
                 continue;
             }
+            HashMap hm = fxf.frames.get(i-1);
             for (int j = 0; j < img.getNumTeseles(size_t); j++) {
+                System.out.println("Tesela: "+j);
                 Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
-                deleteTesela(img, pos, size_t);
-                fxf.frames.get(i).put(j, pos);
+                if (pos != null) {
+                    deleteTesela(img, pos, size_t);
+                    hm.put(j, pos);
+                }
             }
         }
 
@@ -139,12 +144,12 @@ public class CompressorController implements ICompressor {
 
     @Override
     public ArrayList<Imatge> decompressFX(FXContent content) {
-        ArrayList <Imatge> imgs = content.getImatges(); // imatges amb forats
+        ArrayList<Imatge> imgs = content.getImatges(); // imatges amb forats
         FXFile fx = content.getFx();
         int size = imgs.size();
         int refs = size / GoP;
         Imatge ref = imgs.get(0);
-        
+
         for (int i = 1; i < size; i++) {
             Imatge img = imgs.get(i);
             if (i % refs == 0) {
@@ -153,49 +158,48 @@ public class CompressorController implements ICompressor {
             }
             HashMap posicionsTeseles = fx.frames.get(i);
             for (int tesela = 0; tesela < ref.getNumTeseles(size_t); tesela++) {
-                Integer [] posTesela = (Integer[])posicionsTeseles.get(tesela);
-                Integer [] refPosTesela = ref.getPosTesela(tesela, size_t);
-                
+                Integer[] posTesela = (Integer[]) posicionsTeseles.get(tesela);
+                Integer[] refPosTesela = ref.getPosTesela(tesela, size_t);
+
                 BufferedImage imgToFill = img.getImage();
                 BufferedImage imgRef = ref.getImage();
-                
+
                 //pos[0]=x,columnes   pos[1]=y,files
                 for (int col = 0; col < size_t; col++) {
                     for (int fila = 0; fila < size_t; fila++) {
-                        int rgb = imgRef.getRGB(col+refPosTesela[0],fila+refPosTesela[1]);
-                        imgToFill.setRGB(col+posTesela[0], fila+posTesela[1], rgb);
-                        
+                        int rgb = imgRef.getRGB(col + refPosTesela[0], fila + refPosTesela[1]);
+                        imgToFill.setRGB(col + posTesela[0], fila + posTesela[1], rgb);
+
                     }
-                    
+
                 }
             }
-            
+
         }
-            
+
         return imgs;
     }
-
 
     private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int pc, float fq) {
         int width = src.getImage().getWidth();
         int height = src.getImage().getHeight();
-        Integer[] posD = new Integer[2];
-        boolean trobat = false;
+
         Integer[] pos = src.getPosTesela(tesela, size_t);//pos[0]=x,columnes   pos[1]=y,files
         BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
 
-        for (int l = 0; l < pc && !trobat; l++) {
-            for (int fila = pos[1] - l; fila <= pos[1] + l - 2 && !trobat; fila++) {
+        for (int l = 0; l < pc; l++) {
+            for (int fila = pos[1] - l; fila <= pos[1] + l - 2; fila++) {
                 if (fila >= 0 && fila < height - size_t) {
 
-                    for (int col = pos[0] - l; col <= pos[0] + l - 2 && !trobat;) {
+                    for (int col = pos[0] - l; col <= pos[0] + l - 2;) {
                         if (col >= 0 && col < width - size_t) {
                             BufferedImage desti = dest.getImage().getSubimage(col, fila, size_t, size_t);
                             double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
                             if (diff < fq) {
+                                Integer[] posD = new Integer[2];
                                 posD[0] = pos[0];
                                 posD[1] = pos[1];
-                                trobat = true;
+                                return posD;
                             } else {
                                 if (fila == pos[1] - l || fila == pos[1] + l - 2) {
                                     col++;
@@ -218,14 +222,14 @@ public class CompressorController implements ICompressor {
             }
 
         }
-        return posD;
+        return null;
     }
 
     //el valor que es posa en el moment d'eliminar es la mitja de TOTA la imatge
     private void deleteTesela(Imatge imatge, Integer[] pos, int size_t) {
         BufferedImage img = imatge.getImage();
         Statistics s = new Statistics(img);
-        float mean = s.getMean();
+        int mean = (int)s.getMean();
         Color colorMig = new Color(mean, mean, mean);
 
         for (int i = pos[0]; i < pos[0] + size_t; i++) {
