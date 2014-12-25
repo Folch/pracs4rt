@@ -5,7 +5,6 @@
  */
 package view;
 
-import com.sun.org.glassfish.external.statistics.Statistic;
 import controller.statistics.Statistics;
 import java.awt.Color;
 import java.awt.FlowLayout;

@@ -5,7 +5,6 @@
  */
 package controller.compressor;
 
-import controller.disk.DiskController;
 import controller.disk.InternalIDisk;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,8 +34,8 @@ public class FXFile {
     public void save(String path, InternalIDisk disk) {
         try {
             JSONObject root = new JSONObject();
-            root.append("gop", GoP);
-            root.append("size_t", size_t);
+            root.put("gop", GoP);
+            root.put("size_t", size_t);
             
             JSONArray array = new JSONArray();
             JSONObject element;
@@ -50,11 +49,11 @@ public class FXFile {
                     a.put(pos[0]);
                     a.put(pos[1]);
                     
-                    element.append(tesela+"", a);
+                    element.put(tesela+"", a);
                 }
                 array.put(element);
             }
-            root.append("frames", array);
+            root.put("frames", array);
             
             disk.saveGZip(path, root.toString());
         } catch (JSONException ex) {
