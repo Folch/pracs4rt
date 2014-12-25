@@ -139,44 +139,42 @@ public class CompressorController implements ICompressor {
 
     @Override
     public ArrayList<Imatge> decompressFX(FXContent content) {
-
-        return null;
+        ArrayList <Imatge> imgs = content.getImatges(); // imatges amb forats
+        FXFile fx = content.getFx();
+        int size = imgs.size();
+        int refs = size / GoP;
+        Imatge ref = imgs.get(0);
+        
+        for (int i = 1; i < size; i++) {
+            Imatge img = imgs.get(i);
+            if (i % refs == 0) {
+                ref = img;
+                continue;
+            }
+            HashMap posicionsTeseles = fx.frames.get(i);
+            for (int tesela = 0; tesela < ref.getNumTeseles(size_t); tesela++) {
+                Integer [] posTesela = (Integer[])posicionsTeseles.get(tesela);
+                Integer [] refPosTesela = ref.getPosTesela(tesela, size_t);
+                
+                BufferedImage imgToFill = img.getImage();
+                BufferedImage imgRef = ref.getImage();
+                
+                //pos[0]=x,columnes   pos[1]=y,files
+                for (int col = 0; col < size_t; col++) {
+                    for (int fila = 0; fila < size_t; fila++) {
+                        int rgb = imgRef.getRGB(col+refPosTesela[0],fila+refPosTesela[1]);
+                        imgToFill.setRGB(col+posTesela[0], fila+posTesela[1], rgb);
+                        
+                    }
+                    
+                }
+            }
+            
+        }
+            
+        return imgs;
     }
-    /*
-     private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int pc, float fq) {
-     int width = src.getImage().getWidth();
-     int height = src.getImage().getHeight();
-     Integer[] posD = new Integer[2];
-     for (int i = 0; i < src.getNumTeseles(size_t); i++) {
-     Integer[] pos = src.getPosTesela(i, size_t);//pos[0]=x,columnes   pos[1]=y,files
-     BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
-     int initColumna = pos[0] - pc < 0 ? 0 : pos[0] - pc;
-     int initFila = pos[1] - pc < 0 ? 0 : pos[1] - pc;
-     int fiColumna = pos[0] + pc >= width ? width - 1 : pos[0] + pc;
-     int fiFila = pos[1] + pc >= height ? height - 1 : pos[1] + pc;
-     boolean trobat = false;
-     for (int fila = initFila; fila < fiFila && !trobat; fila++) {//cerca cicular!!
-     for (int col = initColumna; col < fiColumna && !trobat; col++) {
-     if (fila + size_t > fiFila || col + size_t > fiColumna) {
-     break;
-     } else {
-     BufferedImage desti = dest.getImage().getSubimage(col, fila, size_t, size_t);
-     double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
-     if (diff < pc) {
-     posD[0] = col;
-     posD[1] = fila;
-     trobat = true;
-     }
 
-     }
-
-     }
-
-     }
-
-     }
-     return posD;
-     }*/
 
     private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int pc, float fq) {
         int width = src.getImage().getWidth();
