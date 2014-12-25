@@ -7,6 +7,7 @@ package test;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +29,7 @@ public class TestJson {
             JSONObject obj = new JSONObject();
             obj.put("frames", 20);
             obj.put("a", "30");
+            obj.put("b", new JSONArray());
             System.out.println(obj.toString());
             
             

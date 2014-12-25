@@ -117,7 +117,7 @@ public class CompressorController implements ICompressor {
         Imatge ref = imatges.get(0);
 
         FXFile fxf = new FXFile(GoP, size_t);
-
+        fxf.frames.add(new HashMap<Integer, Integer[]>());
         for (int i = 1; i < imatges.size(); i++) {
             Imatge img = imatges.get(i);
             fxf.frames.add(new HashMap<Integer, Integer[]>());
@@ -126,7 +126,7 @@ public class CompressorController implements ICompressor {
                 ref = img;
                 continue;
             }
-            HashMap hm = fxf.frames.get(i - 1);
+            HashMap hm = fxf.frames.get(i);
             //int suma = 0;//borrar
             for (int j = 0; j < img.getNumTeseles(size_t); j++) {
                 //System.out.println("Tesela "+j);
@@ -165,6 +165,7 @@ public class CompressorController implements ICompressor {
                 Integer[] refPosTesela = ref.getPosTesela(tesela, size_t);
 
                 BufferedImage imgToFill = img.getImage();
+                
                 BufferedImage imgRef = ref.getImage();
 
                 //pos[0]=x,columnes   pos[1]=y,files
