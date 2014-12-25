@@ -121,14 +121,13 @@ public class CompressorController implements ICompressor {
         for (int i = 1; i < imatges.size(); i++) {
             Imatge img = imatges.get(i);
             fxf.frames.add(new HashMap<Integer, Integer[]>());
-            System.out.println("Imatge " + i);
+            //System.out.println("Imatge " + i);
             if (i % refs == 0) {
                 ref = img;
                 continue;
             }
             HashMap hm = fxf.frames.get(i-1);
             for (int j = 0; j < img.getNumTeseles(size_t); j++) {
-                System.out.println("Tesela: "+j);
                 Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
                 if (pos != null) {
                     deleteTesela(img, pos, size_t);
@@ -137,9 +136,8 @@ public class CompressorController implements ICompressor {
             }
         }
 
-        FXContent content = new FXContent(imatges, fxf);
 
-        return content;
+        return new FXContent(imatges, fxf);
     }
 
     @Override
@@ -188,10 +186,12 @@ public class CompressorController implements ICompressor {
         BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
 
         for (int l = 0; l < pc; l++) {
-            for (int fila = pos[1] - l; fila <= pos[1] + l - 2; fila++) {
+            
+            
+            for (int fila = pos[1] - l; fila <= pos[1] + l -size_t; fila++) {
                 if (fila >= 0 && fila < height - size_t) {
 
-                    for (int col = pos[0] - l; col <= pos[0] + l - 2;) {
+                    for (int col = pos[0] - l; col <= pos[0] + l - size_t;) {
                         if (col >= 0 && col < width - size_t) {
                             BufferedImage desti = dest.getImage().getSubimage(col, fila, size_t, size_t);
                             double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
@@ -201,7 +201,7 @@ public class CompressorController implements ICompressor {
                                 posD[1] = pos[1];
                                 return posD;
                             } else {
-                                if (fila == pos[1] - l || fila == pos[1] + l - 2) {
+                                if (fila == pos[1] - l || fila == pos[1] + l - size_t) {
                                     col++;
                                 } else {
                                     col = pos[0] + l - 2;
