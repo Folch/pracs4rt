@@ -421,6 +421,7 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
         }
         images = compressor.decompressFX(fx);
         imagesCopia = deepCopyArrayList(images);
+        System.out.println("MainController :: openFx: Finish openFX");
         return true;
     }
 

@@ -514,6 +514,9 @@ public class MainFrame extends javax.swing.JFrame {
                 "Files not found",
                 "File Error",
                 JOptionPane.WARNING_MESSAGE);
+        } else {
+            changeState(State.OPEN_ZIP_PAUSE);
+            player.first();
         }
     }//GEN-LAST:event_openfxActionPerformed
 

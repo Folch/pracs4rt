@@ -99,5 +99,12 @@ public class FXFile {
         
         return null;
     }
-    
+
+    public int getGoP() {
+        return GoP;
+    }
+
+    public int getSize_t() {
+        return size_t;
+    }
 }

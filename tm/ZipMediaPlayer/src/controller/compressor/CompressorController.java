@@ -146,10 +146,12 @@ public class CompressorController implements ICompressor {
 
     @Override
     public ArrayList<Imatge> decompressFX(FXContent content) {
-        ArrayList<Imatge> imgs = content.getImatges(); // imatges amb forats
+        ArrayList<Imatge> imgs = content.getImatges(); // imatges amb forats        
         FXFile fx = content.getFx();
         int size = imgs.size();
-        int refs = size / GoP;
+        int GoP_tmp = content.getFx().getGoP();
+        int size_t_tmp = content.getFx().getSize_t();
+        int refs = size / GoP_tmp;
         Imatge ref = imgs.get(0);
 
         for (int i = 1; i < size; i++) {
@@ -159,20 +161,20 @@ public class CompressorController implements ICompressor {
                 continue;
             }
             HashMap posicionsTeseles = fx.frames.get(i);
-            for (int tesela = 0; tesela < ref.getNumTeseles(size_t); tesela++) {
+            for (int tesela = 0; tesela < ref.getNumTeseles(size_t_tmp); tesela++) {
                 Integer[] posTesela = (Integer[]) posicionsTeseles.get(tesela);
-                Integer[] refPosTesela = ref.getPosTesela(tesela, size_t);
+                Integer[] refPosTesela = ref.getPosTesela(tesela, size_t_tmp);
 
                 BufferedImage imgToFill = img.getImage();
                 
                 BufferedImage imgRef = ref.getImage();
 
                 //pos[0]=x,columnes   pos[1]=y,files
-                for (int col = 0; col < size_t; col++) {
-                    for (int fila = 0; fila < size_t; fila++) {
+                for (int col = 0; col < size_t_tmp; col++) {
+                    for (int fila = 0; fila < size_t_tmp; fila++) {
                         int rgb = imgRef.getRGB(col + refPosTesela[0], fila + refPosTesela[1]);
-                        imgToFill.setRGB(col + posTesela[0], fila + posTesela[1], rgb);
-
+                        if(posTesela != null)
+                            imgToFill.setRGB(col + posTesela[0], fila + posTesela[1], rgb);                        
                     }
 
                 }
@@ -205,7 +207,7 @@ public class CompressorController implements ICompressor {
                         if (col >= 0 && col < width - size_t) {
                             BufferedImage desti = dest.getImage().getSubimage(col, fila, size_t, size_t);
                             double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
-                            if (diff < fq) {
+                            if (diff > fq) {
                                 Integer[] posD = new Integer[2];
                                 posD[0] = pos[0];
                                 posD[1] = pos[1];
