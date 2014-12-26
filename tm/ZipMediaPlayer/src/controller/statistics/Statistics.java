@@ -62,7 +62,7 @@ public class Statistics {
         return sum / size;
     }
     public Color getMeanCanals() {
-        return new Color (getMeanR(),getMeanG(),getMeanB());
+        return new Color ((int)getMeanR(),(int)getMeanG(),(int)getMeanB());
     }
 
     public double getVariance() {
