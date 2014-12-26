@@ -77,9 +77,9 @@ public class TestImatge {
         s1 = new Statistics(img1);
         s2 = new Statistics(img2);
         
-        mean12 = s1.getMean() * s2.getMean();
+        mean12 = s1.getMeanR() * s2.getMeanR();
         for (int i = 0; i < size; i++) {
-            out += s1.data[i]*s2.data[i] - mean12;
+            out += s1.dataR[i]*s2.dataR[i] - mean12;
         }
         
         out /= (size*s1.getStdDev() * s2.getStdDev());

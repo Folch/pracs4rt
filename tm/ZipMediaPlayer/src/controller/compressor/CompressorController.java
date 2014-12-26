@@ -241,8 +241,7 @@ public class CompressorController implements ICompressor {
     private void deleteTesela(Imatge imatge, Integer[] pos, int size_t) {
         BufferedImage img = imatge.getImage();
         Statistics s = new Statistics(img);
-        int mean = (int) s.getMean();
-        Color colorMig = new Color(mean, mean, mean);
+        Color colorMig =  s.getMeanCanals();
 
         for (int i = pos[0]; i < pos[0] + size_t; i++) {
             for (int j = pos[1]; j < pos[1] + size_t; j++) {
