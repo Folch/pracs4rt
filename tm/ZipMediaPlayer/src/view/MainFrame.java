@@ -66,7 +66,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         MainController controller;
         if (player == null || saver == null || filter == null || fxparameters == null) {
-            controller = new MainController((OnImageListener)imagepanel);
+            controller = new MainController((OnImageListener)imagepanel,null);//modificar
             player = controller;
             saver = controller;
             filter = controller;

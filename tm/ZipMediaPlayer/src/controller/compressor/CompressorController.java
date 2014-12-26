@@ -6,7 +6,7 @@
 package controller.compressor;
 
 import controller.MainController;
-import controller.filter.threads.ConvolveThread;
+import controller.player.OnLoading;
 import controller.statistics.Statistics;
 import model.Imatge;
 import java.awt.image.BufferedImage;
@@ -25,6 +25,9 @@ import javax.imageio.stream.ImageInputStream;
 import model.config.Config;
 import java.awt.Color;
 import java.util.Collections;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.Duration;
 
 /**
  * Classe controladora de totes les accions relacionades amb la compressió
@@ -37,12 +40,14 @@ public class CompressorController implements ICompressor {
     private int size_t;
     private int pc;
     private float fq;
+    private final OnLoading loading;
 
-    public CompressorController() {
+    public CompressorController(OnLoading loading) {
         this.GoP = Config.DEFAULT_GOP;
         this.size_t = Config.DEFAULT_SIZE_TESELA;
         this.pc = Config.DEFAULT_PC;
         this.fq = Config.DEFAULT_FQ;
+        this.loading = loading;
     }
 
     /**
@@ -113,34 +118,56 @@ public class CompressorController implements ICompressor {
 
     @Override
     public FXContent compressFX(ArrayList<Imatge> imatges, int GoP, int size_t, int pc, float fq) {
-
-        int refs = imatges.size() / GoP;
+        int numImatges = imatges.size();
+        int refs = numImatges / GoP;
         Imatge ref = imatges.get(0);
         Collections.sort(imatges);
-        
+        boolean timeCalculated = false;
+        DatatypeFactory datafactory;
 
         FXFile fxf = new FXFile(GoP, size_t);
-        fxf.frames.add(new HashMap<Integer, Integer[]>());
-        for (int i = 1; i < imatges.size(); i++) {
-            Imatge img = imatges.get(i);
-            fxf.frames.add(new HashMap<Integer, Integer[]>());
-            //System.out.println("Imatge " + i);
-            if (i % refs == 0) {
-                ref = img;
-                continue;
-            }
-            HashMap hm = fxf.frames.get(i);
-            for (int j = 0; j < img.getNumTeseles(size_t); j++) {
-                Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
-                if (pos != null) {
-                    //System.out.println("elimina la tesela " + j + " imatge " + img.getName());
-                    deleteTesela(img, pos, size_t);
-                    hm.put(j, pos);
-                }
+        try {
 
+            datafactory = DatatypeFactory.newInstance();
+            fxf.frames.add(new HashMap<Integer, Integer[]>());
+            for (int i = 1; i < numImatges; i++) {
+                Imatge img = imatges.get(i);
+                fxf.frames.add(new HashMap<Integer, Integer[]>());
+                System.out.println(i + " Imatge " + img.getName());
+                if (i % refs == 0) {
+                    ref = img;
+                    continue;
+                }
+                long start = -1, res = -1;
+                Duration timeleft;
+                if (!timeCalculated) {
+                    start = System.currentTimeMillis();
+                }
+                HashMap hm = fxf.frames.get(i);
+                for (int j = 0; j < img.getNumTeseles(size_t); j++) {
+
+                    Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
+
+                    if (pos != null) {
+                        //System.out.println("elimina la tesela " + j + " imatge " + img.getName());
+                        deleteTesela(img, pos, size_t);
+                        hm.put(j, pos);
+                    }
+
+                }
+                if (!timeCalculated) {
+                    long end = System.currentTimeMillis();
+                    res = end - start;
+                    timeleft = datafactory.newDuration(res);
+                } else {
+                    timeleft = datafactory.newDuration(res*(numImatges-i));
+                }
+                this.loading.updateProgressBar((short)i, timeleft);
             }
+
+        } catch (DatatypeConfigurationException ex) {
+            Logger.getLogger(CompressorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return new FXContent(imatges, fxf);
     }
 
@@ -166,15 +193,16 @@ public class CompressorController implements ICompressor {
                 Integer[] refPosTesela = ref.getPosTesela(tesela, size_t_tmp);
 
                 BufferedImage imgToFill = img.getImage();
-                
+
                 BufferedImage imgRef = ref.getImage();
 
                 //pos[0]=x,columnes   pos[1]=y,files
                 for (int col = 0; col < size_t_tmp; col++) {
                     for (int fila = 0; fila < size_t_tmp; fila++) {
                         int rgb = imgRef.getRGB(col + refPosTesela[0], fila + refPosTesela[1]);
-                        if(posTesela != null)
-                            imgToFill.setRGB(col + posTesela[0], fila + posTesela[1], rgb);                        
+                        if (posTesela != null) {
+                            imgToFill.setRGB(col + posTesela[0], fila + posTesela[1], rgb);
+                        }
                     }
 
                 }
@@ -196,9 +224,9 @@ public class CompressorController implements ICompressor {
             int lastRow = pos[1] + l + size_t;
             int lastColumn = pos[0] + l + size_t;
             /*
-            System.out.println("Inici "+(pos[1]-l)+"  "+(pos[0]-l));
-            System.out.println("Fi "+lastRow+"  "+lastColumn);
-                    */
+             System.out.println("Inici "+(pos[1]-l)+"  "+(pos[0]-l));
+             System.out.println("Fi "+lastRow+"  "+lastColumn);
+             */
             for (int fila = pos[1] - l; fila < lastRow; fila++) {
                 if (fila >= 0 && fila < height - size_t) {
 
@@ -241,7 +269,7 @@ public class CompressorController implements ICompressor {
     private void deleteTesela(Imatge imatge, Integer[] pos, int size_t) {
         BufferedImage img = imatge.getImage();
         Statistics s = new Statistics(img);
-        Color colorMig =  s.getMeanCanals();
+        Color colorMig = s.getMeanCanals();
 
         for (int i = pos[0]; i < pos[0] + size_t; i++) {
             for (int j = pos[1]; j < pos[1] + size_t; j++) {

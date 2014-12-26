@@ -14,6 +14,7 @@ import controller.filter.FilterController;
 import controller.filter.IFilter;
 import controller.disk.IDisk;
 import controller.disk.DiskController;
+import controller.player.OnLoading;
 import java.io.File;
 import model.config.Config;
 import model.config.DirectionType;
@@ -47,12 +48,13 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
      * Constructor
      *
      * @param listener
+     * @param loading
      */
-    public MainController(OnImageListener listener) {
+    public MainController(OnImageListener listener, OnLoading loading) {
         this.listener = listener;
         this.dir = Config.DEFAULT_DIRECTION;
         this.time = Config.DEFAULT_FRAME_RATE;
-        this.compressor = new CompressorController();
+        this.compressor = new CompressorController(loading);
         this.disk = new DiskController();
         this.filter = new FilterController();
         this.images = new ArrayList<>();
