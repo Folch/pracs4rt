@@ -162,7 +162,7 @@ public class CompressorController implements ICompressor {
                 } else {
                     timeleft = datafactory.newDuration(res*(numImatges-i));
                 }
-                this.loading.updateProgressBar((short)i, timeleft);
+                this.loading.updateProgressBar((short)(i*100/numImatges) , timeleft);
             }
 
         } catch (DatatypeConfigurationException ex) {
