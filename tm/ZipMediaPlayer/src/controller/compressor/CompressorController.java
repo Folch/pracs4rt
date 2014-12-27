@@ -159,9 +159,9 @@ public class CompressorController implements ICompressor {
                     res = end - start;
                     timeleft = datafactory.newDuration(res);
                 } else {
-                    timeleft = datafactory.newDuration(res*(numImatges-i));
+                    timeleft = datafactory.newDuration(res * (numImatges - i));
                 }
-                this.loading.updateProgressBar((short)(i*100/numImatges) , timeleft);
+                this.loading.updateProgressBar((short) (i * 100 / numImatges), timeleft);
             }
 
         } catch (DatatypeConfigurationException ex) {
@@ -172,43 +172,63 @@ public class CompressorController implements ICompressor {
 
     @Override
     public ArrayList<Imatge> decompressFX(FXContent content) {
-        ArrayList<Imatge> imgs = content.getImatges(); // imatges amb forats        
+        ArrayList<Imatge> imgs = content.getImatges(); // imatges amb forats
         FXFile fx = content.getFx();
-        int size = imgs.size();
+        int numImatges = imgs.size();
         int GoP_tmp = content.getFx().getGoP();
         int size_t_tmp = content.getFx().getSize_t();
-        int refs = size / GoP_tmp;
+        int refs = numImatges / GoP_tmp;
         Imatge ref = imgs.get(0);
+        boolean timeCalculated = false;
+        DatatypeFactory datafactory;
 
-        for (int i = 1; i < size; i++) {
-            Imatge img = imgs.get(i);
-            if (i % refs == 0) {
-                ref = img;
-                continue;
-            }
-            HashMap posicionsTeseles = fx.frames.get(i);
-            for (int tesela = 0; tesela < ref.getNumTeseles(size_t_tmp); tesela++) {
-                Integer[] posTesela = (Integer[]) posicionsTeseles.get(tesela);
-                Integer[] refPosTesela = ref.getPosTesela(tesela, size_t_tmp);
-
-                BufferedImage imgToFill = img.getImage();
-
-                BufferedImage imgRef = ref.getImage();
-
-                //pos[0]=x,columnes   pos[1]=y,files
-                for (int col = 0; col < size_t_tmp; col++) {
-                    for (int fila = 0; fila < size_t_tmp; fila++) {
-                        int rgb = imgRef.getRGB(col + refPosTesela[0], fila + refPosTesela[1]);
-                        if (posTesela != null) {
-                            imgToFill.setRGB(col + posTesela[0], fila + posTesela[1], rgb);
-                        }
-                    }
-
+        try {
+            datafactory = DatatypeFactory.newInstance();
+            for (int i = 1; i < numImatges; i++) {
+                Imatge img = imgs.get(i);
+                if (i % refs == 0) {
+                    ref = img;
+                    continue;
                 }
+                HashMap posicionsTeseles = fx.frames.get(i);
+                long start = -1, res = -1;
+                Duration timeleft;
+                if (!timeCalculated) {
+                    start = System.currentTimeMillis();
+                }
+                for (int tesela = 0; tesela < ref.getNumTeseles(size_t_tmp); tesela++) {
+                    Integer[] posTesela = (Integer[]) posicionsTeseles.get(tesela);
+                    Integer[] refPosTesela = ref.getPosTesela(tesela, size_t_tmp);
+
+                    BufferedImage imgToFill = img.getImage();
+
+                    BufferedImage imgRef = ref.getImage();
+
+                    //pos[0]=x,columnes   pos[1]=y,files
+                    for (int col = 0; col < size_t_tmp; col++) {
+                        for (int fila = 0; fila < size_t_tmp; fila++) {
+                            int rgb = imgRef.getRGB(col + refPosTesela[0], fila + refPosTesela[1]);
+                            if (posTesela != null) {
+                                imgToFill.setRGB(col + posTesela[0], fila + posTesela[1], rgb);
+                            }
+                        }
+
+                    }
+                }
+                if (!timeCalculated) {
+                    long end = System.currentTimeMillis();
+                    res = end - start;
+                    timeleft = datafactory.newDuration(res);
+                } else {
+                    timeleft = datafactory.newDuration(res * (numImatges - i));
+                }
+                this.loading.updateProgressBar((short) (i * 100 / numImatges), timeleft);
+
             }
 
+        } catch (DatatypeConfigurationException ex) {
+            Logger.getLogger(CompressorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return imgs;
     }
 
@@ -217,9 +237,10 @@ public class CompressorController implements ICompressor {
         int height = src.getImage().getHeight();
 
         Integer[] pos = src.getPosTesela(tesela, size_t);//pos[0]=x,columnes   pos[1]=y,files
-        
-        if(pos[0]+size_t >= width || pos[1] + size_t >= height)
+
+        if (pos[0] + size_t >= width || pos[1] + size_t >= height) {
             return null;
+        }
         BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
 
         for (int l = 0; l < pc; l++) {
