@@ -9,14 +9,21 @@ import controller.player.OnImageListener;
 import controller.MainController;
 import controller.compressor.IFXParameters;
 import controller.filter.IFilter;
+import controller.player.OnLoading;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.io.File;
+import java.text.DateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.Duration;
 import model.config.FileType;
 
 /**
@@ -24,9 +31,10 @@ import model.config.FileType;
  * 
  * @author zenbook
  */
-public class MainFrame extends javax.swing.JFrame {
-    
-    private enum State {OPEN_ZIP_PLAY, OPEN_ZIP_PAUSE, OPEN_IMAGE, EMPTY};
+public class MainFrame extends javax.swing.JFrame implements OnLoading{
+    private State currentstate;
+
+    private enum State {OPEN_ZIP_PLAY, OPEN_ZIP_PAUSE, OPEN_IMAGE, LOADING, EMPTY};
     private enum FilterState {CUSTOM, HSB, NEGATIVE, BINARY, ORIGINAL};
     
     private IDisk saver;
@@ -44,6 +52,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        currentstate = State.EMPTY;
         changeState(State.EMPTY);
         currentFilterState = FilterState.ORIGINAL;
         
@@ -66,7 +75,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         MainController controller;
         if (player == null || saver == null || filter == null || fxparameters == null) {
-            controller = new MainController((OnImageListener)imagepanel,null);//modificar
+            controller = new MainController((OnImageListener)imagepanel,this);//modificar
             player = controller;
             saver = controller;
             filter = controller;
@@ -116,6 +125,22 @@ public class MainFrame extends javax.swing.JFrame {
         }
         return null;
     }
+    
+    @Override
+    public void updateProgressBar(short percent, Duration timeleft) {
+        System.out.println("HOLAA");
+        try {
+            this.loadingbar.setValue(percent);
+            DatatypeFactory datafactory = DatatypeFactory.newInstance();
+            Duration minute = datafactory.newDuration(60*1000);
+            if(timeleft.isShorterThan(minute))
+                this.loadingstat.setText(timeleft.getSeconds()+" seconds");
+            else
+                this.loadingstat.setText(timeleft.getMinutes()+" minutes");
+        } catch (DatatypeConfigurationException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -130,6 +155,8 @@ public class MainFrame extends javax.swing.JFrame {
         nextbtn = new javax.swing.JButton();
         playbtn = new javax.swing.JButton();
         imagepanel = new VideoPanel();
+        loadingbar = new javax.swing.JProgressBar();
+        loadingstat = new javax.swing.JLabel();
         menubar = new javax.swing.JMenuBar();
         filebar = new javax.swing.JMenu();
         openzipmenu = new javax.swing.JMenuItem();
@@ -196,8 +223,10 @@ public class MainFrame extends javax.swing.JFrame {
         );
         imagepanelLayout.setVerticalGroup(
             imagepanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 265, Short.MAX_VALUE)
+            .addGap(0, 248, Short.MAX_VALUE)
         );
+
+        loadingstat.setText("time");
 
         filebar.setText("File");
 
@@ -381,14 +410,18 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(imagepanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(imagepanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(prevbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                         .addComponent(playbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                        .addComponent(nextbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)))
+                        .addComponent(nextbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(loadingbar, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(loadingstat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -401,6 +434,10 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(nextbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                     .addComponent(playbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(prevbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(loadingbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(loadingstat))
                 .addContainerGap())
         );
 
@@ -521,8 +558,12 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_openfxActionPerformed
 
     private void savefxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savefxActionPerformed
+        State s = currentstate;
+        changeState(State.LOADING);
         String path = selectFolderChooser();
+        
         saver.saveFX(path);
+        changeState(s);
     }//GEN-LAST:event_savefxActionPerformed
 
     private void fxoptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fxoptionsActionPerformed
@@ -585,6 +626,9 @@ public class MainFrame extends javax.swing.JFrame {
                 negativemenu.setEnabled(true);
                 binarymenu.setEnabled(true);
                 originalmenu.setEnabled(true);
+                //loading
+                loadingbar.setVisible(false);
+                loadingstat.setVisible(false);
                 break;
             case OPEN_ZIP_PLAY:
                 //menu item
@@ -604,6 +648,9 @@ public class MainFrame extends javax.swing.JFrame {
                 negativemenu.setEnabled(true);
                 binarymenu.setEnabled(true);
                 originalmenu.setEnabled(true);
+                //loading
+                loadingbar.setVisible(false);
+                loadingstat.setVisible(false);
                 break;
             case OPEN_ZIP_PAUSE:
                 //menu item
@@ -623,6 +670,32 @@ public class MainFrame extends javax.swing.JFrame {
                 negativemenu.setEnabled(true);
                 binarymenu.setEnabled(true);
                 originalmenu.setEnabled(true);
+                //loading
+                loadingbar.setVisible(false);
+                loadingstat.setVisible(false);
+                break;
+            case LOADING:
+                //menu item
+                savezipmenu.setEnabled(false);
+                savegzipmenu.setEnabled(false);
+                saveimagemenu.setEnabled(false);
+                savefx.setEnabled(false);
+                //player items
+                optionsmenu.setEnabled(false);
+                prevbtn.setEnabled(false);
+                nextbtn.setEnabled(false);
+                playbtn.setEnabled(false);
+                //filter items
+                customfiltermenu.setEnabled(false);
+                hsbmenu.setEnabled(false);
+                negativemenu.setEnabled(false);
+                binarymenu.setEnabled(false);
+                originalmenu.setEnabled(false);
+                //loading
+                loadingbar.setValue(0);
+                loadingstat.setText("Calculating...");
+                loadingbar.setVisible(true);
+                loadingstat.setVisible(true);
                 break;
             case EMPTY:
                 //menu item
@@ -641,8 +714,12 @@ public class MainFrame extends javax.swing.JFrame {
                 negativemenu.setEnabled(false);
                 binarymenu.setEnabled(false);
                 originalmenu.setEnabled(false);
+                //loading
+                loadingbar.setVisible(false);
+                loadingstat.setVisible(false);
                 break;
         }
+        this.currentstate = state;
     }
     
     /**
@@ -691,6 +768,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem helpmenu;
     private javax.swing.JMenuItem hsbmenu;
     private javax.swing.JPanel imagepanel;
+    private javax.swing.JProgressBar loadingbar;
+    private javax.swing.JLabel loadingstat;
     private javax.swing.JMenuBar menubar;
     private javax.swing.JMenuItem negativemenu;
     private javax.swing.JButton nextbtn;
