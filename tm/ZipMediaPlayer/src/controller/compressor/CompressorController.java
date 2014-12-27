@@ -149,7 +149,6 @@ public class CompressorController implements ICompressor {
                     Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
 
                     if (pos != null) {
-                        //System.out.println("elimina la tesela " + j + " imatge " + img.getName());
                         deleteTesela(img, pos, size_t);
                         hm.put(j, pos);
                     }
@@ -218,6 +217,9 @@ public class CompressorController implements ICompressor {
         int height = src.getImage().getHeight();
 
         Integer[] pos = src.getPosTesela(tesela, size_t);//pos[0]=x,columnes   pos[1]=y,files
+        
+        if(pos[0]+size_t >= width || pos[1] + size_t >= height)
+            return null;
         BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
 
         for (int l = 0; l < pc; l++) {
