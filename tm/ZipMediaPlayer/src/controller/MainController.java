@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipFile;
 
 /**
@@ -131,8 +133,22 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
         }
         this.zip = disk.openZip(path);
         if (zip != null) {
-            this.images = compressor.decompressZip(zip);
-            this.imagesCopia = deepCopyArrayList(images);
+            Thread t = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    images = compressor.decompressZip(zip);
+                    imagesCopia = deepCopyArrayList(images);
+
+                }
+            });
+            t.start();
+            try {
+                t.join();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             return true;
         }
         return false;
@@ -418,7 +434,7 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
                 content.save(path, disk);
             }
         }).start();
-        
+
     }
 
     @Override
@@ -481,5 +497,6 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
     @Override
     public void cancelLoading() {
         System.out.println("CANCELED");
+        this.compressor.cancel();
     }
 }
