@@ -406,13 +406,19 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
     }
 
     @Override
-    public void saveFX(String path) {
-        long start = System.currentTimeMillis();
-        FXContent content = compressor.compressFX(deepCopyArrayList(imagesCopia), getGoP(), getSizeTesela(), getPC(), getFQ());
-        long end = System.currentTimeMillis();
-        long res = end - start;
-        System.out.println("Segundos: " + res / 1000);
-        content.save(path, disk);
+    public void saveFX(final String path) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long start = System.currentTimeMillis();
+                FXContent content = compressor.compressFX(deepCopyArrayList(imagesCopia), getGoP(), getSizeTesela(), getPC(), getFQ());
+                long end = System.currentTimeMillis();
+                long res = end - start;
+                System.out.println("Segundos: " + res / 1000);
+                content.save(path, disk);
+            }
+        }).start();
+        
     }
 
     @Override
@@ -465,5 +471,10 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
     @Override
     public float getFQ() {
         return this.compressor.getFq();
+    }
+
+    @Override
+    public void cancelLoading() {
+        System.out.println("CANCELED");
     }
 }

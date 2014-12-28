@@ -24,4 +24,11 @@ public interface IPlayer {
     public boolean isPlaying();
     public int getFrameRate();
     public DirectionType getDirection();
+    
+    /**
+     * Cancel open/save if the program is loading.
+     * 
+     */
+    public void cancelLoading();
+    
 }

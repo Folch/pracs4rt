@@ -1,16 +1,17 @@
-package view.filter;
+package view.dialog.filter;
 
 import controller.filter.IFilter;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 import model.FilterDim3;
+import view.dialog.BaseDialog;
 
 /**
  * Dialog to show custom filter.
  * 
  * @author zenbook
  */
-public class CustomFilterDialog extends javax.swing.JDialog {
+public class CustomFilterDialog extends BaseDialog {
 
     private IFilter filter;
     
@@ -24,7 +25,6 @@ public class CustomFilterDialog extends javax.swing.JDialog {
      */
     public CustomFilterDialog(java.awt.Frame parent, boolean modal, IFilter filter) {
         super(parent, modal);
-        initComponents();
         this.filter =  filter;
         
         showFilter(filter.getFilterDim3());
@@ -100,7 +100,7 @@ public class CustomFilterDialog extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    public void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         field1 = new javax.swing.JTextField();

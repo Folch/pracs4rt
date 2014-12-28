@@ -1,40 +1,40 @@
 package view;
 
-import view.filter.HSBFilterDialog;
-import view.filter.CustomFilterDialog;
-import view.filter.BinaryFilterDialog;
+import view.dialog.filter.HSBFilterDialog;
+import view.dialog.filter.CustomFilterDialog;
+import view.dialog.filter.BinaryFilterDialog;
 import controller.disk.IDisk;
 import controller.player.IPlayer;
 import controller.player.OnImageListener;
 import controller.MainController;
 import controller.compressor.IFXParameters;
 import controller.filter.IFilter;
-import controller.player.OnLoading;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.io.File;
-import java.text.DateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.Duration;
 import model.config.FileType;
+import view.dialog.AboutDialog;
+import view.dialog.FXOptionsDialog;
+import view.dialog.HelpDialog;
+import view.dialog.OptionsDialog;
+import view.dialog.loading.IGuiLoading;
+import view.dialog.loading.LoadingDialog;
+import view.dialog.loading.LoadingImplements;
 
 /**
  * This is the main JFrame that shows the player where it plays the videos or images.
  * 
  * @author zenbook
  */
-public class MainFrame extends javax.swing.JFrame implements OnLoading{
+public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
     private State currentstate;
 
-    private enum State {OPEN_ZIP_PLAY, OPEN_ZIP_PAUSE, OPEN_IMAGE, LOADING, EMPTY};
+    private enum State {OPEN_ZIP_PLAY, OPEN_ZIP, OPEN_ZIP_PAUSE, OPEN_IMAGE, LOADING, QUIT_LOADING, EMPTY};
     private enum FilterState {CUSTOM, HSB, NEGATIVE, BINARY, ORIGINAL};
     
     private IDisk saver;
@@ -46,6 +46,8 @@ public class MainFrame extends javax.swing.JFrame implements OnLoading{
     
     private JFileChooser fc;
     private JFileChooser fc_folder;
+    
+    private LoadingImplements limpl;
 
     /**
      * Creates new form MainFrame
@@ -72,10 +74,11 @@ public class MainFrame extends javax.swing.JFrame implements OnLoading{
         int height = gd.getDisplayMode().getHeight();
         this.setBounds( width/2-this.getWidth()/2, height/2-this.getHeight()/2, this.getWidth(), this.getHeight());
         
+        limpl = new LoadingImplements();
         
         MainController controller;
         if (player == null || saver == null || filter == null || fxparameters == null) {
-            controller = new MainController((OnImageListener)imagepanel,this);//modificar
+            controller = new MainController((OnImageListener)imagepanel, limpl);//modificar
             player = controller;
             saver = controller;
             filter = controller;
@@ -127,19 +130,10 @@ public class MainFrame extends javax.swing.JFrame implements OnLoading{
     }
     
     @Override
-    public void updateProgressBar(short percent, Duration timeleft) {
-        System.out.println("HOLAA");
-        try {
-            this.loadingbar.setValue(percent);
-            DatatypeFactory datafactory = DatatypeFactory.newInstance();
-            Duration minute = datafactory.newDuration(60*1000);
-            if(timeleft.isShorterThan(minute))
-                this.loadingstat.setText(timeleft.getSeconds()+" seconds");
-            else
-                this.loadingstat.setText(timeleft.getMinutes()+" minutes");
-        } catch (DatatypeConfigurationException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void loading(LoadingImplements l) {
+        LoadingImplements.updateLoading(loadingbar, loadingstat, l);
+        if(l.progress == 99) 
+            changeState(State.QUIT_LOADING);
     }
 
     /**
@@ -157,6 +151,7 @@ public class MainFrame extends javax.swing.JFrame implements OnLoading{
         imagepanel = new VideoPanel();
         loadingbar = new javax.swing.JProgressBar();
         loadingstat = new javax.swing.JLabel();
+        loadingcancelbtn = new javax.swing.JButton();
         menubar = new javax.swing.JMenuBar();
         filebar = new javax.swing.JMenu();
         openzipmenu = new javax.swing.JMenuItem();
@@ -223,10 +218,17 @@ public class MainFrame extends javax.swing.JFrame implements OnLoading{
         );
         imagepanelLayout.setVerticalGroup(
             imagepanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 248, Short.MAX_VALUE)
+            .addGap(0, 241, Short.MAX_VALUE)
         );
 
         loadingstat.setText("time");
+
+        loadingcancelbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resource/Stop16.gif"))); // NOI18N
+        loadingcancelbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadingloadingcancelbtnActionPerformed(evt);
+            }
+        });
 
         filebar.setText("File");
 
@@ -419,9 +421,11 @@ public class MainFrame extends javax.swing.JFrame implements OnLoading{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                         .addComponent(nextbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(loadingbar, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(loadingbar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(loadingstat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(loadingstat, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(loadingcancelbtn)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -435,9 +439,10 @@ public class MainFrame extends javax.swing.JFrame implements OnLoading{
                     .addComponent(playbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(prevbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(loadingbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(loadingstat))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(loadingcancelbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(loadingstat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(loadingbar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -558,18 +563,38 @@ public class MainFrame extends javax.swing.JFrame implements OnLoading{
     }//GEN-LAST:event_openfxActionPerformed
 
     private void savefxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savefxActionPerformed
-        State s = currentstate;
-        changeState(State.LOADING);
         String path = selectFolderChooser();
         
+        LoadingDialog dialog = new LoadingDialog(this, true, "Save FX");
+        
+        limpl.setIGuiLoading(dialog);
         saver.saveFX(path);
-        changeState(s);
+        
+        dialog.setVisible(true);
+        
+        switch (dialog.getState()) {
+            case BACKGROUND:
+                changeState(State.LOADING);
+                LoadingImplements.updateLoading(loadingbar, loadingstat, limpl);
+                limpl.setIGuiLoading(this);
+                break;
+            case CANCEL:
+                player.cancelLoading();
+                break;
+        }
     }//GEN-LAST:event_savefxActionPerformed
 
     private void fxoptionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fxoptionsActionPerformed
         FXOptionsDialog dialog = new FXOptionsDialog(this, true, fxparameters);
         dialog.setVisible(true);
     }//GEN-LAST:event_fxoptionsActionPerformed
+
+    private void loadingloadingcancelbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadingloadingcancelbtnActionPerformed
+        if(currentstate == State.LOADING) {
+            player.cancelLoading();
+            changeState(State.QUIT_LOADING);
+        }
+    }//GEN-LAST:event_loadingloadingcancelbtnActionPerformed
 
     /**
      * This method instatiates a MainController to load a video or image.
@@ -595,9 +620,10 @@ public class MainFrame extends javax.swing.JFrame implements OnLoading{
                 JOptionPane.WARNING_MESSAGE);
 
         } else if(fileType == FileType.ZIP) {
-            if(saver.openZip(path))
+            if(saver.openZip(path)) {
+                changeState(State.OPEN_ZIP);
                 changeState(State.OPEN_ZIP_PAUSE);
-            else
+            } else
                 JOptionPane.showMessageDialog(this,
                 "The following file "+path+" doesn't exist.",
                 "File Not Found",
@@ -626,76 +652,57 @@ public class MainFrame extends javax.swing.JFrame implements OnLoading{
                 negativemenu.setEnabled(true);
                 binarymenu.setEnabled(true);
                 originalmenu.setEnabled(true);
-                //loading
-                loadingbar.setVisible(false);
-                loadingstat.setVisible(false);
                 break;
-            case OPEN_ZIP_PLAY:
+            case OPEN_ZIP:
                 //menu item
                 savezipmenu.setEnabled(true);
                 savegzipmenu.setEnabled(true);
                 saveimagemenu.setEnabled(false);
                 savefx.setEnabled(true);
+                //filter items
+                customfiltermenu.setEnabled(true);
+                hsbmenu.setEnabled(true);
+                negativemenu.setEnabled(true);
+                binarymenu.setEnabled(true);
+                originalmenu.setEnabled(true);
+                break;
+            case OPEN_ZIP_PLAY:
                 //player items
                 optionsmenu.setEnabled(true);
                 prevbtn.setEnabled(false);
                 nextbtn.setEnabled(false);
                 playbtn.setEnabled(true);
                 playbtn.setIcon(new ImageIcon(getClass().getResource("/view/resource/Pause24.gif")));
-                //filter items
-                customfiltermenu.setEnabled(true);
-                hsbmenu.setEnabled(true);
-                negativemenu.setEnabled(true);
-                binarymenu.setEnabled(true);
-                originalmenu.setEnabled(true);
-                //loading
-                loadingbar.setVisible(false);
-                loadingstat.setVisible(false);
                 break;
             case OPEN_ZIP_PAUSE:
-                //menu item
-                savezipmenu.setEnabled(true);
-                savegzipmenu.setEnabled(true);
-                saveimagemenu.setEnabled(false);
-                savefx.setEnabled(true);
                 //player items
                 optionsmenu.setEnabled(true);
                 prevbtn.setEnabled(true);
                 nextbtn.setEnabled(true);
                 playbtn.setEnabled(true);
                 playbtn.setIcon(new ImageIcon(getClass().getResource("/view/resource/Play24.gif")));
-                //filter items
-                customfiltermenu.setEnabled(true);
-                hsbmenu.setEnabled(true);
-                negativemenu.setEnabled(true);
-                binarymenu.setEnabled(true);
-                originalmenu.setEnabled(true);
-                //loading
-                loadingbar.setVisible(false);
-                loadingstat.setVisible(false);
                 break;
             case LOADING:
                 //menu item
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
-                saveimagemenu.setEnabled(false);
                 savefx.setEnabled(false);
-                //player items
-                optionsmenu.setEnabled(false);
-                prevbtn.setEnabled(false);
-                nextbtn.setEnabled(false);
-                playbtn.setEnabled(false);
-                //filter items
-                customfiltermenu.setEnabled(false);
-                hsbmenu.setEnabled(false);
-                negativemenu.setEnabled(false);
-                binarymenu.setEnabled(false);
-                originalmenu.setEnabled(false);
                 //loading
                 loadingbar.setValue(0);
                 loadingstat.setText("Calculating...");
                 loadingbar.setVisible(true);
                 loadingstat.setVisible(true);
+                loadingcancelbtn.setVisible(true);
+                break;
+            case QUIT_LOADING:
+                //menu item
+                savezipmenu.setEnabled(true);
+                savegzipmenu.setEnabled(true);
+                savefx.setEnabled(true);
+                //loading
+                loadingbar.setVisible(false);
+                loadingstat.setVisible(false);
+                loadingcancelbtn.setVisible(false);
                 break;
             case EMPTY:
                 //menu item
@@ -717,6 +724,7 @@ public class MainFrame extends javax.swing.JFrame implements OnLoading{
                 //loading
                 loadingbar.setVisible(false);
                 loadingstat.setVisible(false);
+                loadingcancelbtn.setVisible(false);
                 break;
         }
         this.currentstate = state;
@@ -769,6 +777,7 @@ public class MainFrame extends javax.swing.JFrame implements OnLoading{
     private javax.swing.JMenuItem hsbmenu;
     private javax.swing.JPanel imagepanel;
     private javax.swing.JProgressBar loadingbar;
+    private javax.swing.JButton loadingcancelbtn;
     private javax.swing.JLabel loadingstat;
     private javax.swing.JMenuBar menubar;
     private javax.swing.JMenuItem negativemenu;

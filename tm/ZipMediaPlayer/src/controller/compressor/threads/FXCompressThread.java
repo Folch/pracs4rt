@@ -55,47 +55,34 @@ public class FXCompressThread implements Callable {
         int refs = numImatges / GoP;
         Imatge ref = imatges.get(0);
         Collections.sort(imatges);
-        boolean timeCalculated = false;
         DatatypeFactory datafactory;
+        long start, end, res, init = System.currentTimeMillis();
 
         FXFile fxf = new FXFile(GoP, size_t);
         try {
-
             datafactory = DatatypeFactory.newInstance();
             fxf.frames.add(new HashMap<Integer, Integer[]>());
             for (int i = 1; i < numImatges; i++) {
                 Imatge img = imatges.get(i);
                 fxf.frames.add(new HashMap<Integer, Integer[]>());
-                System.out.println(i + " Imatge " + img.getName());
                 if (i % refs == 0) {
                     ref = img;
                     continue;
                 }
-                long start = -1, res = -1;
                 Duration timeleft;
-                if (!timeCalculated) {
-                    start = System.currentTimeMillis();
-                }
+                start = System.currentTimeMillis();
                 HashMap hm = fxf.frames.get(i);
                 for (int j = 0; j < img.getNumTeseles(size_t); j++) {
-
                     Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
-
                     if (pos != null) {
-                        //System.out.println("elimina la tesela " + j + " imatge " + img.getName());
                         deleteTesela(img, pos, size_t);
                         hm.put(j, pos);
                     }
-
                 }
-                if (!timeCalculated) {
-                    long end = System.currentTimeMillis();
-                    res = end - start;
-                    timeleft = datafactory.newDuration(res);
-                } else {
-                    timeleft = datafactory.newDuration(res * (numImatges - i));
-                }
-                this.loading.updateProgressBar((short) (i * 100 / numImatges), timeleft);
+                end = System.currentTimeMillis();
+                res = ((numImatges/(i+1))-1)*(end-init) + (numImatges%(i+1))*(end-start);
+                timeleft = datafactory.newDuration(res);
+                this.loading.updateProgressBar((short) ((i+1) * 100 / numImatges), timeleft);
             }
 
         } catch (DatatypeConfigurationException ex) {

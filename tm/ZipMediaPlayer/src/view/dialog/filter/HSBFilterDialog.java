@@ -1,14 +1,15 @@
-package view.filter;
+package view.dialog.filter;
 
 import controller.filter.IFilter;
 import java.text.DecimalFormat;
+import view.dialog.BaseDialog;
 
 /**
  * Dialog to show HSB filter.
  * 
  * @author zenbook
  */
-public class HSBFilterDialog extends javax.swing.JDialog {
+public class HSBFilterDialog extends BaseDialog {
 
     private IFilter filter;
     
@@ -20,7 +21,6 @@ public class HSBFilterDialog extends javax.swing.JDialog {
      */
     public HSBFilterDialog(java.awt.Frame parent, boolean modal, IFilter filter) {
         super(parent, modal);
-        initComponents();
         this.filter =  filter;
         
         float h = filter.getHue();
@@ -55,7 +55,7 @@ public class HSBFilterDialog extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    public void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();

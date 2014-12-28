@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view.filter;
+package view.dialog.filter;
 
 import controller.filter.IFilter;
+import view.dialog.BaseDialog;
 
 /**
  * Dialog to show binary filter.
  * 
  * @author zenbook
  */
-public class BinaryFilterDialog extends javax.swing.JDialog {
+public class BinaryFilterDialog extends BaseDialog {
 
     private IFilter filter;
     
@@ -26,7 +27,6 @@ public class BinaryFilterDialog extends javax.swing.JDialog {
      */
     public BinaryFilterDialog(java.awt.Frame parent, boolean modal, IFilter filter) {
         super(parent, modal);
-        initComponents();
         
         this.threshold = filter.getThreshold();
         this.filter =  filter;
@@ -39,7 +39,7 @@ public class BinaryFilterDialog extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    public void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
