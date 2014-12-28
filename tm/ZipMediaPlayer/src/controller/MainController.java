@@ -144,11 +144,6 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
                 }
             });
             t.start();
-            try {
-                t.join();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-            }
             return true;
         }
         return false;

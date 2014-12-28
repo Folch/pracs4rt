@@ -572,6 +572,8 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
         dialog.setVisible(true);
         switch (dialog.getState()) {
             case BACKGROUND:
+                changeState(State.OPEN_ZIP);
+                changeState(State.OPEN_ZIP_PAUSE);
                 changeState(State.LOADING);
                 LoadingImplements.updateLoading(loadingbar, loadingstat, limpl);
                 limpl.setIGuiLoading(this);
@@ -647,14 +649,37 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 JOptionPane.WARNING_MESSAGE);
 
         } else if(fileType == FileType.ZIP) {
+            
+            LoadingDialog dialog = new LoadingDialog(this, true, "Open Zip");
+            limpl.setIGuiLoading(dialog);
+            
             if(saver.openZip(path)) {
-                changeState(State.OPEN_ZIP);
-                changeState(State.OPEN_ZIP_PAUSE);
+                dialog.setVisible(true);
+                
+                switch (dialog.getState()) {
+                    case BACKGROUND:
+                        changeState(State.OPEN_ZIP);
+                        changeState(State.OPEN_ZIP_PAUSE);  
+                        changeState(State.LOADING);
+                        LoadingImplements.updateLoading(loadingbar, loadingstat, limpl);
+                        limpl.setIGuiLoading(this);
+                        break;
+                    case CANCEL:
+                        player.cancelLoading();
+                        break;
+                    case DONE:
+                        changeState(State.OPEN_ZIP);
+                        changeState(State.OPEN_ZIP_PAUSE);
+                        player.first();
+                        break;
+                }
             } else
                 JOptionPane.showMessageDialog(this,
                 "The following file "+path+" doesn't exist.",
                 "File Not Found",
                 JOptionPane.WARNING_MESSAGE);
+            
+            
         }   
         player.first();
     }
