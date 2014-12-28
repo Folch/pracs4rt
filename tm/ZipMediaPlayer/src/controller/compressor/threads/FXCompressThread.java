@@ -6,14 +6,12 @@
 package controller.compressor.threads;
 
 import controller.compressor.CompressorController;
-import controller.compressor.FXContent;
 import controller.compressor.FXFile;
 import controller.player.OnLoading;
 import controller.statistics.Statistics;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
@@ -29,49 +27,52 @@ import model.Imatge;
  */
 public class FXCompressThread implements Callable {
 
-    private final ArrayList<Imatge> imatges;
     private final int size_t;
-    private final int GoP;
     private final int pc;
     private final float fq;
+    private final int inici;
+    private final ArrayList<Imatge> imatges;
+    private final int GoP;
+    private final int fi;
+    private final CompressorController compressor;
     private final OnLoading loading;
 
-    public FXCompressThread( OnLoading load, ArrayList<Imatge> imatges, int GoP, int size_t, int pc, float fq) {
-        this.loading = load;
+    public FXCompressThread(int inici, int fi, int size, int pc, float fq, int GoP, ArrayList<Imatge> imatges, CompressorController compr, OnLoading load) {
         this.imatges = imatges;
-        this.GoP = GoP;
-        this.size_t = size_t;
+        this.inici = inici;
+        this.fi = fi;
+        this.size_t = size;
         this.pc = pc;
         this.fq = fq;
+        this.GoP = GoP;
+        this.compressor = compr;
+        this.loading = load;
     }
 
     @Override
     public Object call() throws Exception {
-        return compressFX(imatges, GoP, size_t, pc, fq);
+        return compressFX();
     }
 
-    private FXContent compressFX(ArrayList<Imatge> imatges, int GoP, int size_t, int pc, float fq) {
-        int numImatges = imatges.size();
-        int refs = numImatges / GoP;
-        Imatge ref = imatges.get(0);
-        Collections.sort(imatges);
-        DatatypeFactory datafactory;
-        long start, end, res, init = System.currentTimeMillis();
-
+    private FXFile compressFX() {
         FXFile fxf = new FXFile(GoP, size_t);
+        Imatge ref = imatges.get(inici);
+        fxf.frames.add(new HashMap<Integer, Integer[]>());//sincronitzar
+        int k = 0;
+        long start, end, res, init = System.currentTimeMillis();
+        Duration timeleft;
+        int numImatges = imatges.size();
         try {
+
+            DatatypeFactory datafactory;
             datafactory = DatatypeFactory.newInstance();
-            fxf.frames.add(new HashMap<Integer, Integer[]>());
-            for (int i = 1; i < numImatges; i++) {
-                Imatge img = imatges.get(i);
-                fxf.frames.add(new HashMap<Integer, Integer[]>());
-                if (i % refs == 0) {
-                    ref = img;
-                    continue;
-                }
-                Duration timeleft;
+            for (int i = inici + 1; i < fi; i++) {
                 start = System.currentTimeMillis();
-                HashMap hm = fxf.frames.get(i);
+                Imatge img = imatges.get(i);
+
+                fxf.frames.add(new HashMap<Integer, Integer[]>());//sincronitzar
+                HashMap hm = fxf.frames.get(k);
+                k++;
                 for (int j = 0; j < img.getNumTeseles(size_t); j++) {
                     Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
                     if (pos != null) {
@@ -79,16 +80,38 @@ public class FXCompressThread implements Callable {
                         hm.put(j, pos);
                     }
                 }
-                end = System.currentTimeMillis();
-                res = ((numImatges/(i+1))-1)*(end-init) + (numImatges%(i+1))*(end-start);
-                timeleft = datafactory.newDuration(res);
-                this.loading.updateProgressBar((short) ((i+1) * 100 / numImatges), timeleft);
+                synchronized (compressor) {
+                    System.out.println(compressor.getI());//borrar
+                    int max = Math.max(compressor.getI(), i);
+                    compressor.setI(max);
+                    end = System.currentTimeMillis();
+                    res = ((numImatges / (max + 1)) - 1) * (end - init) + (numImatges % (max + 1)) * (end - start);
+                    timeleft = datafactory.newDuration(res);
+                    if (loading != null) {
+                        this.loading.updateProgressBar((short) ((max + 1) * 100 / numImatges), timeleft);
+                    }
+                }
             }
 
         } catch (DatatypeConfigurationException ex) {
-            Logger.getLogger(CompressorController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FXCompressThread.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return new FXContent(imatges, fxf);
+        return fxf;
+
+    }
+
+    //el valor que es posa en el moment d'eliminar es la mitja de TOTA la imatge
+    private void deleteTesela(Imatge imatge, Integer[] pos, int size_t) {
+        BufferedImage img = imatge.getImage();
+        Statistics s = new Statistics(img);
+        Color colorMig = s.getMeanCanals();
+
+        for (int i = pos[0]; i < pos[0] + size_t; i++) {
+            for (int j = pos[1]; j < pos[1] + size_t; j++) {
+                img.setRGB(i, j, colorMig.getRGB());
+            }
+
+        }
     }
 
     private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int pc, float fq) {
@@ -146,20 +169,4 @@ public class FXCompressThread implements Callable {
         }
         return null;
     }
-
-    //el valor que es posa en el moment d'eliminar es la mitja de TOTA la imatge
-
-    private void deleteTesela(Imatge imatge, Integer[] pos, int size_t) {
-        BufferedImage img = imatge.getImage();
-        Statistics s = new Statistics(img);
-        Color colorMig = s.getMeanCanals();
-
-        for (int i = pos[0]; i < pos[0] + size_t; i++) {
-            for (int j = pos[1]; j < pos[1] + size_t; j++) {
-                img.setRGB(i, j, colorMig.getRGB());
-            }
-
-        }
-    }
-
 }
