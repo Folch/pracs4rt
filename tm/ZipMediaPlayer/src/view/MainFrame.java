@@ -134,7 +134,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
     @Override
     public void loading(LoadingImplements l) {
         LoadingImplements.updateLoading(loadingbar, loadingstat, l);
-        if(l.progress == 99) 
+        if(l.progress == 100) 
             changeState(State.QUIT_LOADING);
     }
 

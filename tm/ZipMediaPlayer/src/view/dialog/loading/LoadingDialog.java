@@ -32,7 +32,7 @@ public class LoadingDialog extends BaseDialog implements IGuiLoading{
     @Override
     public void loading(LoadingImplements l) {
         LoadingImplements.updateLoading(loadingbar, loadingstat, l);
-        if(l.progress == 99) {
+        if(l.progress == 100) {
             state = LoadingState.DONE;
             this.dispose();
         }

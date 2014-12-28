@@ -88,7 +88,7 @@ public class FXDecompressThread implements Callable {
                     end = System.currentTimeMillis();
                     res = ((numImatges/(i+1))-1)*(end-init) + (numImatges%(i+1))*(end-start);
                     timeleft = datafactory.newDuration(res);
-                    this.loading.updateProgressBar((short) (i * 100 / numImatges), timeleft);
+                    this.loading.updateProgressBar((short) ((i+1) * 100 / numImatges), timeleft);
                 }
 
             }
