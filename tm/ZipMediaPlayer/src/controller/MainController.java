@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.zip.ZipFile;
 
 /**
@@ -45,7 +43,8 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
     private final DiskController disk;
     private final FilterController filter;
     private ZipFile zip;
-
+    private OnLoading load;
+    
     /**
      * Constructor
      *
@@ -61,6 +60,7 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
         this.filter = new FilterController();
         this.images = new ArrayList<>();
         this.imagesCopia = new ArrayList<>();
+        this.load = loading;
     }
 
     /**
@@ -140,7 +140,7 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
 
                     images = compressor.decompressZip(zip);
                     imagesCopia = deepCopyArrayList(images);
-
+                    load.onLoadImages();
                 }
             });
             t.start();
@@ -427,6 +427,7 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
                 long res = end - start;
                 System.out.println("Segundos: " + res / 1000);
                 content.save(path, disk);
+                load.onLoadImages();
             }
         }).start();
 
@@ -444,6 +445,7 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
             public void run() {
                 images = compressor.decompressFX(fx);
                 imagesCopia = deepCopyArrayList(images);
+                load.onLoadImages();
             }
         }).start();
         return true;
