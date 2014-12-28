@@ -151,22 +151,15 @@ public class CompressorController implements ICompressor {
 
         FXFile fxf = new FXFile(GoP, size_t);
 
-        for (int i = 0; i < numImatges; i++) {
-
-            if (i % refs == 0) {
+        for (int i = 0; i < numImatges; i+= refs) {
                 Callable c = new FXCompressThread(inici, inici + refs, size_t, pc, fq, GoP, imatges, this, loading);
                 inici += refs;
                 Future b = executor.submit(c);
                 submits.add(b);
-            }
-
         }
         for (Future submit : submits) {
-
             try {
                 buildFxf((FXFile) submit.get(), fxf);
-                
-                //i += refs;
             } catch (InterruptedException | ExecutionException ex) {
                 Logger.getLogger(CompressorController.class.getName()).log(Level.SEVERE, null, ex);
             }
