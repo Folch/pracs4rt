@@ -61,5 +61,10 @@ public class LoadingImplements implements OnLoading {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    @Override
+    public void onLoadImages() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

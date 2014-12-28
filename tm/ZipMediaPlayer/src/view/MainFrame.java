@@ -134,8 +134,10 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
     @Override
     public void loading(LoadingImplements l) {
         LoadingImplements.updateLoading(loadingbar, loadingstat, l);
-        if(l.progress == 100) 
-            changeState(State.QUIT_LOADING);
+        if(l.progress == 100) {
+           changeState(State.QUIT_LOADING);
+           player.first();
+        }
     }
 
     /**
@@ -553,6 +555,8 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
 
     private void openfxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openfxActionPerformed
         String path = selectFolderChooser();
+        if(path == null)
+            return;
         
         LoadingDialog dialog = new LoadingDialog(this, true, "Open FX");
         limpl.setIGuiLoading(dialog);
@@ -576,13 +580,15 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
             case DONE:
                 changeState(State.OPEN_ZIP);
                 changeState(State.OPEN_ZIP_PAUSE);
+                player.first();
                 break;
         }
-        player.first();
     }//GEN-LAST:event_openfxActionPerformed
 
     private void savefxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savefxActionPerformed
         String path = selectFolderChooser();
+        if(path == null)
+            return;
         
         LoadingDialog dialog = new LoadingDialog(this, true, "Save FX");
         

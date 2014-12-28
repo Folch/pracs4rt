@@ -14,4 +14,5 @@ import javax.xml.datatype.Duration;
  */
 public interface OnLoading {
     public void updateProgressBar(short percent, Duration timeleft);
+    public void onLoadImages();
 }
