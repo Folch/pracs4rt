@@ -49,6 +49,7 @@ public class FXDecompressThread implements Callable {
         Imatge ref = imgs.get(0);
         boolean timeCalculated = false;
         DatatypeFactory datafactory;
+        long start, end, res, init = System.currentTimeMillis();
 
         try {
 
@@ -67,11 +68,8 @@ public class FXDecompressThread implements Callable {
                     BufferedImage imgToFill = img.getImage();
 
                     BufferedImage imgRef = ref.getImage();
-                    long start = -1, res = -1;
                     Duration timeleft;
-                    if (!timeCalculated) {
-                        start = System.currentTimeMillis();
-                    }
+                    start = System.currentTimeMillis();
                     //pos[0]=x,columnes   pos[1]=y,files
                     for (int col = 0; col < size_t_tmp; col++) {
                         for (int fila = 0; fila < size_t_tmp; fila++) {
@@ -87,13 +85,9 @@ public class FXDecompressThread implements Callable {
                         }
 
                     }
-                    if (!timeCalculated) {
-                        long end = System.currentTimeMillis();
-                        res = end - start;
-                        timeleft = datafactory.newDuration(res);
-                    } else {
-                        timeleft = datafactory.newDuration(res * (numImatges - i));
-                    }
+                    end = System.currentTimeMillis();
+                    res = ((numImatges/(i+1))-1)*(end-init) + (numImatges%(i+1))*(end-start);
+                    timeleft = datafactory.newDuration(res);
                     this.loading.updateProgressBar((short) (i * 100 / numImatges), timeleft);
                 }
 

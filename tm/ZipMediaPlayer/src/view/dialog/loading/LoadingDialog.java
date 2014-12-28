@@ -62,6 +62,7 @@ public class LoadingDialog extends BaseDialog implements IGuiLoading{
         setTitle("Loading...");
         setResizable(false);
 
+        cancel_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/resource/Stop16.gif"))); // NOI18N
         cancel_btn.setText("Cancel");
         cancel_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,16 +91,16 @@ public class LoadingDialog extends BaseDialog implements IGuiLoading{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(loadingbar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 261, Short.MAX_VALUE)
-                        .addComponent(background_btn)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(background_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cancel_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(title)
                             .addComponent(loadingstat))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 261, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

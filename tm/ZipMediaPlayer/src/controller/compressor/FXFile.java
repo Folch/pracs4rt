@@ -93,7 +93,7 @@ public class FXFile {
             return fxf;
             
         } catch (JSONException ex) {
-            Logger.getLogger(FXFile.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         
         

@@ -30,10 +30,10 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="loadingbar" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="261" max="32767" attributes="0"/>
-                      <Component id="background_btn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="background_btn" min="-2" pref="120" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="cancel_btn" min="-2" pref="78" max="-2" attributes="0"/>
+                      <Component id="cancel_btn" min="-2" pref="120" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
@@ -41,7 +41,7 @@
                           <Component id="title" min="-2" max="-2" attributes="0"/>
                           <Component id="loadingstat" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="261" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -72,6 +72,9 @@
   <SubComponents>
     <Component class="javax.swing.JButton" name="cancel_btn">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/view/resource/Stop16.gif"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Cancel"/>
       </Properties>
       <Events>

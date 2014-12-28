@@ -40,12 +40,13 @@ public class DiskController implements InternalIDisk {
      */
     @Override
     public ZipFile openZip(String path) {
-        ZipFile zFl = null;
+        ZipFile zFl;
         try {
             File file = new File(path);
             zFl = new ZipFile(file);
 
         } catch (IOException ex) {
+            zFl = null;
         }
         return zFl;
 
@@ -195,7 +196,7 @@ public class DiskController implements InternalIDisk {
             in.close();
             
         } catch (IOException ex) {
-            Logger.getLogger(DiskController.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
         return out;
     }

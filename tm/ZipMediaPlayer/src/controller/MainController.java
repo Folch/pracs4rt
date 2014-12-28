@@ -423,13 +423,18 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
 
     @Override
     public boolean openFX(String path) {
-        FXContent fx = FXContent.open(path, disk, compressor);
+        final FXContent fx = FXContent.open(path, disk, compressor);
         if (fx == null) {
             return false;
         }
-        images = compressor.decompressFX(fx);
-        imagesCopia = deepCopyArrayList(images);
-        System.out.println("MainController :: openFx: Finish openFX");
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                images = compressor.decompressFX(fx);
+                imagesCopia = deepCopyArrayList(images);
+            }
+        }).start();
         return true;
     }
 

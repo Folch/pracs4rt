@@ -48,6 +48,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
     private JFileChooser fc_folder;
     
     private LoadingImplements limpl;
+    private boolean isLoading;
 
     /**
      * Creates new form MainFrame
@@ -75,6 +76,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
         this.setBounds( width/2-this.getWidth()/2, height/2-this.getHeight()/2, this.getWidth(), this.getHeight());
         
         limpl = new LoadingImplements();
+        isLoading = false;
         
         MainController controller;
         if (player == null || saver == null || filter == null || fxparameters == null) {
@@ -551,15 +553,32 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
 
     private void openfxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openfxActionPerformed
         String path = selectFolderChooser();
+        
+        LoadingDialog dialog = new LoadingDialog(this, true, "Open FX");
+        limpl.setIGuiLoading(dialog);
         if(!saver.openFX(path)) {
             JOptionPane.showMessageDialog(this,
                 "Files not found",
                 "File Error",
                 JOptionPane.WARNING_MESSAGE);
-        } else {
-            changeState(State.OPEN_ZIP_PAUSE);
-            player.first();
+            return;
         }
+        dialog.setVisible(true);
+        switch (dialog.getState()) {
+            case BACKGROUND:
+                changeState(State.LOADING);
+                LoadingImplements.updateLoading(loadingbar, loadingstat, limpl);
+                limpl.setIGuiLoading(this);
+                break;
+            case CANCEL:
+                player.cancelLoading();
+                break;
+            case DONE:
+                changeState(State.OPEN_ZIP);
+                changeState(State.OPEN_ZIP_PAUSE);
+                break;
+        }
+        player.first();
     }//GEN-LAST:event_openfxActionPerformed
 
     private void savefxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savefxActionPerformed
@@ -590,7 +609,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
     }//GEN-LAST:event_fxoptionsActionPerformed
 
     private void loadingloadingcancelbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadingloadingcancelbtnActionPerformed
-        if(currentstate == State.LOADING) {
+        if(isLoading) {
             player.cancelLoading();
             changeState(State.QUIT_LOADING);
         }
@@ -683,10 +702,14 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 playbtn.setIcon(new ImageIcon(getClass().getResource("/view/resource/Play24.gif")));
                 break;
             case LOADING:
+                this.isLoading = true;
                 //menu item
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
                 savefx.setEnabled(false);
+                openfx.setEnabled(false);
+                openimagemenu.setEnabled(false);
+                openzipmenu.setEnabled(false);
                 //loading
                 loadingbar.setValue(0);
                 loadingstat.setText("Calculating...");
@@ -695,10 +718,14 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 loadingcancelbtn.setVisible(true);
                 break;
             case QUIT_LOADING:
+                this.isLoading = false;
                 //menu item
                 savezipmenu.setEnabled(true);
                 savegzipmenu.setEnabled(true);
                 savefx.setEnabled(true);
+                openfx.setEnabled(true);
+                openimagemenu.setEnabled(true);
+                openzipmenu.setEnabled(true);
                 //loading
                 loadingbar.setVisible(false);
                 loadingstat.setVisible(false);
