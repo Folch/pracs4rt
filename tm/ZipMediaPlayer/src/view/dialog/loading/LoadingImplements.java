@@ -64,7 +64,8 @@ public class LoadingImplements implements OnLoading {
 
     @Override
     public void onLoadImages() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(gui != null)
+            gui.finishLoading();
     }
     
 }

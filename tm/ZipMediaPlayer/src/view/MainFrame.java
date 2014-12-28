@@ -34,7 +34,7 @@ import view.dialog.loading.LoadingImplements;
 public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
     private State currentstate;
 
-    private enum State {OPEN_ZIP_PLAY, OPEN_ZIP, OPEN_ZIP_PAUSE, OPEN_IMAGE, LOADING, QUIT_LOADING, EMPTY};
+    private enum State {OPEN_ZIP_PLAY, OPEN_ZIP, OPEN_ZIP_PAUSE, OPEN_IMAGE, LOADING, FINISH_LOADING, EMPTY};
     private enum FilterState {CUSTOM, HSB, NEGATIVE, BINARY, ORIGINAL};
     
     private IDisk saver;
@@ -134,10 +134,12 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
     @Override
     public void loading(LoadingImplements l) {
         LoadingImplements.updateLoading(loadingbar, loadingstat, l);
-        if(l.progress == 100) {
-           changeState(State.QUIT_LOADING);
-           player.first();
-        }
+    }
+    
+    @Override
+    public void finishLoading() {
+        changeState(State.FINISH_LOADING);
+        player.first();
     }
 
     /**
@@ -617,7 +619,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
     private void loadingloadingcancelbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadingloadingcancelbtnActionPerformed
         if(isLoading) {
             player.cancelLoading();
-            changeState(State.QUIT_LOADING);
+            changeState(State.FINISH_LOADING);
         }
     }//GEN-LAST:event_loadingloadingcancelbtnActionPerformed
 
@@ -723,7 +725,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 loadingstat.setVisible(true);
                 loadingcancelbtn.setVisible(true);
                 break;
-            case QUIT_LOADING:
+            case FINISH_LOADING:
                 this.isLoading = false;
                 //menu item
                 savezipmenu.setEnabled(true);

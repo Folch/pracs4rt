@@ -11,4 +11,5 @@ package view.dialog.loading;
  */
 public interface IGuiLoading {
     public void loading(LoadingImplements l);
+    public void finishLoading();
 }

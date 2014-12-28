@@ -14,6 +14,8 @@ import view.dialog.*;
  */
 public class LoadingDialog extends BaseDialog implements IGuiLoading{
 
+    
+
     public enum LoadingState {BACKGROUND, DONE, CANCEL};
     
     private LoadingState state;
@@ -32,10 +34,12 @@ public class LoadingDialog extends BaseDialog implements IGuiLoading{
     @Override
     public void loading(LoadingImplements l) {
         LoadingImplements.updateLoading(loadingbar, loadingstat, l);
-        if(l.progress == 100) {
-            state = LoadingState.DONE;
-            this.dispose();
-        }
+    }
+    
+    @Override
+    public void finishLoading() {
+        state = LoadingState.DONE;
+        this.dispose();
     }
     
     public LoadingState getState() {
