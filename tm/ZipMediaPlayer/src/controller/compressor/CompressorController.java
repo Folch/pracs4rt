@@ -6,8 +6,8 @@
 package controller.compressor;
 
 import controller.MainController;
-import controller.compressor.threads.FXCompressThread;
-import controller.compressor.threads.FXDecompressThread;
+import controller.compressor.threads.FXCompress;
+import controller.compressor.threads.FXDecompress;
 import controller.player.OnLoading;
 import model.Imatge;
 import java.awt.image.BufferedImage;
@@ -23,8 +23,6 @@ import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import model.config.Config;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -36,8 +34,8 @@ import javax.xml.datatype.Duration;
 
 /**
  * Classe controladora de totes les accions relacionades amb la compressió
- *
- * @author Albert Folch i Xavi Moreno
+ * 
+* @author Albert Folch i Xavi Moreno
  */
 public class CompressorController implements ICompressor {
 
@@ -46,8 +44,10 @@ public class CompressorController implements ICompressor {
     private int pc;
     private float fq;
     private final OnLoading loading;
-    private final ExecutorService executor;
-    private int i;
+    private boolean isCanceled;
+    
+    private FXCompress compress;
+    private FXDecompress decompress;
 
     public CompressorController(OnLoading loading) {
         this.GoP = Config.DEFAULT_GOP;
@@ -55,7 +55,7 @@ public class CompressorController implements ICompressor {
         this.pc = Config.DEFAULT_PC;
         this.fq = Config.DEFAULT_FQ;
         this.loading = loading;
-        this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        this.isCanceled = false;
     }
 
     /**
@@ -69,7 +69,6 @@ public class CompressorController implements ICompressor {
     public ArrayList<Imatge> decompressZip(ZipFile zFl) {
         ArrayList<Imatge> images = new ArrayList<>();
         long start, end, res, init = System.currentTimeMillis();
-
         try {
             DatatypeFactory datafactory = DatatypeFactory.newInstance();
             Enumeration<? extends ZipEntry> entries = zFl.entries();
@@ -90,17 +89,21 @@ public class CompressorController implements ICompressor {
                 end = System.currentTimeMillis();
                 res = ((numImatges / (i + 1)) - 1) * (end - init) + (numImatges % (i + 1)) * (end - start);
                 timeleft = datafactory.newDuration(res);
+                if(isCanceled){
+                    return null;
+                }
                 if (loading != null) {
                     this.loading.updateProgressBar((short) ((i + 1) * 100 / numImatges), timeleft);
                 }
                 i++;
-
             }
-
         } catch (IOException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DatatypeConfigurationException ex) {
             Logger.getLogger(CompressorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(isCanceled){
+            return null;
         }
         return images;
     }
@@ -108,8 +111,8 @@ public class CompressorController implements ICompressor {
     /**
      * Aquest mètode fa: Descomprimir Zip,Guardar imatges com a files a disc i
      * retorna l'arraylist de files corresponent a les imatges
-     *
-     * @param path
+     *     
+* @param path
      * @param zipFile
      * @return
      */
@@ -119,7 +122,6 @@ public class CompressorController implements ICompressor {
         File outputfile;
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         while (entries.hasMoreElements()) {
-
             try {
                 ZipEntry entry = entries.nextElement();
                 Imatge image = new Imatge();
@@ -132,7 +134,6 @@ public class CompressorController implements ICompressor {
                 outputfile = new File((image.getName().substring(0, image.getName().length() - 4)) + ".jpg");
                 ImageIO.write(image.getImage(), "jpg", outputfile);
                 files.add(outputfile);
-
             } catch (IOException ex) {
                 Logger.getLogger(CompressorController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -142,48 +143,14 @@ public class CompressorController implements ICompressor {
 
     @Override
     public FXContent compressFX(ArrayList<Imatge> imatges, int GoP, int size_t, int pc, float fq) {
-        int numImatges = imatges.size();
-        int refs = numImatges / GoP;
-        int inici = 0;
-        Collections.sort(imatges);
-
-        ArrayList<Future> submits = new ArrayList<>();
-
-        FXFile fxf = new FXFile(GoP, size_t);
-
-        for (int i = 0; i < numImatges; i+= refs) {
-                Callable c = new FXCompressThread(inici, inici + refs, size_t, pc, fq, GoP, imatges, this, loading);
-                inici += refs;
-                Future b = executor.submit(c);
-                submits.add(b);
-        }
-        for (Future submit : submits) {
-            try {
-                buildFxf((FXFile) submit.get(), fxf);
-            } catch (InterruptedException | ExecutionException ex) {
-                Logger.getLogger(CompressorController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        return new FXContent(imatges, fxf);
-    }
-
-    private void buildFxf(FXFile parcial, FXFile total) {
-        for (HashMap hm : parcial.frames) {
-            total.frames.add(hm);
-        }
+        compress = new FXCompress(loading, imatges, GoP, size_t, pc, fq);
+        return compress.compressFX();
     }
 
     @Override
     public ArrayList<Imatge> decompressFX(FXContent content) {
-        try {
-            Callable c = new FXDecompressThread(content, loading);
-            Future b = executor.submit(c);
-            return (ArrayList<Imatge>) b.get();
-        } catch (InterruptedException | ExecutionException ex) {
-            Logger.getLogger(CompressorController.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
+        decompress = new FXDecompress(content, loading);
+        return decompress.decompress();
     }
 
     public int getGoP() {
@@ -219,15 +186,14 @@ public class CompressorController implements ICompressor {
     }
 
     public void cancel() {
-        executor.shutdown();
+        this.isCanceled = true;
+        if(compress != null)
+            compress.cancel();
+        if(decompress != null)
+            decompress.cancel();
     }
-
-    public int getI() {
-        return i;
+    
+    public void resetCancel() {
+        this.isCanceled = false;
     }
-
-    public void setI(int i) {
-        this.i = i;
-    }
-
 }

@@ -33,6 +33,7 @@ import view.dialog.loading.LoadingImplements;
  */
 public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
     private State currentstate;
+    private boolean isEmpty;
 
     private enum State {OPEN_ZIP_PLAY, OPEN_ZIP, OPEN_ZIP_PAUSE, OPEN_IMAGE, LOADING, FINISH_LOADING, EMPTY};
     private enum FilterState {CUSTOM, HSB, NEGATIVE, BINARY, ORIGINAL};
@@ -49,6 +50,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
     
     private LoadingImplements limpl;
     private boolean isLoading;
+    private boolean opener;
 
     /**
      * Creates new form MainFrame
@@ -139,6 +141,10 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
     @Override
     public void finishLoading() {
         changeState(State.FINISH_LOADING);
+        if(opener){
+            changeState(State.OPEN_ZIP);
+            changeState(State.OPEN_ZIP_PAUSE);  
+        }
         player.first();
     }
 
@@ -560,20 +566,22 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
         if(path == null)
             return;
         
-        LoadingDialog dialog = new LoadingDialog(this, true, "Open FX");
-        limpl.setIGuiLoading(dialog);
+        //LoadingDialog dialog = new LoadingDialog(this, true, "Open FX");
+        opener = true;
+        changeState(State.LOADING);
+        limpl.setIGuiLoading(this);
         if(!saver.openFX(path)) {
+            /*Never enter here*/
             JOptionPane.showMessageDialog(this,
                 "Files not found",
                 "File Error",
                 JOptionPane.WARNING_MESSAGE);
             return;
         }
-        dialog.setVisible(true);
+        /*dialog.setVisible(true);
         switch (dialog.getState()) {
             case BACKGROUND:
-                changeState(State.OPEN_ZIP);
-                changeState(State.OPEN_ZIP_PAUSE);
+                opener = true;
                 changeState(State.LOADING);
                 LoadingImplements.updateLoading(loadingbar, loadingstat, limpl);
                 limpl.setIGuiLoading(this);
@@ -586,7 +594,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 changeState(State.OPEN_ZIP_PAUSE);
                 player.first();
                 break;
-        }
+        }*/
     }//GEN-LAST:event_openfxActionPerformed
 
     private void savefxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savefxActionPerformed
@@ -603,6 +611,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
         
         switch (dialog.getState()) {
             case BACKGROUND:
+                opener = false;
                 changeState(State.LOADING);
                 LoadingImplements.updateLoading(loadingbar, loadingstat, limpl);
                 limpl.setIGuiLoading(this);
@@ -640,9 +649,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
         }
         
         if(fileType == FileType.IMAGE) {
-            if(saver.openImage(path))
-                changeState(State.OPEN_IMAGE);
-            else
+            if(!saver.openImage(path))
                 JOptionPane.showMessageDialog(this,
                 "The following file "+path+" doesn't exist.",
                 "File Not Found",
@@ -653,13 +660,14 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
             LoadingDialog dialog = new LoadingDialog(this, true, "Open Zip");
             limpl.setIGuiLoading(dialog);
             
+            if(player.isPlaying())
+                    playbtnActionPerformed(null);
+            
             if(saver.openZip(path)) {
                 dialog.setVisible(true);
-                
                 switch (dialog.getState()) {
                     case BACKGROUND:
-                        changeState(State.OPEN_ZIP);
-                        changeState(State.OPEN_ZIP_PAUSE);  
+                        opener = true;
                         changeState(State.LOADING);
                         LoadingImplements.updateLoading(loadingbar, loadingstat, limpl);
                         limpl.setIGuiLoading(this);
@@ -678,16 +686,15 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 "The following file "+path+" doesn't exist.",
                 "File Not Found",
                 JOptionPane.WARNING_MESSAGE);
-            
-            
         }   
-        player.first();
+        
     }
 
     private void changeState(State state) {
         
         switch (state) {
             case OPEN_IMAGE:
+                isEmpty = false;
                 //menu item
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);
@@ -706,6 +713,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 originalmenu.setEnabled(true);
                 break;
             case OPEN_ZIP:
+                isEmpty = false;
                 //menu item
                 savezipmenu.setEnabled(true);
                 savegzipmenu.setEnabled(true);
@@ -719,6 +727,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 originalmenu.setEnabled(true);
                 break;
             case OPEN_ZIP_PLAY:
+                isEmpty = false;
                 //player items
                 optionsmenu.setEnabled(true);
                 prevbtn.setEnabled(false);
@@ -727,6 +736,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 playbtn.setIcon(new ImageIcon(getClass().getResource("/view/resource/Pause24.gif")));
                 break;
             case OPEN_ZIP_PAUSE:
+                isEmpty = false;
                 //player items
                 optionsmenu.setEnabled(true);
                 prevbtn.setEnabled(true);
@@ -753,9 +763,11 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
             case FINISH_LOADING:
                 this.isLoading = false;
                 //menu item
-                savezipmenu.setEnabled(true);
-                savegzipmenu.setEnabled(true);
-                savefx.setEnabled(true);
+                if(!isEmpty) {
+                    savezipmenu.setEnabled(true);
+                    savegzipmenu.setEnabled(true);
+                    savefx.setEnabled(true);
+                }
                 openfx.setEnabled(true);
                 openimagemenu.setEnabled(true);
                 openzipmenu.setEnabled(true);
@@ -765,6 +777,7 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 loadingcancelbtn.setVisible(false);
                 break;
             case EMPTY:
+                isEmpty = true;
                 //menu item
                 savezipmenu.setEnabled(false);
                 savegzipmenu.setEnabled(false);

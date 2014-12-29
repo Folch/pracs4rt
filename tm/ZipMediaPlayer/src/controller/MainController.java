@@ -134,13 +134,15 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
         this.zip = disk.openZip(path);
         if (zip != null) {
             Thread t = new Thread(new Runnable() {
-
                 @Override
                 public void run() {
-
-                    images = compressor.decompressZip(zip);
-                    imagesCopia = deepCopyArrayList(images);
-                    load.onLoadImages();
+                    ArrayList<Imatge> imgs = compressor.decompressZip(zip);
+                    if(imgs != null) {
+                        images = imgs;
+                        imagesCopia = deepCopyArrayList(images);
+                        load.onLoadImages();
+                    }
+                    compressor.resetCancel();
                 }
             });
             t.start();
@@ -423,29 +425,40 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
             public void run() {
                 long start = System.currentTimeMillis();
                 FXContent content = compressor.compressFX(deepCopyArrayList(imagesCopia), getGoP(), getSizeTesela(), getPC(), getFQ());
+                if(content == null) {
+                    compressor.resetCancel();
+                    return;
+                }
                 long end = System.currentTimeMillis();
                 long res = end - start;
                 System.out.println("Segundos: " + res / 1000);
                 content.save(path, disk);
                 load.onLoadImages();
+                compressor.resetCancel();
             }
         }).start();
 
     }
 
     @Override
-    public boolean openFX(String path) {
-        final FXContent fx = FXContent.open(path, disk, compressor);
-        if (fx == null) {
-            return false;
-        }
+    public boolean openFX(final String path) {
+        
         new Thread(new Runnable() {
 
             @Override
             public void run() {
-                images = compressor.decompressFX(fx);
-                imagesCopia = deepCopyArrayList(images);
-                load.onLoadImages();
+                FXContent fx = FXContent.open(path, disk, compressor);
+                if (fx == null) {
+                    compressor.resetCancel();
+                    return;
+                }
+                ArrayList<Imatge> imgs = compressor.decompressFX(fx);
+                if(imgs != null) {
+                    images = imgs;
+                    imagesCopia = deepCopyArrayList(images);
+                    load.onLoadImages();
+                }
+                compressor.resetCancel();
             }
         }).start();
         return true;
@@ -493,7 +506,6 @@ public class MainController implements IPlayer, IFilter, IDisk, IFXParameters {
 
     @Override
     public void cancelLoading() {
-        System.out.println("CANCELED");
         this.compressor.cancel();
     }
 }

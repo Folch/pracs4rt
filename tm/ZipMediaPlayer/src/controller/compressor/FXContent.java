@@ -35,6 +35,8 @@ public class FXContent {
         ArrayList<Imatge> imatges;
         if (zip != null && fxf != null) {
             imatges = compressor.decompressZip(zip);
+            if(imatges == null)
+                return null;
             return new FXContent(imatges, fxf);
         }
         return null;

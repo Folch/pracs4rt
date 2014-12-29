@@ -6,12 +6,14 @@
 package controller.compressor.threads;
 
 import controller.compressor.CompressorController;
+import controller.compressor.FXContent;
 import controller.compressor.FXFile;
 import controller.player.OnLoading;
 import controller.statistics.Statistics;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
@@ -25,54 +27,47 @@ import model.Imatge;
  *
  * @author albert
  */
-public class FXCompressThread implements Callable {
+public class FXCompress {
 
+    private final ArrayList<Imatge> imatges;
     private final int size_t;
+    private final int GoP;
     private final int pc;
     private final float fq;
-    private final int inici;
-    private final ArrayList<Imatge> imatges;
-    private final int GoP;
-    private final int fi;
-    private final CompressorController compressor;
     private final OnLoading loading;
+    private boolean isCanceled;
 
-    public FXCompressThread(int inici, int fi, int size, int pc, float fq, int GoP, ArrayList<Imatge> imatges, CompressorController compr, OnLoading load) {
+    public FXCompress(OnLoading load, ArrayList<Imatge> imatges, int GoP, int size_t, int pc, float fq) {
+        this.loading = load;
         this.imatges = imatges;
-        this.inici = inici;
-        this.fi = fi;
-        this.size_t = size;
+        this.GoP = GoP;
+        this.size_t = size_t;
         this.pc = pc;
         this.fq = fq;
-        this.GoP = GoP;
-        this.compressor = compr;
-        this.loading = load;
+        this.isCanceled = false;
     }
 
-    @Override
-    public Object call() throws Exception {
-        return compressFX();
-    }
-
-    private FXFile compressFX() {
-        FXFile fxf = new FXFile(GoP, size_t);
-        Imatge ref = imatges.get(inici);
-        fxf.frames.add(new HashMap<Integer, Integer[]>());//sincronitzar
-        int k = 0;
-        long start, end, res, init = System.currentTimeMillis();
-        Duration timeleft;
+    public FXContent compressFX() {
         int numImatges = imatges.size();
+        int refs = numImatges / GoP;
+        Imatge ref = imatges.get(0);
+        Collections.sort(imatges);
+        DatatypeFactory datafactory;
+        long start, end, res, init = System.currentTimeMillis();
+        FXFile fxf = new FXFile(GoP, size_t);
         try {
-
-            DatatypeFactory datafactory;
             datafactory = DatatypeFactory.newInstance();
-            for (int i = inici + 1; i < fi; i++) {
-                start = System.currentTimeMillis();
+            fxf.frames.add(new HashMap<Integer, Integer[]>());
+            for (int i = 1; i < numImatges; i++) {
                 Imatge img = imatges.get(i);
-
-                fxf.frames.add(new HashMap<Integer, Integer[]>());//sincronitzar
-                HashMap hm = fxf.frames.get(k);
-                k++;
+                fxf.frames.add(new HashMap<Integer, Integer[]>());
+                if (i % refs == 0) {
+                    ref = img;
+                    continue;
+                }
+                Duration timeleft;
+                start = System.currentTimeMillis();
+                HashMap hm = fxf.frames.get(i);
                 for (int j = 0; j < img.getNumTeseles(size_t); j++) {
                     Integer[] pos = searchTesela(ref, img, j, size_t, pc, fq);
                     if (pos != null) {
@@ -80,61 +75,39 @@ public class FXCompressThread implements Callable {
                         hm.put(j, pos);
                     }
                 }
-                synchronized (compressor) {
-                    System.out.println(compressor.getI());//borrar
-                    int max = Math.max(compressor.getI(), i);
-                    compressor.setI(max);
-                    end = System.currentTimeMillis();
-                    res = ((numImatges / (max + 1)) - 1) * (end - init) + (numImatges % (max + 1)) * (end - start);
-                    timeleft = datafactory.newDuration(res);
-                    if (loading != null) {
-                        this.loading.updateProgressBar((short) ((max + 1) * 100 / numImatges), timeleft);
-                    }
-                }
+                end = System.currentTimeMillis();
+                res = ((numImatges / (i + 1)) - 1) * (end - init) + (numImatges % (i + 1)) * (end - start);
+                timeleft = datafactory.newDuration(res);
+                if(this.isCanceled)
+                    return null;
+                if(this.loading != null)
+                    this.loading.updateProgressBar((short) ((i + 1) * 100 / numImatges), timeleft);
             }
-
         } catch (DatatypeConfigurationException ex) {
-            Logger.getLogger(FXCompressThread.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CompressorController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return fxf;
-
-    }
-
-    //el valor que es posa en el moment d'eliminar es la mitja de TOTA la imatge
-    private void deleteTesela(Imatge imatge, Integer[] pos, int size_t) {
-        BufferedImage img = imatge.getImage();
-        Statistics s = new Statistics(img);
-        Color colorMig = s.getMeanCanals();
-
-        for (int i = pos[0]; i < pos[0] + size_t; i++) {
-            for (int j = pos[1]; j < pos[1] + size_t; j++) {
-                img.setRGB(i, j, colorMig.getRGB());
-            }
-
-        }
+        if(this.isCanceled)
+            return null;
+        return new FXContent(imatges, fxf);
     }
 
     private Integer[] searchTesela(Imatge src, Imatge dest, int tesela, int size_t, int pc, float fq) {
         int width = src.getImage().getWidth();
         int height = src.getImage().getHeight();
-
-        Integer[] pos = src.getPosTesela(tesela, size_t);//pos[0]=x,columnes   pos[1]=y,files
-
+        Integer[] pos = src.getPosTesela(tesela, size_t);//pos[0]=x,columnes pos[1]=y,files
         if (pos[0] + size_t >= width || pos[1] + size_t >= height) {
             return null;
         }
         BufferedImage subimatge = src.getImage().getSubimage(pos[0].intValue(), pos[1].intValue(), size_t, size_t);
-
         for (int l = 0; l < pc; l++) {
             int lastRow = pos[1] + l + size_t;
             int lastColumn = pos[0] + l + size_t;
             /*
-             System.out.println("Inici "+(pos[1]-l)+"  "+(pos[0]-l));
-             System.out.println("Fi "+lastRow+"  "+lastColumn);
+             System.out.println("Inici "+(pos[1]-l)+" "+(pos[0]-l));
+             System.out.println("Fi "+lastRow+" "+lastColumn);
              */
             for (int fila = pos[1] - l; fila < lastRow; fila++) {
                 if (fila >= 0 && fila < height - size_t) {
-
                     for (int col = pos[0] - l; col < lastColumn;) {
                         //System.out.println("fila = "+fila+" columna = "+col);
                         if (col >= 0 && col < width - size_t) {
@@ -157,7 +130,6 @@ public class FXCompressThread implements Callable {
                         } else {
                             break;
                         }
-
                     }
                 } else if (fila < 0) {
                     fila = 0;
@@ -165,8 +137,23 @@ public class FXCompressThread implements Callable {
                     break;
                 }
             }
-
         }
         return null;
+    }
+    
+    //el valor que es posa en el moment d'eliminar es la mitja de TOTA la imatge
+    private void deleteTesela(Imatge imatge, Integer[] pos, int size_t) {
+        BufferedImage img = imatge.getImage();
+        Statistics s = new Statistics(img);
+        Color colorMig = s.getMeanCanals();
+        for (int i = pos[0]; i < pos[0] + size_t; i++) {
+            for (int j = pos[1]; j < pos[1] + size_t; j++) {
+                img.setRGB(i, j, colorMig.getRGB());
+            }
+        }
+    }
+
+    public void cancel() {
+        this.isCanceled = true;
     }
 }
