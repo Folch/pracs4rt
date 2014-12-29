@@ -115,8 +115,8 @@ public class FXCompress {
                             double diff = Statistics.normalizedCrossCorrelation(subimatge, desti);
                             if (diff > fq) {
                                 Integer[] posD = new Integer[2];
-                                posD[0] = pos[0];
-                                posD[1] = pos[1];
+                                posD[0] = col;
+                                posD[1] = fila;
                                 return posD;
                             } else {
                                 if (fila == pos[1] - l || fila == lastRow) {

@@ -57,6 +57,8 @@ public class FXDecompress {
                 for (int tesela = 0; tesela < ref.getNumTeseles(size_t_tmp); tesela++) {
                     Integer[] posTesela = (Integer[]) posicionsTeseles.get(tesela);
                     Integer[] refPosTesela = ref.getPosTesela(tesela, size_t_tmp);
+                    if(posTesela == null)
+                        continue;
                     BufferedImage imgToFill = img.getImage();
                     BufferedImage imgRef = ref.getImage();
                     Duration timeleft;
@@ -70,9 +72,7 @@ public class FXDecompress {
                              System.out.println();
                              */
                             int rgb = imgRef.getRGB(col + refPosTesela[0], fila + refPosTesela[1]);
-                            if (posTesela != null) {
-                                imgToFill.setRGB(col + posTesela[0], fila + posTesela[1], rgb);
-                            }
+                            imgToFill.setRGB(col + posTesela[0], fila + posTesela[1], rgb);
                         }
                     }
                     end = System.currentTimeMillis();
