@@ -82,8 +82,8 @@ public class Statistics {
         assert img1.getWidth() == img2.getWidth();
         assert img1.getHeight() == img2.getHeight();
 
-        double out = 0;
-        double mean12;
+        double outR = 0,outG=0,outB=0;
+        double meanR,meanG,meanB;
         int size;
         Statistics s1;
         Statistics s2;
@@ -92,13 +92,19 @@ public class Statistics {
         s1 = new Statistics(img1);
         s2 = new Statistics(img2);
 
-        mean12 = s1.getMeanR() * s2.getMeanR();
+        meanR = s1.getMeanR() * s2.getMeanR();
+        meanG = s1.getMeanG() * s2.getMeanG();
+        meanB = s1.getMeanB() * s2.getMeanB();
         for (int i = 0; i < size; i++) {
-            out += s1.dataR[i] * s2.dataR[i] - mean12;
+            outR += s1.dataR[i] * s2.dataR[i] - meanR;
+            outG += s1.dataG[i] * s2.dataG[i] - meanG;
+            outB += s1.dataB[i] * s2.dataB[i] - meanB;
         }
 
-        out /= (size * s1.getStdDev() * s2.getStdDev());
+        outR /= (size * s1.getStdDev() * s2.getStdDev());
+        outG /= (size * s1.getStdDev() * s2.getStdDev());
+        outB /= (size * s1.getStdDev() * s2.getStdDev());
 
-        return out;
+        return (outR+outG+outB)/3;
     }
 }

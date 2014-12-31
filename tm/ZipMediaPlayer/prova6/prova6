@@ -1,0 +1,12 @@
+5,20,20,0.2
+Segundos: 403
+
+fxf = 40625 bytes
+images.zip = 809737 bytes
+
+original = 1061650
+suma = 850362 bytes
+
+1 - suma/float(original)
+19.90%
+
