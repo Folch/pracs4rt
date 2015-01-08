@@ -3,15 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/filter/threads/FilterThread.java</file>
-            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/view/TestClass.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/compressor/FXContent.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/disk/IDisk.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/view/dialog/loading/IGuiLoading.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/player/OnLoading.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/compressor/threads/FXCompress.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/compressor/CompressorController.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/compressor/threads/FXDecompress.java</file>
             <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/MainController.java</file>
-            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/view/FXOptionsDialog.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/view/dialog/loading/LoadingDialog.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/model/config/Config.java</file>
             <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/disk/DiskController.java</file>
-            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/filter/InternalIFilter.java</file>
-            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/filter/FilterController.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/compressor/FXFile.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/view/dialog/BaseDialog.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/view/dialog/loading/LoadingImplements.java</file>
             <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/view/MainFrame.java</file>
-            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/view/filter/CustomFilterDialog.java</file>
+            <file>file:/home/zenbook/github/pracs4rt/tm/ZipMediaPlayer/src/controller/compressor/ICompressor.java</file>
         </group>
     </open-files>
 </project-private>
