@@ -649,12 +649,15 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
         }
         
         if(fileType == FileType.IMAGE) {
-            if(!saver.openImage(path))
+            if(saver.openImage(path)) {
+                changeState(State.OPEN_IMAGE);
+                player.first();
+            } else{
                 JOptionPane.showMessageDialog(this,
                 "The following file "+path+" doesn't exist.",
                 "File Not Found",
                 JOptionPane.WARNING_MESSAGE);
-
+            }
         } else if(fileType == FileType.ZIP) {
             
             LoadingDialog dialog = new LoadingDialog(this, true, "Open Zip");
