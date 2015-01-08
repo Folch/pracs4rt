@@ -243,16 +243,23 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="imagepanel" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="imagepanel" alignment="1" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
                       <Component id="prevbtn" pref="130" max="32767" attributes="0"/>
                       <EmptySpace pref="50" max="32767" attributes="0"/>
                       <Component id="playbtn" pref="155" max="32767" attributes="0"/>
                       <EmptySpace pref="39" max="32767" attributes="0"/>
                       <Component id="nextbtn" pref="130" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="loadingbar" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="loadingstat" min="-2" pref="112" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="loadingcancelbtn" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -269,6 +276,12 @@
                   <Component id="nextbtn" alignment="0" pref="48" max="32767" attributes="0"/>
                   <Component id="playbtn" alignment="0" max="32767" attributes="0"/>
                   <Component id="prevbtn" alignment="0" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="loadingcancelbtn" max="32767" attributes="0"/>
+                  <Component id="loadingstat" max="32767" attributes="0"/>
+                  <Component id="loadingbar" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -337,10 +350,27 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="265" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="241" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
     </Container>
+    <Component class="javax.swing.JProgressBar" name="loadingbar">
+    </Component>
+    <Component class="javax.swing.JLabel" name="loadingstat">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="time"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="loadingcancelbtn">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/view/resource/Stop16.gif"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadingloadingcancelbtnActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>
