@@ -170,7 +170,6 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
         openimagemenu = new javax.swing.JMenuItem();
         saveimagemenu = new javax.swing.JMenuItem();
         savezipmenu = new javax.swing.JMenuItem();
-        savegzipmenu = new javax.swing.JMenuItem();
         openfx = new javax.swing.JMenuItem();
         savefx = new javax.swing.JMenuItem();
         fxoptions = new javax.swing.JMenuItem();
@@ -281,16 +280,6 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
             }
         });
         filebar.add(savezipmenu);
-
-        savegzipmenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        savegzipmenu.setText("Save GZip ...");
-        savegzipmenu.setEnabled(false);
-        savegzipmenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                savegzipmenuActionPerformed(evt);
-            }
-        });
-        filebar.add(savegzipmenu);
 
         openfx.setText("Open FX ...");
         openfx.addActionListener(new java.awt.event.ActionListener() {
@@ -510,12 +499,6 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
         System.exit(0);
     }//GEN-LAST:event_exitmenuActionPerformed
 
-    private void savegzipmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savegzipmenuActionPerformed
-        String path = showSaveFileChooser();
-        if(path != null)
-            saver.saveGZip(path);
-    }//GEN-LAST:event_savegzipmenuActionPerformed
-
     private void fullscreenmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullscreenmenuActionPerformed
         GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
         device.setFullScreenWindow(fullscreenmenu.isSelected() ? this : null);
@@ -700,7 +683,6 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 isEmpty = false;
                 //menu item
                 savezipmenu.setEnabled(false);
-                savegzipmenu.setEnabled(false);
                 saveimagemenu.setEnabled(true);
                 savefx.setEnabled(false);
                 //player items
@@ -719,7 +701,6 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 isEmpty = false;
                 //menu item
                 savezipmenu.setEnabled(true);
-                savegzipmenu.setEnabled(true);
                 saveimagemenu.setEnabled(false);
                 savefx.setEnabled(true);
                 //filter items
@@ -751,7 +732,6 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 this.isLoading = true;
                 //menu item
                 savezipmenu.setEnabled(false);
-                savegzipmenu.setEnabled(false);
                 savefx.setEnabled(false);
                 openfx.setEnabled(false);
                 openimagemenu.setEnabled(false);
@@ -768,7 +748,6 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 //menu item
                 if(!isEmpty) {
                     savezipmenu.setEnabled(true);
-                    savegzipmenu.setEnabled(true);
                     savefx.setEnabled(true);
                 }
                 openfx.setEnabled(true);
@@ -783,7 +762,6 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
                 isEmpty = true;
                 //menu item
                 savezipmenu.setEnabled(false);
-                savegzipmenu.setEnabled(false);
                 saveimagemenu.setEnabled(false);
                 savefx.setEnabled(false);
                 //player items
@@ -867,7 +845,6 @@ public class MainFrame extends javax.swing.JFrame implements IGuiLoading {
     private javax.swing.JMenu playerbar;
     private javax.swing.JButton prevbtn;
     private javax.swing.JMenuItem savefx;
-    private javax.swing.JMenuItem savegzipmenu;
     private javax.swing.JMenuItem saveimagemenu;
     private javax.swing.JMenuItem savezipmenu;
     private javax.swing.JPopupMenu.Separator separatonfiltermenu;
